@@ -1,0 +1,17 @@
+{
+  "name": "roc-package-web-app-react-realtime-example",
+  "version": "1.0.0",
+  "description": "Roc Web React realtime example",
+  "author": "VG",
+  "license": "MIT",
+  "dependencies": {
+    "roc-package-web-app-react": "*",
+    "chart.js": "^1.0.2",
+    "isomorphic-fetch": "^2.2.0",
+    "react-chartjs": "^0.6.0"
+  },
+  "devDependencies": {
+      "roc-package-web-app-react-dev": "*",
+      "roc-plugin-style-sass": "^1.0.0-alpha"
+  }
+}

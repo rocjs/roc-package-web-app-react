@@ -1,0 +1,16 @@
+{
+  "name": "roc-web-react-complex-example",
+  "version": "1.0.0",
+  "description": "Roc Web React complex example",
+  "author": "VG",
+  "license": "MIT",
+  "dependencies": {
+    "redux-fetcher": "~1.0.1",
+    "redux-api-middleware": "vgno/redux-api-middleware#v1.0.0-beta5",
+    "roc-package-web-app-react": "*"
+  },
+  "devDependencies": {
+      "roc-package-web-app-react-dev": "*",
+      "roc-plugin-style-sass": "*"
+  }
+}

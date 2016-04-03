@@ -1,0 +1,26 @@
+.event {
+    text-align: center;
+    font-size: 12px;
+    border: 1px solid;
+    border-radius: 4px;
+    padding: 10px;
+    margin: 0 0 4px 0;
+    background: rgba(151,187,205, 0.7);
+    animation: fadein 0.5s;
+    height: 65px;
+    @keyframes fadein {
+        from { font-size: 0; padding: 0; height: 5px; }
+    }
+}
+
+.name {
+    font-weight: bold;
+}
+
+.up {
+    color: green;
+}
+
+.down {
+    color: red;
+}

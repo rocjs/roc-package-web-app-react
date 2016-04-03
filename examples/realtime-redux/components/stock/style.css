@@ -1,0 +1,9 @@
+.stock {
+    position: relative;
+    background: #fff;
+    border: 1px solid;
+    font-size: 14px;
+    font-family: "Helvetica";
+    padding: 10px;
+    height: 650px;
+}
