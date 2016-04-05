@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+        {{ head.title | safe }}
+        {{ head.meta | safe }}
+        {{ head.link | safe }}
+        {{ head.base | safe }}
+        {{ head.script | safe }}
+
+        {% if dist %}
+        <link rel="stylesheet" href="{{ styleName }}">
+        {% endif %}
+    </head>
+    <body>
+        <div id="application">{{ content | safe }}</div>
+
+        <script>window.ROC_CONFIG = {{ serializedRocConfig | safe }}</script>
+        <script>window.APP_CONFIG = {{ serializedAppConfig | safe }}</script>
+        <script>window.FLUX_STATE = {{ fluxState | safe }}</script>
+
+        <script src="{{ bundleName }}"></script>
+    </body>
+</html>

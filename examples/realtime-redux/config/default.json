@@ -1,0 +1,10 @@
+{
+    "stock": {
+        "sseSource": "http://sse.e24.no/market",
+        "restSource": "http://bors.e24.no/e24/servlets/newt/json/instrument?ticker=",
+        "collect": [
+            "OSEBX.OSE",
+            "C:PBROUSDBR\\SP.IDCENE"
+        ]
+    }
+}

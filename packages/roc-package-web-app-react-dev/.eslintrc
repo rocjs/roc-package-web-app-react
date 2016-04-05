@@ -1,0 +1,13 @@
+{
+    "extends": "vgno/react",
+
+    "parser": "babel-eslint",
+
+    "env": {
+        "es6": true
+    },
+
+    "ecmaFeatures": {
+        "modules": true
+    }
+}

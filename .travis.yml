@@ -1,0 +1,9 @@
+sudo: required
+language: node_js
+node_js:
+    - 4.2
+    - stable
+before_script:
+    - npm run link
+after_success:
+    - npm run build

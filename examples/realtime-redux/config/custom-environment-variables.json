@@ -1,0 +1,7 @@
+{
+    "stock": {
+        "sseSource": "STOCK_SSE_SOURCE",
+        "restSource": "STOCK_REST_SOURCE",
+        "collect": "STOCK_COLLECT"
+    }
+}

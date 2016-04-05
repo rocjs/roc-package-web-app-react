@@ -1,0 +1,16 @@
+{
+  "name": "roc-web-react-simple-example",
+  "version": "1.0.0",
+  "description": "Roc Web React simple example",
+  "author": "VG",
+  "license": "MIT",
+  "scripts": {
+    "dev": "roc dev --applicationName 'Simple Example'"
+  },
+  "dependencies": {
+    "roc-package-web-app-react": "*"
+  },
+  "devDependencies": {
+      "roc-package-web-app-react-dev": "*"
+  }
+}

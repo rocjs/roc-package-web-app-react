@@ -1,0 +1,9 @@
+{
+    "DANGEROUSLY_EXPOSE_TO_CLIENT": {
+        "foo": "bar"
+    },
+    "auth": {
+        "publicKey": "1",
+        "privateKey": "foobar"
+    }
+}
