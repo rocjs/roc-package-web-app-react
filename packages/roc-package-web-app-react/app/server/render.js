@@ -1,4 +1,4 @@
-/* global __DIST__ __DEV__ ROC_PATH */
+/* global __DIST__ __DEV__ */
 
 import debug from 'debug';
 import nunjucks from 'nunjucks';

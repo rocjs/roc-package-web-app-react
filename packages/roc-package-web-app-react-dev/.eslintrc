@@ -1,5 +1,5 @@
 {
-    "extends": "vgno",
+    "extends": "vgno/react",
 
     "parser": "babel-eslint",
 

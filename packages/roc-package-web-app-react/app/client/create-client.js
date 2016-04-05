@@ -1,4 +1,4 @@
-/* global __DIST__ __TEST__ HAS_CLIENT_LOADING ROC_CLIENT_LOADING ROC_PATH */
+/* global __DIST__ HAS_CLIENT_LOADING ROC_CLIENT_LOADING */
 
 import React from 'react';
 import ReactDom from 'react-dom';
