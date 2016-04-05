@@ -3,7 +3,7 @@
   "description": "Package for building React applications with Roc (Development)",
   "author": "VG",
   "license": "MIT",
-  "version": "1.0.0",
+  "version": "1.0.0-alpha.1",
   "main": "lib/index.js",
   "bin": "bin/index.js",
   "scripts": {
@@ -31,7 +31,6 @@
     "roc-package-web-app-dev": "^1.0.0-alpha",
     "roc-package-web-app-react": "^1.0.0-alpha",
     "roc-plugin-react-dev": "^1.0.0-alpha",
-
     "react-a11y": "~0.2.6",
     "yellowbox-react": "~0.9.1"
   },
