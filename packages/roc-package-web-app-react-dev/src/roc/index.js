@@ -20,11 +20,11 @@ export default {
                 const newSettings = { build: { input: {} } };
 
                 if (!settings.build.input.web) {
-                    newSettings.build.input.web = require.resolve('roc-package-web-app-react/default/client');
+                    newSettings.build.input.web = require.resolve('roc-package-web-app-react/app/default/client');
                 }
 
                 if (!settings.build.input.node) {
-                    newSettings.build.input.node = require.resolve('roc-package-web-app-react/default/server');
+                    newSettings.build.input.node = require.resolve('roc-package-web-app-react/app/default/server');
                 }
 
                 if (settings.build.resources.length > 0) {

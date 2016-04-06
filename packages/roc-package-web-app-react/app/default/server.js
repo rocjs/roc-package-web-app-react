@@ -1,4 +1,4 @@
-import { createServer, useReact } from '../app/server';
+import { createServer, useReact } from '../server';
 
 import getRoutesAndStore from './get-routes-and-store';
 

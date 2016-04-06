@@ -7,16 +7,16 @@ export default function getRoutesAndStore(web = false) {
     let routes = null;
 
     if (HAS_REDUX_REDUCERS) {
-        const { createStore } = require('../app/shared');
+        const { createStore } = require('../shared');
 
         let defaultReducers = {};
         if (USE_DEFAULT_REDUX_REDUCERS) {
-            defaultReducers = require('../app/shared').defaultReducers;
+            defaultReducers = require('../shared').defaultReducers;
         }
 
         let middlewares = [];
         if (USE_DEFAULT_REDUX_MIDDLEWARES) {
-            middlewares = middlewares.concat(require('../app/shared').defaultMiddlewares);
+            middlewares = middlewares.concat(require('../shared').defaultMiddlewares);
         }
 
         if (HAS_REDUX_MIDDLEWARES) {
@@ -49,7 +49,7 @@ export default function getRoutesAndStore(web = false) {
     }
 
     if (USE_DEFAULT_REACT_ROUTER_ROUTES) {
-        const { createRoutes } = require('../app/shared');
+        const { createRoutes } = require('../shared');
         routes = createRoutes(require(REACT_ROUTER_ROUTES).default);
     } else {
         routes = require(REACT_ROUTER_ROUTES).default;
