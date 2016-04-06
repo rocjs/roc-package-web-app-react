@@ -1,4 +1,4 @@
-/* global __DIST__ HAS_CLIENT_LOADING ROC_CLIENT_LOADING */
+/* global __DIST__ HAS_CLIENT_LOADING ROC_CLIENT_LOADING ROC_PATH */
 
 import React from 'react';
 import ReactDom from 'react-dom';
@@ -15,7 +15,7 @@ import { rocConfig } from '../shared/universal-config';
 
 const clientDebug = debug('roc:client');
 
-const basename = rocConfig.runtime.path === '/' ? null : rocConfig.runtime.path;
+const basename = ROC_PATH === '/' ? null : ROC_PATH;
 
 /**
  * Client entry point for React applications.

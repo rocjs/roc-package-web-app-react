@@ -1,4 +1,4 @@
-/* global __DIST__ __DEV__ */
+/* global __DIST__ __DEV__ ROC_PATH */
 
 import debug from 'debug';
 import nunjucks from 'nunjucks';
@@ -60,7 +60,7 @@ export function initRenderPage({ script, css }) {
 }
 
 export function reactRender(url, createRoutes, store, renderPage, staticRender = false) {
-    const basename = rocConfig.runtime.path === '/' ? null : rocConfig.runtime.path;
+    const basename = ROC_PATH === '/' ? null : ROC_PATH;
 
     return new Promise((resolve) => {
         match({routes: createRoutes(store), location: url, basename },
