@@ -1,3 +1,5 @@
+/* global ROC_PATH */
+
 import React from 'react';
 import Helmet from 'react-helmet';
 
@@ -5,10 +7,10 @@ import { rocConfig } from './universal-config';
 
 export default class Header extends React.Component {
     render() {
-        const path = rocConfig.runtime.path !== '/' ? rocConfig.runtime.path + '/' : rocConfig.runtime.path;
+        const path = ROC_PATH !== '/' ? ROC_PATH + '/' : ROC_PATH;
         const base = rocConfig.runtime.base.href ? {
             ...rocConfig.runtime.base,
-            href: rocConfig.runtime.base.href.replace(new RegExp(rocConfig.runtime.path), path)
+            href: rocConfig.runtime.base.href.replace(/ROC_PATH/, path)
         } : {};
 
         return (
