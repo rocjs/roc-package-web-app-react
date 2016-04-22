@@ -1,7 +1,7 @@
 /* globals __DEV__ __WEB__ */
 
 import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
-import { routeReducer } from 'redux-simple-router';
+import { routerMiddleware, routerReducer } from 'react-router-redux';
 
 import { rocConfig } from '../universal-config';
 
@@ -17,7 +17,7 @@ import { rocConfig } from '../universal-config';
  */
 export default function createReduxStore(reducers, ...middlewares) {
     return (callback) =>
-        (initialState) => {
+        (history, initialState) => {
             let finalCreateStore;
 
             if (__DEV__ && __WEB__) {
@@ -33,8 +33,12 @@ export default function createReduxStore(reducers, ...middlewares) {
 
                 const debugMiddlewares = [logger];
 
+                // Add the react-router-redux middleware
+                middlewares.push(routerMiddleware(history));
+
                 finalCreateStore = compose(
                     applyMiddleware(...middlewares, ...debugMiddlewares),
+                    // TODO Enable maxAge support here. Will require a fix for validations in roc
                     instrument(),
                     persistState(window.location.href.match(/[?&]debug_session=([^&]+)\b/))
                 )(createStore);
@@ -45,7 +49,7 @@ export default function createReduxStore(reducers, ...middlewares) {
             }
 
             const reducer = combineReducers({
-                routing: routeReducer,
+                routing: routerReducer,
                 ...reducers
             });
 
@@ -55,7 +59,7 @@ export default function createReduxStore(reducers, ...middlewares) {
                 // Enable Webpack hot module replacement for reducers
                 callback((newReducers) => {
                     const nextRootReducer = combineReducers({
-                        routing: routeReducer,
+                        routing: routerReducer,
                         ...newReducers
                     });
                     store.replaceReducer(nextRootReducer);

@@ -1,4 +1,4 @@
-/* global __DIST__ __DEV__ ROC_PATH */
+/* global __DIST__ __DEV__ */
 
 import debug from 'debug';
 import nunjucks from 'nunjucks';
@@ -6,11 +6,10 @@ import serialize from 'serialize-javascript';
 import PrettyError from 'pretty-error';
 import React from 'react';
 import { renderToString, renderToStaticMarkup } from 'react-dom/server';
-import { match, RoutingContext } from 'react-router';
+import { match, RouterContext } from 'react-router';
 import { Provider } from 'react-redux';
-import { updatePath } from 'redux-simple-router';
 import Helmet from 'react-helmet';
-import { getPrefetchedData } from 'react-fetcher';
+import { trigger } from 'redial';
 import { getAbsolutePath } from 'roc';
 import ServerStatus from 'react-server-status';
 import myPath from 'roc-package-web-app-react/lib/helpers/my-path';
@@ -58,12 +57,10 @@ export function initRenderPage({ script, css }) {
         });
     };
 }
-
-export function reactRender(url, createRoutes, store, renderPage, staticRender = false) {
-    const basename = ROC_PATH === '/' ? null : ROC_PATH;
-
+// FIXME Do we need completeUrl?
+export function reactRender(url, history, store, createRoutes, renderPage, staticRender = false) {
     return new Promise((resolve) => {
-        match({routes: createRoutes(store), location: url, basename },
+        match({ history, routes: createRoutes(store), location: url },
             (error, redirect, renderProps) => {
                 if (redirect) {
                     log(`Redirect request to ${redirect.pathname + redirect.search}`);
@@ -79,7 +76,7 @@ export function reactRender(url, createRoutes, store, renderPage, staticRender =
                 } else if (!renderProps) {
                     log('No renderProps, most likely the path does not exist');
                     return resolve({
-                        status: 500,
+                        status: 404,
                         body: renderPage()
                     });
                 }
@@ -99,13 +96,11 @@ export function reactRender(url, createRoutes, store, renderPage, staticRender =
                     };
                 }
 
-                getPrefetchedData(components, locals)
+                trigger('fetch', components, locals)
                     .then(() => {
-                        let component = <RoutingContext {...renderProps} />;
+                        let component = <RouterContext {...renderProps} />;
 
                         if (store) {
-                            store.dispatch(updatePath(url));
-
                             component = (
                                 <Provider store={ store }>
                                     { component }

@@ -3,6 +3,7 @@ import PrettyError from 'pretty-error';
 
 import { rocConfig } from '../shared/universal-config';
 
+import setupForRender from './setup-for-render';
 import { initRenderPage, reactRender } from './render';
 
 const pretty = new PrettyError();
@@ -33,7 +34,10 @@ export default function routes({ createRoutes, createStore, stats, dist }) {
                 this.status = 200;
                 this.body = renderPage();
             } else {
-                const store = createStore ? createStore() : null;
+                const { store, history, url } = setupForRender(createStore, this.url);
+
+                // Give Koa middlewares a chance to interact with the reduxStore
+                // This can be used to dynamically pass some data to the client.
                 this.state.reduxStore = store;
                 yield next;
 
@@ -46,7 +50,7 @@ export default function routes({ createRoutes, createStore, stats, dist }) {
                     body,
                     redirect,
                     status = 200
-                } = yield reactRender(this.url, createRoutes, store, renderPage);
+                } = yield reactRender(url, history, store, createRoutes, renderPage);
 
                 if (redirect) {
                     this.redirect(redirect);

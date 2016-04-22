@@ -1,14 +1,14 @@
-/* global __DIST__ HAS_CLIENT_LOADING ROC_CLIENT_LOADING ROC_PATH */
+/* global __DEV__ HAS_CLIENT_LOADING ROC_CLIENT_LOADING ROC_PATH */
 
 import React from 'react';
-import ReactDom from 'react-dom';
+import ReactDOM from 'react-dom';
 
-import createHistory from 'history/lib/createBrowserHistory';
-import useBasename from 'history/lib/useBasename';
-import { Router } from 'react-router';
+import Router from 'react-router/lib/Router';
+import useRouterHistory from 'react-router/lib/useRouterHistory';
+import { createHistory } from 'history';
 
 import { Provider } from 'react-redux';
-import { syncReduxAndRouter } from 'redux-simple-router';
+import { syncHistoryWithStore } from 'react-router-redux';
 import debug from 'debug';
 
 import { rocConfig } from '../shared/universal-config';
@@ -44,23 +44,36 @@ export default function createClient({ createRoutes, createStore, mountNode }) {
         debug.enable(rocConfig.runtime.debug.client);
     }
 
-    if (!__DIST__ && rocConfig.dev.a11y) {
+    if (__DEV__ && rocConfig.dev.a11y) {
         if (rocConfig.runtime.ssr) {
             clientDebug('You will see a "Warning: React attempted to reuse markup in a container but the checksum was' +
                 ' invalid." message. That\'s because a11y is enabled.');
         }
 
-        require('react-a11y')(React);
+        require('react-a11y')(React, {
+            ReactDOM,
+            // These needs to be added for Redux Devtools to be ignored by A11Y
+            filterFn: (name) => [
+                'LogMonitorButton',
+                'LogMonitorAction',
+                'JSONValueNode',
+                'JSONNestedNode',
+                'JSONArrow'
+            ].indexOf(name) === -1
+        });
     }
 
     const render = () => {
         const node = document.getElementById(mountNode);
 
         let component;
-        const history = useBasename(createHistory)({ basename });
+        const history = useRouterHistory(createHistory)({
+            basename: basename
+        });
 
         if (createStore) {
-            const store = createStore(window.FLUX_STATE);
+            const store = createStore(history, window.FLUX_STATE);
+            const theHistory = syncHistoryWithStore(history, store);
 
             const ReduxContext = require('./redux-context').default;
 
@@ -71,18 +84,16 @@ export default function createClient({ createRoutes, createStore, mountNode }) {
 
             component = (
                 <Router
-                    history={ history }
+                    history={ theHistory }
                     routes={ createRoutes(store) }
-                    RoutingContext={ ReduxContext }
+                    render={ (props) => <ReduxContext {...props} /> }
                     store={ store }
                     blocking={ rocConfig.runtime.clientBlocking }
                     initalClientLoading={ initalClientLoading }
                 />
             );
 
-            syncReduxAndRouter(history, store);
-
-            if (!__DIST__) {
+            if (__DEV__) {
                 if (rocConfig.dev.reduxDevtools.enabled) {
                     const DevTools = require('./dev-tools').default;
 
@@ -134,7 +145,7 @@ export default function createClient({ createRoutes, createStore, mountNode }) {
             );
         }
 
-        ReactDom.render(component, node);
+        ReactDOM.render(component, node);
     };
 
     render();
