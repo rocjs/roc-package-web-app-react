@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { defer } from 'react-fetcher';
+import { provideHooks } from 'redial';
 
-@defer(() => new Promise((resolve) => {
+@provideHooks({ fetch: () => new Promise((resolve) => {
     setTimeout(() => {
         console.log('Completed!');
         resolve();
     }, 2000);
-}))
+})})
 export default class About extends Component {
     render() {
         return (

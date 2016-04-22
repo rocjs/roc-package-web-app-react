@@ -1,7 +1,7 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { prefetch } from 'react-fetcher';
+import { provideHooks } from 'redial';
 
 // components
 import Weather from '../weather';
@@ -38,7 +38,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 // prefetch triggers on both server and client
-@prefetch(prefetchWeather)
+@provideHooks({ fetch: prefetchWeather })
 // mergeWeatherProps enriches dispatch props with weatherForceFetch
 @connect(mapStateToProps, mapDispatchToProps, mergeWeatherProps)
 export default class Main extends React.Component {
