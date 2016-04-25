@@ -1,7 +1,7 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { prefetch } from 'react-fetcher';
+import { provideHooks } from 'redial';
 
 import { appConfig } from 'roc-package-web-app-react/app/shared';
 
@@ -22,7 +22,7 @@ function mapDispatchToProps(dispatch) {
     return bindActionCreators({ stockLoad, stockError }, dispatch);
 }
 
-@prefetch(({ dispatch }) => {
+@provideHooks({ fetch: ({ dispatch }) => {
     const dataForServer = rest.fetchServerData();
 
     if (dataForServer) {
@@ -32,7 +32,7 @@ function mapDispatchToProps(dispatch) {
             .then(rest.handleEvents(dispatch, stockLoad, stockError))
             .catch(rest.handleFetchDataError(dispatch, stockError));
     }
-})
+} })
 @connect(mapStateToProps, mapDispatchToProps)
 export default class Stock extends React.Component {
     static propTypes = {
