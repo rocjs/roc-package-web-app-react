@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
+import sharedStyles from '../shared.css';
 
-export default class WeatherUpdateButton extends Component {
+export default class RepoUpdateButton extends Component {
     static propTypes = {
         text: React.PropTypes.string,
         onClick: React.PropTypes.func
@@ -8,7 +9,9 @@ export default class WeatherUpdateButton extends Component {
 
     render() {
         return (
-            <button onClick={ (this.props.onClick) }>
+            <button
+                className={ sharedStyles.button }
+                onClick={ this.props.onClick }>
                 { this.props.text }
             </button>
         );

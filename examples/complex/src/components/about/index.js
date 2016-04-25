@@ -12,7 +12,6 @@ export default class About extends Component {
         return (
             <div>
                 <h1>About us</h1>
-                <img src="favicon.png" />
             </div>
         );
     }

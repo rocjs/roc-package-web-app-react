@@ -1,0 +1,19 @@
+.repos {
+    margin: 20px 0 20px 0;
+
+    input {
+        padding: 4px;
+        width: 79%;
+    }
+}
+
+.data {
+    font-size: 12px;
+}
+
+.list {
+    list-style-type: none;
+    margin-bottom: 20px;
+}
+
+

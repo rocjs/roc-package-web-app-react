@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-export default class WeatherLoader extends Component {
+export default class Repo extends Component {
     static propTypes = {
         endpoint: React.PropTypes.string
     };
@@ -10,7 +10,7 @@ export default class WeatherLoader extends Component {
 
         return (
             <div>
-                { `Loading weather data${source}...` }
+                { `Loading repos data${source}...` }
             </div>
         );
     }

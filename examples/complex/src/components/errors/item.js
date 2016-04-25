@@ -15,7 +15,7 @@ export default class ErrorItem extends Component {
 
     render() {
         return (
-            <div key={ this.props.key } className={styles.error}>
+            <div key={ this.props.key } className={ styles.error }>
                 <h2>Error</h2>
                 <p>{ this.props.error }</p>
             </div>
