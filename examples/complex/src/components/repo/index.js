@@ -13,21 +13,21 @@ export default class Repo extends Component {
         payload: React.PropTypes.oneOfType([React.PropTypes.object, React.PropTypes.array]),
         loading: React.PropTypes.bool,
         endpoint: React.PropTypes.string,
-        fetchReposData: React.PropTypes.func,
+        reposForceFetch: React.PropTypes.func,
         updateRepoUrl: React.PropTypes.func,
-        reposUrl: React.PropTypes.string,
+        repositoriesUrl: React.PropTypes.string,
         error: React.PropTypes.bool
     };
 
     render() {
         const error = this.props.error;
-        const fetch = this.props.fetchReposData(this.props.reposUrl);
+        const fetch = this.props.reposForceFetch(this.props.repositoriesUrl);
 
         const inputUrl = (
             <input
                 ref="locationInput"
                 type="text"
-                defaultValue={ this.props.reposUrl }
+                defaultValue={ this.props.repositoriesUrl }
                 onChange={ (e) => {
                         this.props.updateRepoUrl(e.target.value)
                     }
@@ -52,7 +52,7 @@ export default class Repo extends Component {
         // "hey man, we are loading your data" UI
         if (this.props.loading) {
             return (
-                <RepoLoader endpoint={ this.props.endpoint } />
+                <RepoLoader endpoint={ this.props.meta.endpoint } />
             );
         }
 

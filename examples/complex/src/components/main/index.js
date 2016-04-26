@@ -51,7 +51,7 @@ export default class Main extends React.Component {
         createFetchAction: React.PropTypes.func.isRequired,
         reposForceFetch: React.PropTypes.func.isRequired,
         updateRepoUrl: React.PropTypes.func.isRequired,
-        reposUrl: React.PropTypes.string,
+        repositoriesUrl: React.PropTypes.string,
         // connected values from store
         clicker: React.PropTypes.number,
         repositories: React.PropTypes.object,
@@ -67,13 +67,10 @@ export default class Main extends React.Component {
                 <Clicker className={ styles.clicker } clicker={ this.props.clicker } click={ this.props.click }/>
 
                 <Repo
-                    payload={ this.props.repositories.payload }
-                    loading= { this.props.repositories.loading }
-                    endpoint={ this.props.repositories.meta.endpoint }
-                    error={ this.props.repositories.error }
-                    reposUrl={ this.props.repositoriesUrl }
-                    fetchReposData={ this.props.reposForceFetch }
-                    updateRepoUrl={ this.props.updateRepoUrl }
+                    { ...this.props.repositories }
+                    repositoriesUrl = { this.props.repositoriesUrl }
+                    reposForceFetch = { this.props.reposForceFetch }
+                    updateRepoUrl = { this.props.updateRepoUrl }
                 />
                 <Bacon/>
             </div>
