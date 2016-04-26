@@ -13,7 +13,7 @@ export default function setupForRender(createStore, url) {
     });
 
     const store = createStore ? createStore(memoryHistory) : null;
-    const history = syncHistoryWithStore(memoryHistory, store);
+    const history = store ? syncHistoryWithStore(memoryHistory, store) : memoryHistory;
 
     return {
         store,
