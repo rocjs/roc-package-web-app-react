@@ -57,7 +57,7 @@ export function initRenderPage({ script, css }) {
         });
     };
 }
-// FIXME Do we need completeUrl?
+
 export function reactRender(url, history, store, createRoutes, renderPage, staticRender = false) {
     return new Promise((resolve) => {
         match({ history, routes: createRoutes(store), location: url },
