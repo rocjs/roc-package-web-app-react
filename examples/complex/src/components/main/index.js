@@ -10,7 +10,7 @@ import Bacon from '../bacon';
 import Errors from '../errors';
 
 import { createFetchAction } from 'redux-fetcher'
-import { updateRepoUrl }  from '../../reducers/repourl';
+import { updateUser }  from '../../reducers/repouser';
 
 // roc error action
 import { resetErrors } from './actions';
@@ -28,7 +28,7 @@ import logo from './logo.png';
 function mapStateToProps(state) {
     return {
         clicker: state.clicker,
-        repositoriesUrl: state.repositoriesUrl,
+        repoUser: state.repoUser,
         repositories: state.repositories,
         errors: state.errors
     };
@@ -36,7 +36,7 @@ function mapStateToProps(state) {
 
 // this maps action creators to dispatch, available as props on component
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ click, resetErrors, createFetchAction, updateRepoUrl }, dispatch);
+    return bindActionCreators({ click, resetErrors, createFetchAction, updateUser }, dispatch);
 }
 
 // fetch triggers on both server and client
@@ -50,8 +50,8 @@ export default class Main extends React.Component {
         resetErrors: React.PropTypes.func.isRequired,
         createFetchAction: React.PropTypes.func.isRequired,
         reposForceFetch: React.PropTypes.func.isRequired,
-        updateRepoUrl: React.PropTypes.func.isRequired,
-        repositoriesUrl: React.PropTypes.string,
+        updateUser: React.PropTypes.func.isRequired,
+        repoUser: React.PropTypes.string,
         // connected values from store
         clicker: React.PropTypes.number,
         repositories: React.PropTypes.object,
@@ -68,9 +68,9 @@ export default class Main extends React.Component {
 
                 <Repo
                     { ...this.props.repositories }
-                    repositoriesUrl = { this.props.repositoriesUrl }
+                    repoUser = { this.props.repoUser }
                     reposForceFetch = { this.props.reposForceFetch }
-                    updateRepoUrl = { this.props.updateRepoUrl }
+                    updateUser = { this.props.updateUser }
                 />
                 <Bacon/>
             </div>

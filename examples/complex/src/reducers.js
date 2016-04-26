@@ -1,3 +1,3 @@
 export clicker from './reducers/clicker';
-export repositoriesUrl from './reducers/repourl';
+export repoUser from './reducers/repouser';
 export repositories from './reducers/repofetch';
