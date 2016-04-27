@@ -1,6 +1,6 @@
 import React from 'react';
-import RoutingContext from 'react-router/lib/RoutingContext';
-import { getPrefetchedData, getDeferredData } from 'react-fetcher';
+import { RouterContext } from 'react-router';
+import { trigger } from 'redial';
 
 import ReduxContextContainer from './redux-context-container';
 
@@ -47,9 +47,9 @@ export default class ReduxContext extends React.Component {
             return;
         }
 
-        const newComponents = this.filterAndFlattenComponents(nextProps.components, 'fetchers');
-        if (newComponents.length > 0) {
-            this.loadData(newComponents, nextProps.params, nextProps.location);
+        const fetchComponents = this.filterAndFlattenComponents(nextProps.components, '__redial_handlers__', 'fetch');
+        if (fetchComponents.length > 0) {
+            this.loadData(fetchComponents, nextProps.params, nextProps.location);
         } else {
             this.setState({
                 loading: false,
@@ -57,9 +57,9 @@ export default class ReduxContext extends React.Component {
             });
         }
 
-        const newComponentsDefered = this.filterAndFlattenComponents(nextProps.components, 'deferredFetchers');
-        if (newComponentsDefered.length > 0) {
-            this.loadDataDefered(newComponentsDefered, nextProps.params, nextProps.location);
+        const deferComponents = this.filterAndFlattenComponents(nextProps.components, '__redial_handlers__', 'defer');
+        if (deferComponents.length > 0) {
+            this.loadDataDefered(deferComponents, nextProps.params, nextProps.location);
         }
     }
 
@@ -73,13 +73,13 @@ export default class ReduxContext extends React.Component {
         );
     }
 
-    filterAndFlattenComponents(components, staticMethod) {
-        return components.filter((component) => !!component[staticMethod]);
+    filterAndFlattenComponents(components, staticMethod, name) {
+        return components.filter((component) => !!component[staticMethod] && component[staticMethod][name]);
     }
 
     loadDataDefered(components, params, location) {
         // Get deferred data, will not block route transitions
-        getDeferredData(components, {
+        trigger('defer', components, {
             location,
             params,
             dispatch: this.props.store.dispatch,
@@ -111,7 +111,7 @@ export default class ReduxContext extends React.Component {
             });
         }
 
-        getPrefetchedData(components, {
+        trigger('fetch', components, {
             location,
             params,
             dispatch: this.props.store.dispatch,
@@ -133,6 +133,6 @@ export default class ReduxContext extends React.Component {
         }
 
         const props = this.state.loading ? this.state.prevProps : this.props;
-        return <RoutingContext {...props} createElement={ this.createElement } />;
+        return <RouterContext {...props} createElement={ this.createElement } />;
     }
 }

@@ -23,8 +23,8 @@ export default {
                 enabled: true,
                 position: 'right',
                 size: 0.3,
-                visibilityKey: 'H',
-                positionKey: 'Q',
+                visibilityKey: 'ctrl-h',
+                positionKey: 'ctrl-q',
                 defaultVisible: false,
                 theme: 'ocean'
             },

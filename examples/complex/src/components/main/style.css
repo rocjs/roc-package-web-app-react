@@ -4,3 +4,12 @@
     margin: auto;
     padding: 20px;
 }
+
+.logo {
+    float: left;
+    padding: 30px;
+    margin: 0 20px 20px 0;
+    border-radius: 8px;
+    width: 200px;
+    background: #2a7e8e;
+}

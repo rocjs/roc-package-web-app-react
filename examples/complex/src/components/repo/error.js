@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-export default class WeatherError extends Component {
+export default class RepoError extends Component {
     static propTypes = {
         error: React.PropTypes.string
     };
@@ -8,7 +8,7 @@ export default class WeatherError extends Component {
     render() {
         return (
             <div>
-                <h4>Error loading weather data.</h4>
+                <h4>Error loading repos data.</h4>
                 { this.props.error }
             </div>
         );

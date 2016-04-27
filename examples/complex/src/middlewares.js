@@ -1,5 +1,7 @@
 /* global __NODE__ __DEV__ */
 
+import { apiMiddleware } from 'redux-api-middleware';
+
 export default function getMiddlewares() {
     if (__NODE__) {
         // Add server middlewares here
@@ -11,5 +13,5 @@ export default function getMiddlewares() {
         // Add dev middlewares here
     }
 
-    return [];
+    return [apiMiddleware];
 }
