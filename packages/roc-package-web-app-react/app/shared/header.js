@@ -15,11 +15,14 @@ export default class Header extends React.Component {
 
         return (
             <Helmet
-                title={ rocConfig.runtime.applicationName }
+                htmlAttributes={ rocConfig.runtime.htmlAttributes }
+                defaultTitle={ rocConfig.runtime.applicationName }
+                titleTemplate={ rocConfig.runtime.applicationNameTemplate }
                 meta={ rocConfig.runtime.meta }
                 link={ rocConfig.runtime.link }
                 base={ base }
                 script={ rocConfig.runtime.script }
+                style={ rocConfig.runtime.style }
             />
         );
     }

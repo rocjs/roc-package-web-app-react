@@ -11,16 +11,21 @@ export default {
         descriptions: {
             runtime: {
                 stats: 'Path to client stats file from build.',
-                applicationName: 'Application name to use for <title>.',
-                meta: 'Meta tags to be used in <head>, should be formatted as objects, ' +
+                applicationName: 'Default application name to use for <title>.',
+                applicationNameTemplate: 'Template to be used for <title>. ' +
+                    'See https://github.com/nfl/react-helmet.',
+                htmlAttributes: 'Attributes that should be added to the <html> tag.',
+                meta: 'Meta tags to be used in <head>, should be formatted as objects. ' +
                     'see https://github.com/nfl/react-helmet.',
-                link: 'Link tags to be used in <head>, should be formatted as objects, ' +
+                link: 'Link tags to be used in <head>, should be formatted as objects. ' +
                     'See https://github.com/nfl/react-helmet.',
                 base: {
                     href: 'The document base address from which relative links are made.',
                     target: 'The browsing context in which the links should open.'
                 },
-                script: 'Script tags to be used in <head>, should be formatted as objects, ' +
+                script: 'Script tags to be used in <head>, should be formatted as objects. ' +
+                    'See https://github.com/nfl/react-helmet.',
+                style: 'Style tags to be used in <head>, should be formatted as objects. ' +
                     'See https://github.com/nfl/react-helmet.',
                 ssr: 'If server side rendering should be enabled.',
                 clientBlocking: 'If "prefetch" should block a route transition on the client.',
@@ -43,6 +48,8 @@ export default {
             runtime: {
                 stats: isPath,
                 applicationName: required(isString),
+                applicationNameTemplate: isString,
+                htmlAttributes: isObject(),
                 meta: isArray(isObject(isString)),
                 link: isArray(isObject(isString)),
                 base: {
@@ -50,6 +57,7 @@ export default {
                     target: isString
                 },
                 script: isArray(isObject(isString)),
+                style: isArray(isObject(isString)),
                 ssr: isBoolean,
                 clientBlocking: isBoolean,
                 template: {

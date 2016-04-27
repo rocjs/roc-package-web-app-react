@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html {{ head.htmlAttributes | safe }}>
   <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -9,6 +9,7 @@
         {{ head.link | safe }}
         {{ head.base | safe }}
         {{ head.script | safe }}
+        {{ head.style | safe }}
 
         {% if dist %}
         <link rel="stylesheet" href="{{ styleName }}">
