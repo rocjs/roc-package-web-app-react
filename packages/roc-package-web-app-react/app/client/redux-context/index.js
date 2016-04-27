@@ -2,6 +2,7 @@ import React from 'react';
 import { RouterContext } from 'react-router';
 import { trigger } from 'redial';
 
+import getRoutesProps from '../../shared/get-routes-props';
 import ReduxContextContainer from './redux-context-container';
 
 export default class ReduxContext extends React.Component {
@@ -47,9 +48,11 @@ export default class ReduxContext extends React.Component {
             return;
         }
 
+        const routeProps = getRoutesProps(nextProps.routes);
+
         const fetchComponents = this.filterAndFlattenComponents(nextProps.components, '__redial_handlers__', 'fetch');
         if (fetchComponents.length > 0) {
-            this.loadData(fetchComponents, nextProps.params, nextProps.location);
+            this.loadData(fetchComponents, nextProps.params, nextProps.location, routeProps);
         } else {
             this.setState({
                 loading: false,
@@ -59,7 +62,7 @@ export default class ReduxContext extends React.Component {
 
         const deferComponents = this.filterAndFlattenComponents(nextProps.components, '__redial_handlers__', 'defer');
         if (deferComponents.length > 0) {
-            this.loadDataDefered(deferComponents, nextProps.params, nextProps.location);
+            this.loadDataDefered(deferComponents, nextProps.params, nextProps.location, routeProps);
         }
     }
 
@@ -77,13 +80,14 @@ export default class ReduxContext extends React.Component {
         return components.filter((component) => !!component[staticMethod] && component[staticMethod][name]);
     }
 
-    loadDataDefered(components, params, location) {
+    loadDataDefered(components, params, location, routeProps) {
         // Get deferred data, will not block route transitions
         trigger('defer', components, {
             location,
             params,
             dispatch: this.props.store.dispatch,
-            getState: this.props.store.getState
+            getState: this.props.store.getState,
+            routeProps
         }).catch((err) => {
             if (process.env.NODE_ENV !== 'production') {
                 console.error('There was an error when fetching data: ', err);
@@ -91,7 +95,7 @@ export default class ReduxContext extends React.Component {
         });
     }
 
-    loadData(components, params, location) {
+    loadData(components, params, location, routeProps) {
         const completeRouteTransition = () => {
             const sameLocation = this.props.location === location;
 
@@ -115,7 +119,8 @@ export default class ReduxContext extends React.Component {
             location,
             params,
             dispatch: this.props.store.dispatch,
-            getState: this.props.store.getState
+            getState: this.props.store.getState,
+            routeProps
         }).then(() => {
             completeRouteTransition();
         }).catch((err) => {

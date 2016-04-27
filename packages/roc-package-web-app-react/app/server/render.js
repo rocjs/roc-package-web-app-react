@@ -16,6 +16,7 @@ import myPath from 'roc-package-web-app-react/lib/helpers/my-path';
 
 import { rocConfig, appConfig } from '../shared/universal-config';
 import Header from '../shared/header';
+import getRoutesProps from '../shared/get-routes-props';
 
 const pretty = new PrettyError();
 const log = debug('roc:react-render');
@@ -85,7 +86,8 @@ export function reactRender(url, history, store, createRoutes, renderPage, stati
 
                 let locals = {
                     location: renderProps.location,
-                    params: renderProps.params
+                    params: renderProps.params,
+                    routeProps: getRoutesProps(renderProps.routes)
                 };
 
                 if (store) {
