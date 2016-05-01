@@ -37,6 +37,7 @@
     "react-helmet": "~3.1.0",
     "react-redux": "~4.4.5",
     "react-router": "~2.3.0",
+    "react-router-redial": "~0.1.0",
     "react-router-redux": "~4.0.2",
     "react-server-status": "~1.0.0",
     "redial": "~0.4.1",

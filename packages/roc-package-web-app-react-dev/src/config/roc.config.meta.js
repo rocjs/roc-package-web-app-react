@@ -18,7 +18,7 @@ export default {
                     ' documentation for what middlewares that are included.',
 
                 clientLoading: 'The React component to use on the first client load while fetching data, will only ' +
-                    'be used if clientBlocking is set to true.'
+                    'be used if some blocking hooks are defined.'
             },
             dev: {
                 a11y: 'If A11Y validation should be active. Currently it´s suggested to not enable reduxDevtools ' +

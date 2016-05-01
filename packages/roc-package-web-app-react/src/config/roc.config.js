@@ -21,7 +21,6 @@ export default {
             script: [],
             style: [],
             ssr: true,
-            clientBlocking: false,
             template: {
                 path: '',
                 name: 'main.html'
@@ -29,7 +28,15 @@ export default {
             debug: {
                 client: 'roc:*'
             },
-            configWhitelistProperty: 'DANGEROUSLY_EXPOSE_TO_CLIENT'
+            configWhitelistProperty: 'DANGEROUSLY_EXPOSE_TO_CLIENT',
+            fetch: {
+                server: ['fetch'],
+                client: {
+                    blocking: ['fetch'],
+                    defer: ['defer'],
+                    parallel: false
+                }
+            }
         }
     }
 };

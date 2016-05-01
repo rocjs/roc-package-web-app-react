@@ -28,7 +28,6 @@ export default {
                 style: 'Style tags to be used in <head>, should be formatted as objects. ' +
                     'See https://github.com/nfl/react-helmet.',
                 ssr: 'If server side rendering should be enabled.',
-                clientBlocking: 'If "prefetch" should block a route transition on the client.',
                 template: {
                     path: 'A directory where the template for the application can be found. Will default to internal ' +
                         'path.',
@@ -40,7 +39,17 @@ export default {
                         'https://npmjs.com/package/debug.'
                 },
                 configWhitelistProperty: 'A single property to expose to the client from node-config. Make sure that ' +
-                    'this property does NOT contain any secrets that should not be exposed to the world.'
+                    'this property does NOT contain any secrets that should not be exposed to the world.',
+                fetch: {
+                    server: 'What redial hooks that should run on the server and in what order.',
+                    client: {
+                        blocking: 'What redial hooks that should run on the client that blocks route transitions ' +
+                            'and in what order.',
+                        defer: 'What redial hooks that should run on the client that should not block route ' +
+                            'transitions and in what order.',
+                        parallel: 'If defer hooks should be started at the same time as the blocking ones.'
+                    }
+                }
             }
         },
 
@@ -59,7 +68,6 @@ export default {
                 script: isArray(isObject(isString)),
                 style: isArray(isObject(isString)),
                 ssr: isBoolean,
-                clientBlocking: isBoolean,
                 template: {
                     path: isPath,
                     name: isString
@@ -67,7 +75,15 @@ export default {
                 debug: {
                     client: isString
                 },
-                configWhitelistProperty: isString
+                configWhitelistProperty: isString,
+                fetch: {
+                    server: isArray(),
+                    client: {
+                        blocking: isArray(),
+                        defer: isArray(),
+                        parallel: isBoolean
+                    }
+                }
             }
         }
     }
