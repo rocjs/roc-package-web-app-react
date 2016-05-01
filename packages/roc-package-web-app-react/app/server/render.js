@@ -1,4 +1,4 @@
-/* global __DIST__ __DEV__ */
+/* global __DIST__ __DEV__ HAS_TEMPLATE_VALUES TEMPLATE_VALUES */
 
 import debug from 'debug';
 import nunjucks from 'nunjucks';
@@ -33,7 +33,8 @@ export function initRenderPage({ script, css }) {
         head,
         content = '',
         fluxState = {},
-        redialProps = {}
+        redialProps = {},
+        customTemplateValues = {}
     ) => {
         const { dev, build, ...rest } = rocConfig;
 
@@ -55,12 +56,13 @@ export function initRenderPage({ script, css }) {
             dist: __DIST__,
             serializedRocConfig: serialize(rocConfigClient),
             serializedAppConfig: serialize(appConfig),
-            redialProps: serialize(redialProps)
+            redialProps: serialize(redialProps),
+            custom: customTemplateValues
         });
     };
 }
 
-export function reactRender(url, history, store, createRoutes, renderPage, staticRender = false) {
+export function reactRender(url, history, store, createRoutes, renderPage, koaState, staticRender = false) {
     return new Promise((resolve) => {
         match({ history, routes: createRoutes(store), location: url },
             (error, redirect, renderProps) => {
@@ -107,21 +109,31 @@ export function reactRender(url, history, store, createRoutes, renderPage, stati
 
                     const page = staticRender ? renderToStaticMarkup(component) : renderToString(component);
                     const head = Helmet.rewind();
-
                     const state = store ? store.getState() : {};
+
+                    let templateValues;
+                    if (HAS_TEMPLATE_VALUES) {
+                        // Provides settings, Redux state and Koa state
+                        templateValues = require(TEMPLATE_VALUES).default({
+                            koaState,
+                            settings: rocConfig,
+                            reduxState: state
+                        });
+                    }
+
                     return resolve({
-                        body: renderPage(head, page, state, redialProps),
+                        body: renderPage(head, page, state, redialProps, templateValues),
                         status: ServerStatus.rewind() || 200
                     });
                 })
                 .catch((err) => {
                     if (err) {
                         log('Fetching error', pretty.render(err));
-                        return resolve({
-                            status: 500,
-                            body: renderPage()
-                        });
                     }
+                    return resolve({
+                        status: 500,
+                        body: renderPage()
+                    });
                 });
             });
     });

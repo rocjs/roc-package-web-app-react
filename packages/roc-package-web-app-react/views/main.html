@@ -15,7 +15,11 @@
         <link rel="stylesheet" href="{{ styleName }}">
         {% endif %}
     </head>
+    {% if custom.bodyClass %}
+    <body class="{{ custom.bodyClass | safe }}">
+    {% else %}
     <body>
+    {% endif %}
         <div id="application">{{ content | safe }}</div>
 
         <script>window.ROC_CONFIG = {{ serializedRocConfig | safe }}</script>

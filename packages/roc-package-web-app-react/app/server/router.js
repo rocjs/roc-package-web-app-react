@@ -50,7 +50,7 @@ export default function routes({ createRoutes, createStore, stats, dist }) {
                     body,
                     redirect,
                     status = 200
-                } = yield reactRender(url, history, store, createRoutes, renderPage);
+                } = yield reactRender(url, history, store, createRoutes, renderPage, this.state);
 
                 if (redirect) {
                     this.redirect(redirect);

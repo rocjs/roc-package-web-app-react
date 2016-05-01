@@ -92,6 +92,17 @@ export default () => ({ settings: { build: buildSettings }, previousValue: rocBu
         );
     }
 
+    const hasTemplateValues = !!(buildSettings.templateValues && fileExists(buildSettings.templateValues));
+    if (hasTemplateValues) {
+        const templateValues = getAbsolutePath(buildSettings.templateValues);
+
+        buildConfig.plugins.push(
+            new builder.DefinePlugin({
+                TEMPLATE_VALUES: JSON.stringify(templateValues)
+            })
+        );
+    }
+
     buildConfig.plugins.push(
         new builder.DefinePlugin({
             USE_DEFAULT_REDUX_REDUCERS: buildSettings.useDefaultReducers,
@@ -100,7 +111,8 @@ export default () => ({ settings: { build: buildSettings }, previousValue: rocBu
 
             HAS_REDUX_REDUCERS: hasReducers,
             HAS_REDUX_MIDDLEWARES: hasMiddlewares,
-            HAS_CLIENT_LOADING: hasClientLoading
+            HAS_CLIENT_LOADING: hasClientLoading,
+            HAS_TEMPLATE_VALUES: hasTemplateValues
         })
     );
 
