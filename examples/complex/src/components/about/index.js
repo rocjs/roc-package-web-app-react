@@ -18,11 +18,14 @@ import { provideHooks } from 'redial';
 })
 export default class About extends Component {
     render() {
+        // "Remove" props that are different on the server and the client - only structure from JSON.stringify
+        const { location, routes, route, ...props } = this.props;
+
         return (
             <div>
                 <h1 style={{color: this.props.color}}>About us</h1>
                 <button onClick={ () => this.props.reload() }>Reload</button>
-                <pre>{ JSON.stringify(this.props, null, 2) }</pre>
+                <pre>{ JSON.stringify(props, null, 2) }</pre>
             </div>
         );
     }
