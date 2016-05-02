@@ -33,7 +33,7 @@ export function initRenderPage({ script, css }) {
         head,
         content = '',
         fluxState = {},
-        redialProps = {},
+        redialProps = [],
         customTemplateValues = {}
     ) => {
         const { dev, build, ...rest } = rocConfig;
