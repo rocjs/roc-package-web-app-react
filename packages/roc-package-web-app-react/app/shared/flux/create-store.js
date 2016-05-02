@@ -22,7 +22,6 @@ export default function createReduxStore(reducers, ...middlewares) {
 
             if (__DEV__ && __WEB__) {
                 const { persistState } = require('redux-devtools');
-                const { instrument } = require('../../client/dev-tools').default;
                 const createLogger = require('redux-logger');
                 const logger = createLogger({
                     level: rocConfig.dev.reduxLogger.level,
@@ -35,11 +34,15 @@ export default function createReduxStore(reducers, ...middlewares) {
 
                 // Add the react-router-redux middleware
                 middlewares.push(routerMiddleware(history));
+                const devTools = window.devToolsExtension
+                    ? window.devToolsExtension()
+                    // TODO Enable maxAge support here. Will require a fix for validations in roc
+                    // This should probably also additionally only be added if devtools is on in settings
+                    : require('../../client/dev-tools').default.instrument();
 
                 finalCreateStore = compose(
                     applyMiddleware(...middlewares, ...debugMiddlewares),
-                    // TODO Enable maxAge support here. Will require a fix for validations in roc
-                    instrument(),
+                    devTools,
                     persistState(window.location.href.match(/[?&]debug_session=([^&]+)\b/))
                 )(createStore);
             } else {

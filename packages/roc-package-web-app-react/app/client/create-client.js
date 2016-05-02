@@ -99,7 +99,7 @@ export default function createClient({ createRoutes, createStore, mountNode }) {
             ));
 
             if (__DEV__) {
-                if (rocConfig.dev.reduxDevtools.enabled) {
+                if (rocConfig.dev.reduxDevtools.enabled && !window.devToolsExtension) {
                     const DevTools = require('./dev-tools').default;
 
                     createDevComponent.push((component) => (
@@ -110,6 +110,8 @@ export default function createClient({ createRoutes, createStore, mountNode }) {
                             </span>
                         </Provider>
                     ));
+                } else if (rocConfig.dev.reduxDevtools.enabled) {
+                    console.log('Found Redux Devtools Chrome extension, will use that over default one.');
                 }
             }
         } else {
