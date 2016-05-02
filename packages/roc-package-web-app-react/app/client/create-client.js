@@ -77,6 +77,7 @@ export default function createClient({ createRoutes, createStore, mountNode }) {
         let routes;
         let locals = {};
         let createComponent = [(component) => component];
+        let createDevComponent = [(component) => component];
 
         if (HAS_REDUX_REDUCERS && createStore) {
             const { Provider } = require('react-redux');
@@ -101,16 +102,13 @@ export default function createClient({ createRoutes, createStore, mountNode }) {
                 if (rocConfig.dev.reduxDevtools.enabled) {
                     const DevTools = require('./dev-tools').default;
 
-                    if (rocConfig.runtime.ssr) {
-                        clientDebug('You will see a "Warning: React attempted to reuse markup in a container but the ' +
-                            'checksum was invalid." message. That\'s because the redux-devtools are enabled.');
-                    }
-
-                    createComponent.push((component) => (
-                        <span>
-                            { component }
-                            <DevTools />
-                        </span>
+                    createDevComponent.push((component) => (
+                        <Provider store={ store }>
+                            <span>
+                                { component }
+                                <DevTools />
+                            </span>
+                        </Provider>
                     ));
                 }
             }
@@ -125,12 +123,7 @@ export default function createClient({ createRoutes, createStore, mountNode }) {
             console.ignoredYellowBox = rocConfig.dev.yellowbox.ignore;
             /* eslint-enable */
 
-            if (rocConfig.runtime.ssr) {
-                clientDebug('You will see a "Warning: React attempted to reuse markup in a container but the ' +
-                    'checksum was invalid." message. That\'s because the YellowBox is enabled.');
-            }
-
-            createComponent.push((component) => (
+            createDevComponent.push((component) => (
                 <span>
                     { component }
                     <YellowBox />
@@ -156,6 +149,12 @@ export default function createClient({ createRoutes, createStore, mountNode }) {
         );
 
         ReactDOM.render(finalComponent, node);
+
+        if (__DEV__) {
+            const devNode = document.createElement('div');
+            node.parentNode.insertBefore(devNode, node.nextSibling);
+            ReactDOM.render(compose(createDevComponent)(null), devNode);
+        }
     };
 
     render();
