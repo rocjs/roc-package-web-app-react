@@ -7,7 +7,7 @@ import { rocConfig } from './universal-config';
 
 export default class Header extends React.Component {
     render() {
-        const path = ROC_PATH !== '/' ? ROC_PATH + '/' : null;
+        const path = ROC_PATH !== '/' ? ROC_PATH + '/' : ROC_PATH;
         const base = rocConfig.runtime.base.href && path ? {
             ...rocConfig.runtime.base,
             href: rocConfig.runtime.base.href.replace(/ROC_PATH/, path)

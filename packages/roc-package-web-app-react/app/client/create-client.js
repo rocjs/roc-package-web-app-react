@@ -14,7 +14,7 @@ import { rocConfig } from '../shared/universal-config';
 
 const clientDebug = debug('roc:client');
 
-const basename = ROC_PATH === '/' ? null : ROC_PATH;
+const basename = ROC_PATH === '/' ? '' : ROC_PATH;
 
 /**
  * Client entry point for React applications.
@@ -66,7 +66,7 @@ export default function createClient({ createRoutes, createStore, mountNode }) {
         const node = document.getElementById(mountNode);
 
         let history = useRouterHistory(createHistory)({
-            basename: basename
+            basename
         });
 
         let initialLoading = null;
