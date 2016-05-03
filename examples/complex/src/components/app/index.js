@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { IndexLink, Link } from 'react-router';
+import Link from 'react-router/lib/Link';
+import IndexLink from 'react-router/lib/IndexLink';
 
 export default class App extends Component {
     static propTypes = {
