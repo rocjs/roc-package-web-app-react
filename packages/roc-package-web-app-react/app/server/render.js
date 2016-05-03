@@ -1,4 +1,4 @@
-/* global __DIST__ __DEV__ */
+/* global __DIST__ __DEV__ HAS_TEMPLATE_VALUES TEMPLATE_VALUES */
 
 import debug from 'debug';
 import nunjucks from 'nunjucks';
@@ -6,10 +6,10 @@ import serialize from 'serialize-javascript';
 import PrettyError from 'pretty-error';
 import React from 'react';
 import { renderToString, renderToStaticMarkup } from 'react-dom/server';
-import { match, RouterContext } from 'react-router';
+import { match } from 'react-router';
 import { Provider } from 'react-redux';
 import Helmet from 'react-helmet';
-import { trigger } from 'redial';
+import { triggerHooks, RedialContext } from 'react-router-redial';
 import { getAbsolutePath } from 'roc';
 import ServerStatus from 'react-server-status';
 import myPath from 'roc-package-web-app-react/lib/helpers/my-path';
@@ -32,7 +32,9 @@ export function initRenderPage({ script, css }) {
     return (
         head,
         content = '',
-        fluxState = {}
+        fluxState = {},
+        redialProps = [],
+        customTemplateValues = {}
     ) => {
         const { dev, build, ...rest } = rocConfig;
 
@@ -53,12 +55,14 @@ export function initRenderPage({ script, css }) {
             styleName,
             dist: __DIST__,
             serializedRocConfig: serialize(rocConfigClient),
-            serializedAppConfig: serialize(appConfig)
+            serializedAppConfig: serialize(appConfig),
+            redialProps: serialize(redialProps),
+            custom: customTemplateValues
         });
     };
 }
 
-export function reactRender(url, history, store, createRoutes, renderPage, staticRender = false) {
+export function reactRender(url, history, store, createRoutes, renderPage, koaState, staticRender = false) {
     return new Promise((resolve) => {
         match({ history, routes: createRoutes(store), location: url },
             (error, redirect, renderProps) => {
@@ -81,52 +85,56 @@ export function reactRender(url, history, store, createRoutes, renderPage, stati
                     });
                 }
 
-                const components = renderProps.routes.map(route => route.component);
+                const locals = store ? {
+                    dispatch: store.dispatch,
+                    getState: store.getState
+                } : {};
 
-                let locals = {
-                    location: renderProps.location,
-                    params: renderProps.params
-                };
+                const hooks = rocConfig.runtime.fetch.server;
 
-                if (store) {
-                    locals = {
-                        ...locals,
-                        dispatch: store.dispatch,
-                        getState: store.getState
-                    };
-                }
+                triggerHooks({
+                    renderProps,
+                    hooks,
+                    locals
+                }).then(({ redialMap, redialProps }) => {
+                    let component = <RedialContext {...renderProps} redialMap={ redialMap } />;
 
-                trigger('fetch', components, locals)
-                    .then(() => {
-                        let component = <RouterContext {...renderProps} />;
+                    if (store) {
+                        component = (
+                            <Provider store={ store }>
+                                { component }
+                            </Provider>
+                        );
+                    }
 
-                        if (store) {
-                            component = (
-                                <Provider store={ store }>
-                                    { component }
-                                </Provider>
-                            );
-                        }
+                    const page = staticRender ? renderToStaticMarkup(component) : renderToString(component);
+                    const head = Helmet.rewind();
+                    const state = store ? store.getState() : {};
 
-                        const page = staticRender ? renderToStaticMarkup(component) : renderToString(component);
-                        const head = Helmet.rewind();
-
-                        const state = store ? store.getState() : {};
-
-                        return resolve({
-                            body: renderPage(head, page, state),
-                            status: ServerStatus.rewind() || 200
+                    let templateValues;
+                    if (HAS_TEMPLATE_VALUES) {
+                        // Provides settings, Redux state and Koa state
+                        templateValues = require(TEMPLATE_VALUES).default({
+                            koaState,
+                            settings: rocConfig,
+                            reduxState: state
                         });
-                    })
-                    .catch((err) => {
-                        if (err) {
-                            log('Fetching error', pretty.render(err));
-                            return resolve({
-                                status: 500,
-                                body: renderPage()
-                            });
-                        }
+                    }
+
+                    return resolve({
+                        body: renderPage(head, page, state, redialProps, templateValues),
+                        status: ServerStatus.rewind() || 200
                     });
+                })
+                .catch((err) => {
+                    if (err) {
+                        log('Fetching error', pretty.render(err));
+                    }
+                    return resolve({
+                        status: 500,
+                        body: renderPage()
+                    });
+                });
             });
     });
 }

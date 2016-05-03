@@ -3,6 +3,8 @@ export default {
         runtime: {
             stats: 'build/client/webpack-stats.json',
             applicationName: '',
+            applicationNameTemplate: '',
+            htmlAttributes: {},
             meta: [{
                 name: 'viewport',
                 content: 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0'
@@ -17,8 +19,8 @@ export default {
                 target: ''
             },
             script: [],
+            style: [],
             ssr: true,
-            clientBlocking: false,
             template: {
                 path: '',
                 name: 'main.html'
@@ -26,7 +28,15 @@ export default {
             debug: {
                 client: 'roc:*'
             },
-            configWhitelistProperty: 'DANGEROUSLY_EXPOSE_TO_CLIENT'
+            configWhitelistProperty: 'DANGEROUSLY_EXPOSE_TO_CLIENT',
+            fetch: {
+                server: ['fetch'],
+                client: {
+                    blocking: ['fetch'],
+                    defer: ['defer'],
+                    parallel: false
+                }
+            }
         }
     }
 };

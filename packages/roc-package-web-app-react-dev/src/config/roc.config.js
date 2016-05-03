@@ -14,7 +14,9 @@ export default {
 
             clientLoading: '',
             // Consider using the config function to merge this with the previous
-            resources: ['roc-package-web-app-react/styles/base.css']
+            resources: ['roc-package-web-app-react/styles/base.css'],
+
+            templateValues: 'template-values.js'
         },
         dev: {
             // A11Y not play nice with Redux Devtools

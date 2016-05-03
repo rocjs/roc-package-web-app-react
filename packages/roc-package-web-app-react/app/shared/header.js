@@ -7,7 +7,7 @@ import { rocConfig } from './universal-config';
 
 export default class Header extends React.Component {
     render() {
-        const path = ROC_PATH !== '/' ? ROC_PATH + '/' : null;
+        const path = ROC_PATH !== '/' ? ROC_PATH + '/' : ROC_PATH;
         const base = rocConfig.runtime.base.href && path ? {
             ...rocConfig.runtime.base,
             href: rocConfig.runtime.base.href.replace(/ROC_PATH/, path)
@@ -15,11 +15,14 @@ export default class Header extends React.Component {
 
         return (
             <Helmet
-                title={ rocConfig.runtime.applicationName }
+                htmlAttributes={ rocConfig.runtime.htmlAttributes }
+                defaultTitle={ rocConfig.runtime.applicationName }
+                titleTemplate={ rocConfig.runtime.applicationNameTemplate }
                 meta={ rocConfig.runtime.meta }
                 link={ rocConfig.runtime.link }
                 base={ base }
                 script={ rocConfig.runtime.script }
+                style={ rocConfig.runtime.style }
             />
         );
     }

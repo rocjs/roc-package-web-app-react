@@ -1,4 +1,4 @@
-/* global __DEV__ HAS_CLIENT_LOADING ROC_CLIENT_LOADING ROC_PATH */
+/* global __DEV__ HAS_CLIENT_LOADING ROC_CLIENT_LOADING ROC_PATH HAS_REDUX_REDUCERS */
 
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -7,15 +7,14 @@ import Router from 'react-router/lib/Router';
 import useRouterHistory from 'react-router/lib/useRouterHistory';
 import { createHistory } from 'history';
 
-import { Provider } from 'react-redux';
-import { syncHistoryWithStore } from 'react-router-redux';
 import debug from 'debug';
 
+import { RedialContext } from 'react-router-redial';
 import { rocConfig } from '../shared/universal-config';
 
 const clientDebug = debug('roc:client');
 
-const basename = ROC_PATH === '/' ? null : ROC_PATH;
+const basename = ROC_PATH === '/' ? '' : ROC_PATH;
 
 /**
  * Client entry point for React applications.
@@ -66,87 +65,109 @@ export default function createClient({ createRoutes, createStore, mountNode }) {
     const render = () => {
         const node = document.getElementById(mountNode);
 
-        let component;
-        const history = useRouterHistory(createHistory)({
-            basename: basename
+        let history = useRouterHistory(createHistory)({
+            basename
         });
 
-        if (createStore) {
+        let initialLoading = null;
+        if (HAS_CLIENT_LOADING) {
+            initialLoading = require(ROC_CLIENT_LOADING).default;
+        }
+
+        let routes;
+        let locals = {};
+        let createComponent = [(component) => component];
+        let createDevComponent = [(component) => component];
+
+        if (HAS_REDUX_REDUCERS && createStore) {
+            const { Provider } = require('react-redux');
+            const { syncHistoryWithStore } = require('react-router-redux');
+
             const store = createStore(history, window.FLUX_STATE);
-            const theHistory = syncHistoryWithStore(history, store);
+            history = syncHistoryWithStore(history, store);
 
-            const ReduxContext = require('./redux-context').default;
+            routes = createRoutes(store);
+            locals = {
+                dispatch: store.dispatch,
+                getState: store.getState
+            };
 
-            let initalClientLoading = null;
-            if (HAS_CLIENT_LOADING) {
-                initalClientLoading = require(ROC_CLIENT_LOADING).default;
-            }
-
-            component = (
-                <Router
-                    history={ theHistory }
-                    routes={ createRoutes(store) }
-                    render={ (props) => <ReduxContext {...props} /> }
-                    store={ store }
-                    blocking={ rocConfig.runtime.clientBlocking }
-                    initalClientLoading={ initalClientLoading }
-                />
-            );
-
-            if (__DEV__) {
-                if (rocConfig.dev.reduxDevtools.enabled) {
-                    const DevTools = require('./dev-tools').default;
-
-                    if (rocConfig.runtime.ssr) {
-                        clientDebug('You will see a "Warning: React attempted to reuse markup in a container but the ' +
-                            'checksum was invalid." message. That\'s because the redux-devtools are enabled.');
-                    }
-
-                    component = (
-                        <div>
-                            { component }
-                            <DevTools />
-                        </div>
-                    );
-                }
-
-                if (rocConfig.dev.yellowbox.enabled) {
-                    const YellowBox = require('yellowbox-react').default;
-
-                    /* eslint-disable no-console */
-                    console.ignoredYellowBox = rocConfig.dev.yellowbox.ignore;
-                    /* eslint-enable */
-
-                    if (rocConfig.runtime.ssr) {
-                        clientDebug('You will see a "Warning: React attempted to reuse markup in a container but the ' +
-                            'checksum was invalid." message. That\'s because the YellowBox is enabled.');
-                    }
-
-                    component = (
-                        <div>
-                            { component }
-                            <YellowBox />
-                        </div>
-                    );
-                }
-            }
-
-            component = (
+            createComponent.push((component) => (
                 <Provider store={ store }>
                     { component }
                 </Provider>
-            );
+            ));
+
+            if (__DEV__) {
+                if (rocConfig.dev.reduxDevtools.enabled && !window.devToolsExtension) {
+                    const DevTools = require('./dev-tools').default;
+
+                    createDevComponent.push((component) => (
+                        <Provider store={ store }>
+                            <span>
+                                { component }
+                                <DevTools />
+                            </span>
+                        </Provider>
+                    ));
+                } else if (rocConfig.dev.reduxDevtools.enabled) {
+                    console.log('Found Redux Devtools Chrome extension, will use that over default one.');
+                }
+            }
         } else {
-            component = (
-                <Router
-                    history={ history }
-                    routes={ createRoutes() }
-                />
-            );
+            routes = createRoutes();
         }
 
-        ReactDOM.render(component, node);
+        if (__DEV__ && rocConfig.dev.yellowbox.enabled) {
+            const YellowBox = require('yellowbox-react').default;
+
+            /* eslint-disable no-console */
+            console.ignoredYellowBox = rocConfig.dev.yellowbox.ignore;
+            /* eslint-enable */
+
+            createDevComponent.push((component) => (
+                <span>
+                    { component }
+                    <YellowBox />
+                </span>
+            ));
+        }
+
+        const finalComponent = compose(createComponent)(
+            <Router
+                history={ history }
+                routes={ routes }
+                render={ (props) => (
+                    <RedialContext
+                        { ...props }
+                        locals={ locals }
+                        blocking={ rocConfig.runtime.fetch.client.blocking }
+                        defer={ rocConfig.runtime.fetch.client.defer }
+                        parallel={ rocConfig.runtime.fetch.client.parallel }
+                        initialLoading={ initialLoading }
+                    />
+                )}
+            />
+        );
+
+        ReactDOM.render(finalComponent, node);
+
+        if (__DEV__) {
+            const devNode = document.createElement('div');
+            node.parentNode.insertBefore(devNode, node.nextSibling);
+            ReactDOM.render(compose(createDevComponent)(null), devNode);
+        }
     };
 
     render();
+}
+
+function compose(funcs) {
+    if (funcs.length === 0) {
+        return (arg) => arg;
+    }
+
+    const last = funcs[funcs.length - 1];
+    const rest = funcs.slice(0, -1);
+    return (...args) => rest.reduceRight((composed, f) => f(composed), last(...args));
 }

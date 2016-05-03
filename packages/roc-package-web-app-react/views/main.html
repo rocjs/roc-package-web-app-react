@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html {{ head.htmlAttributes | safe }}>
   <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -9,17 +9,23 @@
         {{ head.link | safe }}
         {{ head.base | safe }}
         {{ head.script | safe }}
+        {{ head.style | safe }}
 
         {% if dist %}
         <link rel="stylesheet" href="{{ styleName }}">
         {% endif %}
     </head>
+    {% if custom.bodyClass %}
+    <body class="{{ custom.bodyClass | safe }}">
+    {% else %}
     <body>
+    {% endif %}
         <div id="application">{{ content | safe }}</div>
 
         <script>window.ROC_CONFIG = {{ serializedRocConfig | safe }}</script>
         <script>window.APP_CONFIG = {{ serializedAppConfig | safe }}</script>
         <script>window.FLUX_STATE = {{ fluxState | safe }}</script>
+        <script>window.__REDIAL_PROPS__ = {{ redialProps | safe }}</script>
 
         <script src="{{ bundleName }}"></script>
     </body>
