@@ -20,6 +20,9 @@ export default function createReduxStore(reducers, ...middlewares) {
         (history, initialState) => {
             let finalCreateStore;
 
+            // Add the react-router-redux middleware
+            middlewares.push(routerMiddleware(history));
+
             if (__DEV__ && __WEB__) {
                 const { persistState } = require('redux-devtools');
                 const createLogger = require('redux-logger');
@@ -32,8 +35,6 @@ export default function createReduxStore(reducers, ...middlewares) {
 
                 const debugMiddlewares = [logger];
 
-                // Add the react-router-redux middleware
-                middlewares.push(routerMiddleware(history));
                 const devTools = window.devToolsExtension
                     ? window.devToolsExtension()
                     // TODO Enable maxAge support here. Will require a fix for validations in roc
