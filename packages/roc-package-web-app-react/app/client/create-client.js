@@ -6,6 +6,7 @@ import ReactDOM from 'react-dom';
 import Router from 'react-router/lib/Router';
 import useRouterHistory from 'react-router/lib/useRouterHistory';
 import { createHistory } from 'history';
+import { supportsHistory } from 'history/lib/DOMUtils';
 
 import debug from 'debug';
 
@@ -84,7 +85,12 @@ export default function createClient({ createRoutes, createStore, mountNode }) {
             const { syncHistoryWithStore } = require('react-router-redux');
 
             const store = createStore(history, window.FLUX_STATE);
-            history = syncHistoryWithStore(history, store);
+            history = syncHistoryWithStore(history, store, {
+                // We do not want to use adjustUrlOnReplay if the browser does
+                // not support the history API with pushState since this can lead
+                // to redirect loops https://github.com/reactjs/react-router-redux/issues/285
+                adjustUrlOnReplay: supportsHistory()
+            });
 
             routes = createRoutes(store);
             locals = {
