@@ -19,9 +19,10 @@ export default function createReduxStore(reducers, ...middlewares) {
     return (callback) =>
         (history, initialState) => {
             let finalCreateStore;
+            const normalMiddlewares = [].concat(middlewares);
 
             // Add the react-router-redux middleware
-            middlewares.push(routerMiddleware(history));
+            normalMiddlewares.push(routerMiddleware(history));
 
             if (__DEV__ && __WEB__) {
                 const { persistState } = require('redux-devtools');
@@ -42,13 +43,13 @@ export default function createReduxStore(reducers, ...middlewares) {
                     : require('../../client/dev-tools').default.instrument();
 
                 finalCreateStore = compose(
-                    applyMiddleware(...middlewares, ...debugMiddlewares),
+                    applyMiddleware(...normalMiddlewares, ...debugMiddlewares),
                     devTools,
                     persistState(window.location.href.match(/[?&]debug_session=([^&]+)\b/))
                 )(createStore);
             } else {
                 finalCreateStore = compose(
-                    applyMiddleware(...middlewares)
+                    applyMiddleware(...normalMiddlewares)
                 )(createStore);
             }
 
