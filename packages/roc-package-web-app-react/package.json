@@ -38,7 +38,7 @@
     "react-redux": "~4.4.5",
     "react-router": "~2.3.0",
     "react-router-redial": "~0.2.1",
-    "react-router-redux": "~4.0.2",
+    "react-router-redux": "dlmr/react-router-redux#fix-inital-server-load-dist",
     "react-server-status": "~1.0.0",
     "redial": "~0.4.1",
     "redux": "~3.4.0",
