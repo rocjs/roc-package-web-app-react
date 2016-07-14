@@ -1,0 +1,63 @@
+{
+  "name": "roc-package-web-app-react",
+  "description": "Package for building React applications with Roc",
+  "version": "1.0.0-beta.0",
+  "main": "lib/index.js",
+  "scripts": {
+    "lint": "eslint .",
+    "test": "npm run lint"
+  },
+  "files": [
+    "lib",
+    "styles",
+    "views",
+    "app"
+  ],
+  "keywords": [
+    "roc",
+    "roc-package",
+    "react-router",
+    "react",
+    "redux"
+  ],
+  "repository": "https://github.com/rocjs/roc-package-web-app-react/tree/master/extensions/roc-package-web-app-react",
+  "author": "Verdens Gang AS",
+  "contributors": [{
+    "name": "Gustaf Dalemar"
+  }],
+  "license": "MIT",
+  "dependencies": {
+    "debug": "~2.2.0",
+    "error": "~7.0.2",
+    "history": "^2.1.0",
+    "nunjucks": "~2.4.2",
+    "pretty-error": "~2.0.0",
+    "react-helmet": "~3.1.0",
+    "react-redux": "~4.4.5",
+    "react-router": "~2.3.0",
+    "react-router-redial": "~0.2.2",
+    "react-router-redux": "~4.0.2",
+    "react-server-status": "~1.0.0",
+    "redial": "~0.4.1",
+    "redux": "~3.4.0",
+    "redux-thunk": "~2.0.1",
+    "roc": "^1.0.0-rc",
+    "roc-package-web-app": "^1.0.0-beta",
+    "roc-plugin-react": "^1.0.0-beta",
+    "serialize-javascript": "~1.2.0"
+  },
+  "devDependencies": {
+    "babel-eslint": "~6.1.2",
+    "eslint": "~3.0.1",
+    "eslint-config-airbnb": "~9.0.1",
+    "eslint-plugin-babel": "~3.3.0",
+    "eslint-plugin-import": "~1.10.2",
+    "eslint-plugin-jsx-a11y": "1.5.5",
+    "eslint-plugin-react": "5.2.2"
+  },
+  "roc": {
+    "packages": [
+      "./lib/index.js"
+    ]
+  }
+}

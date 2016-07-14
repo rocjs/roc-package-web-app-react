@@ -3,13 +3,15 @@
   "private": true,
   "license": "MIT",
   "scripts": {
+    "start": "rid",
     "rid": "rid",
     "build": "rid build",
     "lint": "rid lint:alias",
     "link": "rid link",
+    "link:all": "rid link roc,roc-package-web-app,roc-package-web-app-dev,roc-plugin-react-dev,roc-plugin-react",
     "test": "npm run lint"
   },
   "devDependencies": {
-    "@rocjs/roc-internal-dev": "^1.0.0"
+    "@rocjs/roc-internal-dev": "^2.0.0"
   }
 }

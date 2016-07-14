@@ -1,0 +1,21 @@
+{
+    "extends": "airbnb-base",
+
+    "parser": "babel-eslint",
+
+    plugins: ["eslint-plugin-babel"],
+
+    "rules": {
+        "indent": [2, 4, { "SwitchCase": 1 }],
+        "max-len": [2, 120, 4],
+        "no-warning-comments": 1,
+
+        "generator-star-spacing": 0,
+        "babel/generator-star-spacing": [2, { before: false, after: true }],
+
+        "import/order": [2, { "groups": ["builtin", "external", "internal", "parent", "sibling", "index"], "newlines-between": "always"}],
+        "import/newline-after-import": [2],
+        "import/no-extraneous-dependencies": [1],
+        "import/no-unresolved": [1]
+    }
+}

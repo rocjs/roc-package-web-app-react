@@ -9,8 +9,10 @@ module.exports = {
         },
         build: {
             koaMiddlewares: 'src/koa-middlewares.js',
-            reduxMiddlewares: 'src/middlewares.js',
-            reducers: 'src/reducers.js',
+            redux: {
+                middlewares: 'src/middlewares.js',
+                reducers: 'src/reducers.js',
+            },
             routes: 'src/routes.js',
             templateValues: 'src/template-values.js'
         }
