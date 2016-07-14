@@ -1,5 +1,4 @@
-/* global __DIST__ __DEV__ HAS_TEMPLATE_VALUES TEMPLATE_VALUES */
-
+import config from 'config';
 import debug from 'debug';
 import nunjucks from 'nunjucks';
 import serialize from 'serialize-javascript';
@@ -10,20 +9,28 @@ import { match } from 'react-router';
 import { Provider } from 'react-redux';
 import Helmet from 'react-helmet';
 import { triggerHooks, RedialContext } from 'react-router-redial';
-import { getAbsolutePath } from 'roc';
+import { getAbsolutePath, getSettings } from 'roc';
 import ServerStatus from 'react-server-status';
-import myPath from 'roc-package-web-app-react/lib/helpers/my-path';
 
-import { rocConfig, appConfig } from '../shared/universal-config';
-import Header from '../shared/header';
+import myPath from './helpers/myPath';
 
 const pretty = new PrettyError();
 const log = debug('roc:react-render');
 
-export function initRenderPage({ script, css }) {
+const rocConfig = getSettings();
+
+const whiteListed = () => (
+    rocConfig.runtime.configWhitelistProperty ?
+        config[rocConfig.runtime.configWhitelistProperty] :
+        undefined
+);
+
+const appConfig = whiteListed();
+
+export function initRenderPage({ script, css }, distMode, devMode, Header) {
     const templatePath = rocConfig.runtime.template.path || `${myPath}/views`;
     nunjucks.configure(getAbsolutePath(templatePath), {
-        watch: __DEV__,
+        watch: devMode,
     });
 
     const bundleName = script[0];
@@ -36,15 +43,15 @@ export function initRenderPage({ script, css }) {
         redialProps = [],
         customTemplateValues = {}
     ) => {
-        const { dev, build, ...rest } = rocConfig;
+        const { dev, build, ...rest } = rocConfig; // eslint-disable-line
 
-        const rocConfigClient = __DIST__ ? rest : { ...rest, dev };
+        const rocConfigClient = distMode ? rest : { ...rest, dev };
 
         // If we have no head we will generate it
         if (!head) {
             // Render to trigger React Helmet
             renderToStaticMarkup(<Header />);
-            head = Helmet.rewind();
+            head = Helmet.rewind(); // eslint-disable-line
         }
 
         return nunjucks.render(rocConfig.runtime.template.name, {
@@ -53,7 +60,7 @@ export function initRenderPage({ script, css }) {
             fluxState: serialize(fluxState),
             bundleName,
             styleName,
-            dist: __DIST__,
+            dist: distMode,
             serializedRocConfig: serialize(rocConfigClient),
             serializedAppConfig: serialize(appConfig),
             redialProps: serialize(redialProps),
@@ -62,7 +69,17 @@ export function initRenderPage({ script, css }) {
     };
 }
 
-export function reactRender(url, history, store, createRoutes, renderPage, koaState, staticRender = false) {
+export function reactRender({
+    url,
+    history,
+    store,
+    createRoutes,
+    renderPage,
+    koaState,
+    staticRender = false,
+    hasTemplateValues,
+    templateValues,
+}) {
     return new Promise((resolve) => {
         match({ history, routes: createRoutes(store), location: url },
             (error, redirect, renderProps) => {
@@ -92,7 +109,7 @@ export function reactRender(url, history, store, createRoutes, renderPage, koaSt
 
                 const hooks = rocConfig.runtime.fetch.server;
 
-                triggerHooks({
+                return triggerHooks({
                     renderProps,
                     hooks,
                     locals,
@@ -111,10 +128,10 @@ export function reactRender(url, history, store, createRoutes, renderPage, koaSt
                     const head = Helmet.rewind();
                     const state = store ? store.getState() : {};
 
-                    let templateValues;
-                    if (HAS_TEMPLATE_VALUES) {
+                    let computedTemplateValues;
+                    if (hasTemplateValues) {
                         // Provides settings, Redux state and Koa state
-                        templateValues = require(TEMPLATE_VALUES).default({
+                        computedTemplateValues = templateValues.default({
                             koaState,
                             settings: rocConfig,
                             reduxState: state,
@@ -122,7 +139,7 @@ export function reactRender(url, history, store, createRoutes, renderPage, koaSt
                     }
 
                     return resolve({
-                        body: renderPage(head, page, state, redialProps, templateValues),
+                        body: renderPage(head, page, state, redialProps, computedTemplateValues),
                         status: ServerStatus.rewind() || 200,
                     });
                 })

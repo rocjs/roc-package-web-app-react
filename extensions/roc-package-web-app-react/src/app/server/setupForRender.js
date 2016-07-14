@@ -3,8 +3,8 @@
 import { createMemoryHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 
-export default function setupForRender(createStore, url) {
-    const basename = ROC_PATH === '/' ? '' : ROC_PATH;
+export default function setupForRender(createStore, url, rocPath) {
+    const basename = rocPath === '/' ? '' : rocPath;
 
     const completeUrl = basename + url;
     const memoryHistory = createMemoryHistory({

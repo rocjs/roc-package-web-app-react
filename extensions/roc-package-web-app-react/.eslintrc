@@ -16,6 +16,9 @@
         "import/order": [2, { "groups": ["builtin", "external", "internal", "parent", "sibling", "index"], "newlines-between": "always"}],
         "import/newline-after-import": [2],
         "import/no-extraneous-dependencies": [1],
-        "import/no-unresolved": [1]
+        "import/no-unresolved": [1],
+
+        "react/jsx-indent": [2, 4],
+        "react/jsx-indent-props": [2, 4]
     }
 }

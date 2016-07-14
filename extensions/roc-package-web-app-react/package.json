@@ -22,9 +22,11 @@
   ],
   "repository": "https://github.com/rocjs/roc-package-web-app-react/tree/master/extensions/roc-package-web-app-react",
   "author": "Verdens Gang AS",
-  "contributors": [{
-    "name": "Gustaf Dalemar"
-  }],
+  "contributors": [
+    {
+      "name": "Gustaf Dalemar"
+    }
+  ],
   "license": "MIT",
   "dependencies": {
     "debug": "~2.2.0",
@@ -48,6 +50,7 @@
   },
   "devDependencies": {
     "babel-eslint": "~6.1.2",
+    "babel-preset-react": "6.11.1",
     "eslint": "~3.0.1",
     "eslint-config-airbnb": "~9.0.1",
     "eslint-plugin-babel": "~3.3.0",

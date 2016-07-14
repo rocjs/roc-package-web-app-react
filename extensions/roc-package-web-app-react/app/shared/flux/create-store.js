@@ -25,8 +25,8 @@ export default function createReduxStore(reducers, ...middlewares) {
             normalMiddlewares.push(routerMiddleware(history));
 
             if (__DEV__ && __WEB__) {
-                const { persistState } = require('redux-devtools');
-                const createLogger = require('redux-logger');
+                const { persistState } = require('redux-devtools'); // eslint-disable-line
+                const createLogger = require('redux-logger'); // eslint-disable-line
                 const logger = createLogger({ ...rocConfig.dev.redux.logger });
 
                 const debugMiddlewares = [logger];
@@ -35,8 +35,7 @@ export default function createReduxStore(reducers, ...middlewares) {
                 if (rocConfig.dev.redux.devTools.enabled) {
                     devTools = window.devToolsExtension
                         ? window.devToolsExtension()
-                        // TODO Enable maxAge support here. Will require a fix for validations in roc
-                        // This should probably also additionally only be added if devtools is on in settings
+                        // eslint-disable-next-line
                         : require('../../client/dev-tools').default.instrument(rocConfig.dev.redux.devTools.instrument);
                 }
 

@@ -9,14 +9,16 @@
  * to read the full configuration on the server you will need to read it directly from node-config.
  */
 
-export const rocConfig = (function () {
-    return typeof window !== 'undefined' ? window.ROC_CONFIG : require('roc').getSettings();
-})();
+export const rocConfig = (function getRocConfig() {
+    return typeof window !== 'undefined' ? window.ROC_CONFIG : require('roc').getSettings(); // eslint-disable-line
+}());
 
-const whiteListed = () => rocConfig.runtime.configWhitelistProperty ?
-    require('config')[rocConfig.runtime.configWhitelistProperty] :
-    undefined;
+const whiteListed = () => (
+    rocConfig.runtime.configWhitelistProperty ?
+        require('config')[rocConfig.runtime.configWhitelistProperty] : // eslint-disable-line
+        undefined
+);
 
-export const appConfig = (function () {
+export const appConfig = (function getAppConfig() {
     return typeof window !== 'undefined' ? window.APP_CONFIG : whiteListed();
-})();
+}());

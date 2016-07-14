@@ -1,6 +1,7 @@
 /* global REACT_ROUTER_ROUTES, REDUX_REDUCERS, HAS_REDUX_REDUCERS, HAS_REDUX_MIDDLEWARES, REDUX_MIDDLEWARES,
     USE_DEFAULT_REDUX_REDUCERS, USE_DEFAULT_REDUX_MIDDLEWARES, USE_DEFAULT_REACT_ROUTER_ROUTES
 */
+/* eslint-disable global-require */
 
 export default function getRoutesAndStore(web = false) {
     let store = null;
@@ -50,6 +51,7 @@ export default function getRoutesAndStore(web = false) {
 
     if (USE_DEFAULT_REACT_ROUTER_ROUTES) {
         const { createRoutes } = require('../shared');
+
         routes = createRoutes(require(REACT_ROUTER_ROUTES).default);
     } else {
         routes = require(REACT_ROUTER_ROUTES).default;

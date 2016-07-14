@@ -1,21 +1,30 @@
 /* global __DEV__ HAS_CLIENT_LOADING ROC_CLIENT_LOADING ROC_PATH HAS_REDUX_REDUCERS */
-
+/* eslint-disable global-require */
 import React from 'react';
 import ReactDOM from 'react-dom';
-
 import Router from 'react-router/lib/Router';
 import useRouterHistory from 'react-router/lib/useRouterHistory';
 import { createHistory } from 'history';
 import { supportsHistory } from 'history/lib/DOMUtils';
-
 import debug from 'debug';
-
 import { RedialContext } from 'react-router-redial';
+
 import { rocConfig } from '../shared/universal-config';
 
 const clientDebug = debug('roc:client');
 
 const basename = ROC_PATH === '/' ? '' : ROC_PATH;
+
+function compose(funcs) {
+    if (funcs.length === 0) {
+        return (arg) => arg;
+    }
+
+    const last = funcs[funcs.length - 1];
+    const rest = funcs.slice(0, -1);
+    return (...args) => rest.reduceRight((composed, f) => f(composed), last(...args));
+}
+
 
 /**
  * Client entry point for React applications.
@@ -141,16 +150,16 @@ export default function createClient({ createRoutes, createStore, mountNode }) {
 
         const finalComponent = compose(createComponent)(
             <Router
-              history={history}
-              routes={routes}
-              render={(props) => (
+                history={history}
+                routes={routes}
+                render={(props) => (
                     <RedialContext
-                      {...props}
-                      locals={locals}
-                      blocking={rocConfig.runtime.fetch.client.blocking}
-                      defer={rocConfig.runtime.fetch.client.defer}
-                      parallel={rocConfig.runtime.fetch.client.parallel}
-                      initialLoading={initialLoading}
+                        {...props}
+                        locals={locals}
+                        blocking={rocConfig.runtime.fetch.client.blocking}
+                        defer={rocConfig.runtime.fetch.client.defer}
+                        parallel={rocConfig.runtime.fetch.client.parallel}
+                        initialLoading={initialLoading}
                     />
                 )}
             />
@@ -166,14 +175,4 @@ export default function createClient({ createRoutes, createStore, mountNode }) {
     };
 
     render();
-}
-
-function compose(funcs) {
-    if (funcs.length === 0) {
-        return (arg) => arg;
-    }
-
-    const last = funcs[funcs.length - 1];
-    const rest = funcs.slice(0, -1);
-    return (...args) => rest.reduceRight((composed, f) => f(composed), last(...args));
 }

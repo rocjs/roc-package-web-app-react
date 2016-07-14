@@ -4,17 +4,7 @@ import webpack from 'webpack';
 export default ({ config: { settings: { build: buildSettings } }, previousValue: webpackConfig }) => (target) => () => {
     const newWebpackConfig = { ...webpackConfig };
 
-    const NODE = (target === 'node');
     const WEB = (target === 'web');
-
-    if (NODE) {
-        newWebpackConfig.externals = [].concat([
-            {
-                'roc-package-web-app-react/src/helpers/read-stats': true,
-                'roc-package-web-app-react/src/helpers/my-path': true,
-            },
-        ], newWebpackConfig.externals);
-    }
 
     if (WEB) {
         newWebpackConfig.plugins.push(

@@ -1,14 +1,14 @@
-import readStats from 'roc-package-web-app-react/lib/helpers/read-stats';
-import routes from './router';
+import readStats from './helpers/readStats';
+import reactRouter from './reactRouter';
 
 /**
  * Enhances a server instance with React support.
  *
- * Extends the options object from _roc-web_. See {@link rocServerOptions} for what the new options are.
+ * Extends the options object from _roc-web-app_. See {@link rocServerOptions} for what the new options are.
  *
  * @example
- * import { createServer } from 'roc-web/app';
- * import { useReact } from 'roc-web-react/app/server';
+ * import { createServer } from 'roc-package-web-app/app';
+ * import { useReact } from 'roc-package-web-app-react/app/server';
  *
  * const server = useReact(createServer)({
  *     serve: 'files',
@@ -23,11 +23,12 @@ import routes from './router';
  * @returns {function} Returns a new createServer that can be used to create server instances that can manage React
  * applications
  */
-export default function useReact(createServer) {
+export default function useReact(createServer, params) {
     return function (options = {}, beforeUserMiddlewares = []) {
         const { stats, createRoutes, createStore, ...serverOptions } = options;
 
-        return createServer(serverOptions, beforeUserMiddlewares.concat(routes({
+        return createServer(serverOptions, beforeUserMiddlewares.concat(reactRouter({
+            ...params,
             createRoutes,
             createStore,
             stats: readStats(stats),

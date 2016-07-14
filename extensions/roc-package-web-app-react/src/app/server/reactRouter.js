@@ -1,15 +1,26 @@
+import { getSettings } from 'roc';
 import debug from 'debug';
 import PrettyError from 'pretty-error';
 
-import { rocConfig } from '../shared/universal-config';
-
-import setupForRender from './setup-for-render';
-import { initRenderPage, reactRender } from './render';
+import setupForRender from './setupForRender';
+import { initRenderPage, reactRender } from './reactRenderer';
 
 const pretty = new PrettyError();
 const log = debug('roc:server');
 
-export default function routes({ createRoutes, createStore, stats, dist }) {
+export default function reactRouter({
+    createRoutes,
+    createStore,
+    stats,
+    dist,
+    dev,
+    hasTemplateValues,
+    templateValues,
+    rocPath,
+    Header,
+}) {
+    const rocConfig = getSettings();
+
     if (!createRoutes) {
         throw new Error('createRoutes needs to be defined');
     }
@@ -18,7 +29,7 @@ export default function routes({ createRoutes, createStore, stats, dist }) {
         throw new Error('stats needs to be defined');
     }
 
-    const renderPage = initRenderPage(stats, dist);
+    const renderPage = initRenderPage(stats, dist, dev, Header);
 
     return function* (next) {
         try {
@@ -34,7 +45,7 @@ export default function routes({ createRoutes, createStore, stats, dist }) {
                 this.status = 200;
                 this.body = renderPage();
             } else {
-                const { store, history, url } = setupForRender(createStore, this.url);
+                const { store, history, url } = setupForRender(createStore, this.url, rocPath);
 
                 // Give Koa middlewares a chance to interact with the reduxStore
                 // This can be used to dynamically pass some data to the client.
@@ -50,7 +61,16 @@ export default function routes({ createRoutes, createStore, stats, dist }) {
                     body,
                     redirect,
                     status = 200,
-                } = yield reactRender(url, history, store, createRoutes, renderPage, this.state);
+                } = yield reactRender({
+                    url,
+                    history,
+                    store,
+                    createRoutes,
+                    renderPage,
+                    koaState: this.state,
+                    hasTemplateValues,
+                    templateValues,
+                });
 
                 if (redirect) {
                     this.redirect(redirect);
