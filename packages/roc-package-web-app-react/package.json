@@ -43,7 +43,7 @@
     "redial": "~0.4.1",
     "redux": "~3.4.0",
     "redux-logger": "~2.6.1",
-    "redux-thunk": "~2.0.1",
+    "redux-thunk": "~2.1.0",
     "roc": "^1.0.0-rc",
     "roc-package-web-app": "^1.0.0-alpha",
     "roc-plugin-react": "^1.0.0-alpha",
