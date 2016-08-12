@@ -21,8 +21,7 @@ export function mergeReposProps(stateProps, dispatchProps, ownProps) {
     // enrich dispatch props with a repos forced fetch, typically used for buttons
     const newDispatchProps = {
         ...dispatchProps,
-        reposForceFetch: () => dispatchProps.createFetchAction.bind(
-            undefined,
+        reposForceFetch: () => dispatchProps.createFetchAction(
             FETCH_REPOS,
             userUrl(stateProps.repoUser),
             { force: true, method: 'GET' }

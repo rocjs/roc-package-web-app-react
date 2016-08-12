@@ -50,7 +50,7 @@ export default class Repo extends Component {
                 </span>
                 <RepoUpdateButton
                     text= { buttonText }
-                    onClick={ this.props.reposForceFetch() }
+                    onClick={ this.props.reposForceFetch }
                 />
                 { data }
             </div>
