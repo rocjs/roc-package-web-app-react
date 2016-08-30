@@ -1,4 +1,4 @@
-/* globals __DEV__ __WEB__ */
+/* globals __DEV__ __WEB__ __NODE__ */
 
 import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
 import { routerMiddleware, routerReducer } from 'react-router-redux';
@@ -46,6 +46,17 @@ export default function createReduxStore(reducers, ...middlewares) {
                     applyMiddleware(...normalMiddlewares, ...debugMiddlewares),
                     devTools,
                     persistState(window.location.href.match(/[?&]debug_session=([^&]+)\b/))
+                )(createStore);
+            } else if (__DEV__ && __NODE__) {
+                const createLogger = require('redux-logger');
+                const logger = createLogger({
+                    logger: console
+                });
+
+                const debugMiddlewares = [logger];
+                
+                finalCreateStore = compose(
+                    applyMiddleware(...normalMiddlewares, ...debugMiddlewares)
                 )(createStore);
             } else {
                 finalCreateStore = compose(
