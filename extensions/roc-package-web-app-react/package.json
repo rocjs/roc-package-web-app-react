@@ -43,9 +43,9 @@
     "redial": "~0.4.1",
     "redux": "~3.4.0",
     "redux-thunk": "~2.1.0",
-    "roc": "^1.0.0-rc",
-    "roc-package-web-app": "^1.0.0-beta",
-    "roc-plugin-react": "^1.0.0-beta",
+    "roc": "1.0.0-rc.11",
+    "roc-package-web-app": "1.0.0-beta.1",
+    "roc-plugin-react": "1.0.0-beta.1",
     "serialize-javascript": "~1.2.0"
   },
   "devDependencies": {

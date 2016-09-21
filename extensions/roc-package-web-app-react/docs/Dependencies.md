@@ -64,12 +64,12 @@ __Extension__: roc-package-web-app-react
 __Custom resolve function__:  No  
 
 ### [redux-thunk](https://www.npmjs.com/package/redux-thunk)
-__Version__: ~2.0.1  
+__Version__: ~2.1.0  
 __Extension__: roc-package-web-app-react  
 __Custom resolve function__:  No  
 
 ### [roc-package-web-app](https://www.npmjs.com/package/roc-package-web-app)
-__Version__: ^1.0.0-beta  
+__Version__: 1.0.0-beta.1  
 __Extension__: roc-package-web-app-react  
 __Custom resolve function__:  No  
 
