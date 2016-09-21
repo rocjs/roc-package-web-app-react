@@ -1,4 +1,4 @@
-/* globals __DEV__ __WEB__ */
+/* globals __DEV__, __WEB__, window */
 
 import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
 import { routerMiddleware, routerReducer } from 'react-router-redux';

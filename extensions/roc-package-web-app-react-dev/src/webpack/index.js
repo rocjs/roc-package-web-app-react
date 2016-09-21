@@ -1,7 +1,10 @@
 import { getAbsolutePath, fileExists } from 'roc';
 import webpack from 'webpack';
 
-export default ({ config: { settings: { build: buildSettings } }, previousValue: webpackConfig }) => (target) => () => {
+export default ({
+    context: { config: { settings: { build: buildSettings } } },
+    previousValue: webpackConfig
+}) => (target) => () => {
     const newWebpackConfig = { ...webpackConfig };
 
     const WEB = (target === 'web');

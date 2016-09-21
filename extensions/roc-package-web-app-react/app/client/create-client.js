@@ -1,4 +1,4 @@
-/* global __DEV__ HAS_CLIENT_LOADING ROC_CLIENT_LOADING ROC_PATH HAS_REDUX_REDUCERS */
+/* global __DEV__, HAS_CLIENT_LOADING, ROC_CLIENT_LOADING, ROC_PATH, HAS_REDUX_REDUCERS, document, window */
 /* eslint-disable global-require */
 import React from 'react';
 import ReactDOM from 'react-dom';

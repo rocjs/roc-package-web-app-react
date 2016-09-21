@@ -1,3 +1,4 @@
+/* globals window */
  /**
  * Universal Configuration Manager
  *
