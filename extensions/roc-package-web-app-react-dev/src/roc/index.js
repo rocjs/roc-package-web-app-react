@@ -57,7 +57,6 @@ export default {
     }],
     packages: [
         require.resolve('roc-package-web-app-dev'),
-        require.resolve('roc-package-web-app-react'),
     ],
     plugins: [
         require.resolve('roc-plugin-react-dev'),
