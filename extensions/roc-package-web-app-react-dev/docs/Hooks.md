@@ -16,9 +16,6 @@
   * [get-webpack-targets](#get-webpack-targets)
 * [roc-package-webpack-node-dev](#roc-package-webpack-node-dev)
   * [dev-process-created](#dev-process-created)
-* [roc-plugin-start](#roc-plugin-start)
-  * [get-potential-target](#get-potential-target)
-  * [register-runtime](#register-runtime)
 * [roc-plugin-style-css](#roc-plugin-style-css)
   * [add-style](#add-style)
 
@@ -28,13 +25,16 @@
 
 Expected to return new settings that should be merged with the existing ones.
 
+Makes it possible to modify the settings object before a command is started and after potential arguments from the command line and configuration file have been parsed. This is a good point to default to some value if no was given or modify something in the settings.
+
 __Initial value:__ _Nothing_  
 __Expected return value:__ `{}`
 
 #### Arguments
+
 | Name        | Description                                                                  | Type       | Required | Can be empty |
 | ----------- | ---------------------------------------------------------------------------- | ---------- | -------- | ------------ |
-| getSettings | A function that returns the settings after the context has been initialized. | `Function` | No       | Yes          |
+| getSettings | A function that returns the settings after the context has been initialized. | `Function` | No       |              |
 
 ## roc-abstract-package-base-dev
 
@@ -60,6 +60,7 @@ __Initial value:__ _Nothing_
 __Expected return value:__ `Function`
 
 #### Arguments
+
 | Name    | Description                                                                            | Type       | Required | Can be empty |
 | ------- | -------------------------------------------------------------------------------------- | ---------- | -------- | ------------ |
 | targets | The targets to build for, will be based on settings or a possible argument if defined. | `[String]` | Yes      | No           |
@@ -72,6 +73,7 @@ __Initial value:__ _Nothing_
 __Expected return value:__ _Nothing_
 
 #### Arguments
+
 | Name    | Description                                                                           | Type       | Required | Can be empty |
 | ------- | ------------------------------------------------------------------------------------- | ---------- | -------- | ------------ |
 | targets | The targets use for dev, will be based on settings or a possible argument if defined. | `[String]` | Yes      | No           |
@@ -86,6 +88,7 @@ __Initial value:__ _Nothing_
 __Expected return value:__ _Nothing_
 
 #### Arguments
+
 | Name | Description                              | Type      | Required | Can be empty |
 | ---- | ---------------------------------------- | --------- | -------- | ------------ |
 | port | The port of the server.                  | `Integer` | Yes      | No           |
@@ -101,6 +104,7 @@ __Initial value:__ `{}`
 __Expected return value:__ `{}`
 
 #### Arguments
+
 | Name   | Description                                                         | Type     | Required | Can be empty |
 | ------ | ------------------------------------------------------------------- | -------- | -------- | ------------ |
 | target | The target for which the Webpack configuration should be build for. | `String` | No       | Yes          |
@@ -129,30 +133,10 @@ __Initial value:__ _Nothing_
 __Expected return value:__ _Nothing_
 
 #### Arguments
+
 | Name          | Description                 | Type | Required | Can be empty |
 | ------------- | --------------------------- | ---- | -------- | ------------ |
-| serverProcess | The created server process. |      | No       | Yes          |
-
-## roc-plugin-start
-
-### get-potential-target
-
-Use to define for what target that it should try to find a resource for too start with.
-
-__Initial value:__ `"node"`  
-__Expected return value:__ `String`
-
-### register-runtime
-
-Can be used to modify the runtime before an application starts.
-
-__Initial value:__ _Nothing_  
-__Expected return value:__ _Nothing_
-
-#### Arguments
-| Name    | Description | Type      | Required | Can be empty |
-| ------- | ----------- | --------- | -------- | ------------ |
-| verbose |             | `Boolean` | No       | Yes          |
+| serverProcess | The created server process. |      | No       |              |
 
 ## roc-plugin-style-css
 

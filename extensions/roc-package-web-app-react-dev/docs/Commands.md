@@ -1,19 +1,20 @@
 # Commands for `roc-package-web-app-react-dev`
 
 ## General Information
-All commands can be called with some additional options as can be seen below.
+All commands can be called with some additional options illustrated in the table below.
 
 ### General options
-| Name            | Description                                                                                                   | Required |
-| --------------- | ------------------------------------------------------------------------------------------------------------- | -------- |
-| -c, --config    | Path to configuration file, will default to roc.config.js in current working directory.                       | No       |
-| -d, --directory | Path to working directory, will default to the current working directory. Can be either absolute or relative. | No       |
-| -h, --help      | Output usage information.                                                                                     | No       |
-| -V, --verbose   | Enable verbose mode.                                                                                          | No       |
-| -v, --version   | Output version number.                                                                                        | No       |
+
+| Name                  | Description                                    | Required |
+| --------------------- | ---------------------------------------------- | -------- |
+| -b, --better-feedback | Enables source-map-support and loud-rejection. | No       |
+| -c, --config          | Path to configuration file.                    | No       |
+| -d, --directory       | Path to working directory.                     | No       |
+| -h, --help            | Output usage information.                      | No       |
+| -V, --verbose         | Enable verbose mode.                           | No       |
+| -v, --version         | Output version number.                         | No       |
 
 ## Commands
-* [start](#start)
 * [development](#development)
     * [build](#build)
     * [clean](#clean)
@@ -21,24 +22,6 @@ All commands can be called with some additional options as can be seen below.
 * [meta](#meta)
     * [docs](#docs)
     * [list-settings](#list-settings)
-
-## start
-__Starts the current project.__
-
-```
-roc start [artifact]
-```
-
-### Arguments
-| Name     | Description                   | Default | Type       | Required | Can be empty |
-| -------- | ----------------------------- | ------- | ---------- | -------- | ------------ |
-| artifact | Path to an artifact to start. |         | `Filepath` | No       | Yes          |
-
-###  Settings options
-* [runtime](/Users/gustaf/VG/public/roc-package/roc-package-web-app-react/extensions/roc-package-web-app-react-dev/docs/Settings.md#runtime)
-
-###  Defined by extensions
-roc-plugin-start
 
 ## development
 __Project development__
@@ -57,6 +40,7 @@ roc development build [targets]
 ```
 
 #### Arguments
+
 | Name    | Description                                                                      | Default | Type       | Required | Can be empty |
 | ------- | -------------------------------------------------------------------------------- | ------- | ---------- | -------- | ------------ |
 | targets | The targets the project should be built for, overrides the settings if provided. |         | `[String]` | No       | Yes          |
@@ -88,6 +72,7 @@ roc development dev [targets]
 ```
 
 #### Arguments
+
 | Name    | Description                                                                      | Default | Type       | Required | Can be empty |
 | ------- | -------------------------------------------------------------------------------- | ------- | ---------- | -------- | ------------ |
 | targets | The targets the project should be built for, overrides the settings if provided. |         | `[String]` | No       | Yes          |
@@ -96,7 +81,6 @@ roc development dev [targets]
 _All groups are available._
 * [build](/Users/gustaf/VG/public/roc-package/roc-package-web-app-react/extensions/roc-package-web-app-react-dev/docs/Settings.md#build)
 * [dev](/Users/gustaf/VG/public/roc-package/roc-package-web-app-react/extensions/roc-package-web-app-react-dev/docs/Settings.md#dev)
-* [runtime](/Users/gustaf/VG/public/roc-package/roc-package-web-app-react/extensions/roc-package-web-app-react-dev/docs/Settings.md#runtime)
 
 ####  Defined by extensions
 roc-abstract-package-base-dev, roc-package-webpack-dev
@@ -118,13 +102,14 @@ roc meta docs
 ```
 
 #### Command options
-| Name            | Description | Default        | Type | Required | Can be empty |
-| --------------- | ----------- | -------------- | ---- | -------- | ------------ |
-| --hide-commands |             |                |      | No       | Yes          |
-| --html          |             | `false`        |      | No       | Yes          |
-| --markdown      |             | `true`         |      | No       | Yes          |
-| --mode          |             | `"github.com"` |      | No       | Yes          |
-| --output        |             | `"docs"`       |      | No       | Yes          |
+
+| Name       | Description                                                   | Default        | Type                                                              | Required | Can be empty |
+| ---------- | ------------------------------------------------------------- | -------------- | ----------------------------------------------------------------- | -------- | ------------ |
+| --html     | If HTML should be generated. (Not supported yet)              | `false`        | `Boolean`                                                         | No       |              |
+| --markdown | If markdown should be generated.                              | `true`         | `Boolean`                                                         | No       |              |
+| --mode     | The platform that is to be used, for link generation.         | `"github.com"` | `/github\.com|nodejs\.org|bitbucket\.org|ghost\.org|gitlab\.com/` | No       |              |
+| --output   | A directory to place the generated documentation inside of.   | `"docs"`       | `String`                                                          | No       | No           |
+| --project  | If the projects configuration and actions should be included. | `false`        | `Boolean`                                                         | No       |              |
 
 ####  Defined by extensions
 roc

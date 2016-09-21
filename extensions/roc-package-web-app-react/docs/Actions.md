@@ -14,6 +14,7 @@ Adds the base runtime. Will resolve node paths and enable source map support.
 
 __Connects to extension:__ `roc-plugin-start`  
 __Connects to hook:__ `register-runtime`  
+__Have post:__ No  
 
 ## roc-package-web-app
 
@@ -21,3 +22,4 @@ __Connects to hook:__ `register-runtime`
 
 __Connects to extension:__ `roc-plugin-start`  
 __Connects to hook:__ `register-runtime`  
+__Have post:__ No  
