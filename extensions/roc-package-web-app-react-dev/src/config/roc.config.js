@@ -4,11 +4,13 @@ export default {
             input: { web: undefined, node: undefined },
 
             redux: {
-                reducers: 'src/redux/reducers.js',
                 useDefaultReducers: true,
                 middlewares: 'src/redux/middlewares.js',
                 useDefaultMiddlewares: true,
             },
+
+            // Will be moved to redux above eventually, now kept here to make the template upgradable
+            reducers: 'src/redux/reducers.js',
 
             routes: 'src/routes/routes.js',
             useDefaultRoutes: true,

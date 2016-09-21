@@ -24,12 +24,12 @@ export default {
                     'documentation for more details.',
                 validator: required(isBoolean),
             },
+            reducers: {
+                description: 'The reducers to use if no entry file is given, will use default entry ' +
+                    'files internally.',
+                validator: notEmpty(isPath),
+            },
             redux: {
-                reducers: {
-                    description: 'The reducers to use if no entry file is given, will use default entry ' +
-                        'files internally.',
-                    validator: notEmpty(isPath),
-                },
                 useDefaultReducers: {
                     description: 'If Roc should use internally defined reducers, please look at the documentation ' +
                         ' for what reducers that are included.',
@@ -63,7 +63,7 @@ export default {
                 validator: required(isBoolean),
             },
             redux: {
-                devtools: {
+                devTools: {
                     enabled: {
                         description: 'If Redux Devtools should be enabled.',
                         validator: required(isBoolean),

@@ -25,9 +25,9 @@ export default ({
         );
     }
 
-    const hasReducers = !!(buildSettings.redux.reducers && fileExists(buildSettings.redux.reducers));
+    const hasReducers = !!(buildSettings.reducers && fileExists(buildSettings.reducers));
     if (hasReducers) {
-        const reducers = getAbsolutePath(buildSettings.redux.reducers);
+        const reducers = getAbsolutePath(buildSettings.reducers);
 
         newWebpackConfig.plugins.push(
             new webpack.DefinePlugin({
