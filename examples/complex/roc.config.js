@@ -11,8 +11,8 @@ module.exports = {
             koaMiddlewares: 'src/koa-middlewares.js',
             redux: {
                 middlewares: 'src/middlewares.js',
-                reducers: 'src/reducers.js',
             },
+            reducers: 'src/reducers.js',
             routes: 'src/routes.js',
             templateValues: 'src/template-values.js'
         }
