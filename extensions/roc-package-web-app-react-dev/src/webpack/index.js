@@ -3,7 +3,7 @@ import webpack from 'webpack';
 
 export default ({
     context: { config: { settings: { build: buildSettings } } },
-    previousValue: webpackConfig
+    previousValue: webpackConfig,
 }) => (target) => () => {
     const newWebpackConfig = { ...webpackConfig };
 
