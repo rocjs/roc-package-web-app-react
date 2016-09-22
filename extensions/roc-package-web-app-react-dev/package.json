@@ -1,7 +1,7 @@
 {
   "name": "roc-package-web-app-react-dev",
   "description": "Package for building React applications with Roc (Development)",
-  "version": "1.0.0-beta.0",
+  "version": "1.0.0-beta.1",
   "main": "lib/index.js",
   "scripts": {
     "lint": "eslint .",
@@ -20,9 +20,11 @@
   ],
   "repository": "https://github.com/rocjs/roc-package-web-app-react/tree/master/extensions/roc-package-web-app-react-dev",
   "author": "Verdens Gang AS",
-  "contributors": [{
-    "name": "Gustaf Dalemar"
-  }],
+  "contributors": [
+    {
+      "name": "Gustaf Dalemar"
+    }
+  ],
   "license": "MIT",
   "dependencies": {
     "roc": "1.0.0-rc.11",
