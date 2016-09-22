@@ -10,6 +10,7 @@
         "max-len": [2, 120, 4],
         "no-warning-comments": 1,
         "class-methods-use-this": 0,
+        "arrow-parens": ["off", "as-needed"],
 
         "generator-star-spacing": 0,
         "babel/generator-star-spacing": [2, { before: false, after: true }],

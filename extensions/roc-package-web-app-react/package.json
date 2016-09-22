@@ -51,8 +51,8 @@
   "devDependencies": {
     "babel-eslint": "~6.1.2",
     "babel-preset-react": "6.11.1",
-    "eslint": "~3.4.0",
-    "eslint-config-airbnb": "~11.0.0",
+    "eslint": "~3.5.0",
+    "eslint-config-airbnb": "~11.1.0",
     "eslint-plugin-babel": "~3.3.0",
     "eslint-plugin-import": "~1.14.0",
     "eslint-plugin-jsx-a11y": "2.2.1",
