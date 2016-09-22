@@ -5,7 +5,7 @@
 # (multiple files can be used, and are applied starting from current document location)
 root = true
 
-[{package.json}]
+[{package.json,.travis.yml}]
 indent_style = space
 indent_size = 2
 
