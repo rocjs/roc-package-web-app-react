@@ -1,9 +1,9 @@
 /* global REACT_ROUTER_ROUTES, REDUX_REDUCERS, HAS_REDUX_REDUCERS, HAS_REDUX_MIDDLEWARES, REDUX_MIDDLEWARES,
-    USE_DEFAULT_REDUX_REDUCERS, USE_DEFAULT_REDUX_MIDDLEWARES, USE_DEFAULT_REACT_ROUTER_ROUTES
+    USE_DEFAULT_REDUX_REDUCERS, USE_DEFAULT_REDUX_MIDDLEWARES, USE_DEFAULT_REACT_ROUTER_ROUTES, __WEB__
 */
 /* eslint-disable global-require */
 
-export default function getRoutesAndStore(web = false) {
+export default function getRoutesAndStore() {
     let store = null;
     let routes = null;
 
@@ -35,7 +35,7 @@ export default function getRoutesAndStore(web = false) {
         );
 
         let replaceReducers = null;
-        if (web) {
+        if (__WEB__) {
             replaceReducers = (replaceReducer) => {
                 module.hot.accept(require.resolve(REDUX_REDUCERS), () => {
                     replaceReducer({
