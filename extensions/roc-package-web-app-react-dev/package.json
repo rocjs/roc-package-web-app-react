@@ -27,10 +27,9 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "roc": "1.0.0-rc.11",
-    "roc-package-web-app-dev": "1.0.0-beta.2",
-    "roc-package-web-app-react": "1.0.0-beta.1",
-    "roc-plugin-react-dev": "1.0.0-beta.1",
+    "roc": "^1.0.0-rc.12",
+    "roc-package-web-app-dev": "^1.0.0-beta.3",
+    "roc-plugin-react-dev": "^1.0.0-beta.2",
     "react-a11y": "~0.3.3",
     "redux-devtools": "~3.2.0",
     "redux-devtools-dock-monitor": "~1.1.1",
