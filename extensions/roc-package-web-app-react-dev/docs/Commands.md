@@ -46,7 +46,7 @@ roc development build [targets]
 | targets | The targets the project should be built for, overrides the settings if provided. |         | `[String]` | No       | Yes          |
 
 ####  Settings options
-* [build](/Users/gustaf/VG/public/roc-package/roc-package-web-app-react/extensions/roc-package-web-app-react-dev/docs/Settings.md#build)
+* [build](/Users/gustaf/Desktop/test-hest/roc-package-web-app-react/extensions/roc-package-web-app-react-dev/docs/Settings.md#build)
 
 ####  Defined by extensions
 roc-abstract-package-base-dev, roc-package-webpack-dev
@@ -59,7 +59,7 @@ roc development clean
 ```
 
 ####  Settings options
-* [build](/Users/gustaf/VG/public/roc-package/roc-package-web-app-react/extensions/roc-package-web-app-react-dev/docs/Settings.md#build)
+* [build](/Users/gustaf/Desktop/test-hest/roc-package-web-app-react/extensions/roc-package-web-app-react-dev/docs/Settings.md#build)
 
 ####  Defined by extensions
 roc-abstract-package-base-dev
@@ -79,8 +79,8 @@ roc development dev [targets]
 
 ####  Settings options
 _All groups are available._
-* [build](/Users/gustaf/VG/public/roc-package/roc-package-web-app-react/extensions/roc-package-web-app-react-dev/docs/Settings.md#build)
-* [dev](/Users/gustaf/VG/public/roc-package/roc-package-web-app-react/extensions/roc-package-web-app-react-dev/docs/Settings.md#dev)
+* [build](/Users/gustaf/Desktop/test-hest/roc-package-web-app-react/extensions/roc-package-web-app-react-dev/docs/Settings.md#build)
+* [dev](/Users/gustaf/Desktop/test-hest/roc-package-web-app-react/extensions/roc-package-web-app-react-dev/docs/Settings.md#dev)
 
 ####  Defined by extensions
 roc-abstract-package-base-dev, roc-package-webpack-dev
