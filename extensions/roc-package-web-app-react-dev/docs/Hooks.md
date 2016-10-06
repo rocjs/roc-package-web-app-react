@@ -11,6 +11,7 @@
 * [roc-package-web-app-dev](#roc-package-web-app-dev)
   * [server-started](#server-started)
 * [roc-package-webpack-dev](#roc-package-webpack-dev)
+  * [babel-config](#babel-config)
   * [build-webpack](#build-webpack)
   * [create-watchers](#create-watchers)
   * [get-webpack-targets](#get-webpack-targets)
@@ -95,6 +96,19 @@ __Expected return value:__ _Nothing_
 | path | The path that the server has started on. | `String`  | Yes      | No           |
 
 ## roc-package-webpack-dev
+
+### babel-config
+
+Used to create a Babel configuration to be used in the Webpack build.
+
+__Initial value:__ `{}`  
+__Expected return value:__ `{}`
+
+#### Arguments
+
+| Name   | Description              | Type     | Required | Can be empty |
+| ------ | ------------------------ | -------- | -------- | ------------ |
+| target | The target that is used. | `String` | No       | Yes          |
 
 ### build-webpack
 

@@ -3,19 +3,9 @@
 The dependencies that are available in the project.
 
 ## Exported
-### [react](https://www.npmjs.com/package/react)
-__Version__: ~15.0.1  
-__Extension__: roc-plugin-react  
-__Custom resolve function__:  No  
-
 ### [react-a11y](https://www.npmjs.com/package/react-a11y)
 __Version__: ~0.3.3  
 __Extension__: roc-package-web-app-react-dev  
-__Custom resolve function__:  No  
-
-### [react-dom](https://www.npmjs.com/package/react-dom)
-__Version__: ~15.0.1  
-__Extension__: roc-plugin-react  
 __Custom resolve function__:  No  
 
 ### [redux-devtools](https://www.npmjs.com/package/redux-devtools)

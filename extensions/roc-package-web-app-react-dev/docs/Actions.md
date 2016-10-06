@@ -4,7 +4,10 @@
 * [roc-abstract-package-base-dev](#roc-abstract-package-base-dev)
   * [after-clean](#after-clean)
   * [before-clean](#before-clean)
+* [roc-plugin-babel](#roc-plugin-babel)
+  * [babel-config](#babel-config)
 * [roc-package-webpack-dev](#roc-package-webpack-dev)
+  * [babel-config](#babel-config-1)
   * [build-webpack](#build-webpack)
   * [run-build-command](#run-build-command)
   * [run-dev-command](#run-dev-command)
@@ -26,9 +29,9 @@
   * [build-webpack](#build-webpack-5)
   * [dev-process-created](#dev-process-created)
 * [roc-plugin-react-dev](#roc-plugin-react-dev)
-  * [build-webpack](#build-webpack-6)
+  * [babel-config](#babel-config-2)
 * [roc-package-web-app-react-dev](#roc-package-web-app-react-dev)
-  * [build-webpack](#build-webpack-7)
+  * [build-webpack](#build-webpack-6)
   * [update-settings](#update-settings)
 
 ## roc-abstract-package-base-dev
@@ -49,7 +52,23 @@ __Connects to extension:__ `roc-abstract-package-base-dev`
 __Connects to hook:__ `before-clean`  
 __Have post:__ No  
 
+## roc-plugin-babel
+
+### babel-config
+
+Base Babel configuration
+
+__Connects to extension:__ Not specified  
+__Connects to hook:__ `babel-config`  
+__Have post:__ Yes  
+
 ## roc-package-webpack-dev
+
+### babel-config
+
+__Connects to extension:__ `roc-package-webpack-dev`  
+__Connects to hook:__ `babel-config`  
+__Have post:__ No  
 
 ### build-webpack
 
@@ -175,12 +194,12 @@ __Have post:__ No
 
 ## roc-plugin-react-dev
 
-### build-webpack
+### babel-config
 
-Adds the needed Webpack configuration to be able to build and develop React code.
+Adds the needed Babel configuration to be able to build and develop React code.
 
 __Connects to extension:__ Not specified  
-__Connects to hook:__ `build-webpack`  
+__Connects to hook:__ `babel-config`  
 __Have post:__ No  
 
 ## roc-package-web-app-react-dev
