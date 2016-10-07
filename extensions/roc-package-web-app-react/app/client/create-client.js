@@ -4,7 +4,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Router from 'react-router/lib/Router';
 import useRouterHistory from 'react-router/lib/useRouterHistory';
-import { createHistory } from 'history';
+import createHistory from 'history/lib/createBrowserHistory';
 import { supportsHistory } from 'history/lib/DOMUtils';
 import debug from 'debug';
 import { RedialContext } from 'react-router-redial';
