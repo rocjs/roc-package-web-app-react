@@ -45,6 +45,10 @@ export default {
                     ' documentation for what middlewares that are included.',
                     validator: required(isBoolean),
                 },
+                sagas: {
+                    description: 'The Redux Saga to use as the root saga.',
+                    validator: notEmpty(isPath),
+                },
             },
             clientLoading: {
                 description: 'The React component to use on the first client load while fetching data, will only ' +

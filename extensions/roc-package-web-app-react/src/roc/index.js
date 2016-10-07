@@ -23,7 +23,7 @@ export default {
             'react-router-redux',
             'react-server-status',
             'redial',
-
+            'redux-saga',
             'react-router-redial',
             'redux',
             'redux-thunk',

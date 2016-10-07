@@ -18,6 +18,7 @@ export default function reactRouter({
     templateValues,
     rocPath,
     Header,
+    reduxSagas,
 }) {
     const rocConfig = getSettings();
 
@@ -70,6 +71,7 @@ export default function reactRouter({
                     koaState: this.state,
                     hasTemplateValues,
                     templateValues,
+                    reduxSagas,
                 });
 
                 if (redirect) {

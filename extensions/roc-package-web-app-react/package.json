@@ -42,6 +42,7 @@
     "react-server-status": "~1.0.0",
     "redial": "~0.4.1",
     "redux": "~3.4.0",
+    "redux-saga": "0.12.0",
     "redux-thunk": "~2.1.0",
     "roc": "^1.0.0-rc.12",
     "roc-package-web-app": "^1.0.0-beta.3",
