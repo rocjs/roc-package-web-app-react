@@ -10,7 +10,7 @@ export default function useReact(createServer) {
     let reduxSagas;
 
     if (HAS_REDUX_SAGA) {
-        reduxSagas = require(REDUX_SAGAS).default;
+        reduxSagas = require(REDUX_SAGAS).default; // eslint-disable-line
     }
 
     return useReactLib(createServer, {
