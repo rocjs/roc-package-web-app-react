@@ -31,6 +31,9 @@ export default {
             debug: {
                 client: 'roc:*',
             },
+            history: {
+                forceRefresh: undefined,
+            },
             configWhitelistProperty: 'DANGEROUSLY_EXPOSE_TO_CLIENT',
             fetch: {
                 server: ['fetch'],

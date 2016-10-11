@@ -1,4 +1,4 @@
-import { isString, isBoolean, isPath, isArray, isObject, notEmpty, required } from 'roc/validators';
+import { isString, isBoolean, isPath, isArray, isObject, notEmpty, required, oneOf, isFunction } from 'roc/validators';
 
 export default {
     settings: {
@@ -101,6 +101,12 @@ export default {
                         description: 'If defer hooks should be started at the same time as the blocking ones.',
                         validator: required(isBoolean),
                     },
+                },
+            },
+            history: {
+                forceRefresh: {
+                    description: 'Whether to force load from server rather than do single page navigation',
+                    validator: oneOf(isBoolean, isFunction),
                 },
             },
         },

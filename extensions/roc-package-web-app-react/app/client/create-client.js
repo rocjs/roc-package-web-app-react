@@ -75,8 +75,12 @@ export default function createClient({ createRoutes, createStore, mountNode }) {
     const render = () => {
         const node = document.getElementById(mountNode);
 
+        const forceRefreshSetting = rocConfig.runtime.history.forceRefresh;
         let history = useRouterHistory(createHistory)({
             basename,
+            forceRefresh: typeof forceRefreshSetting === 'function'
+                ? forceRefreshSetting()
+                : forceRefreshSetting,
         });
 
         let initialLoading = null;
