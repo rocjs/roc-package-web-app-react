@@ -1,4 +1,4 @@
-/* globals __DEV__, __WEB__, window */
+/* globals __DEV__, __WEB__, window, HAS_REDUX_SAGA */
 
 import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
 import { routerMiddleware, routerReducer } from 'react-router-redux';
@@ -20,6 +20,14 @@ export default function createReduxStore(reducers, ...middlewares) {
         (history, initialState) => {
             let finalCreateStore;
             const normalMiddlewares = [].concat(middlewares);
+            let sagaMiddleware;
+
+            // redux-saga
+            if (HAS_REDUX_SAGA) {
+                const createSagaMiddleware = require('redux-saga').default; // eslint-disable-line
+                sagaMiddleware = createSagaMiddleware();
+                normalMiddlewares.push(sagaMiddleware);
+            }
 
             // Add the react-router-redux middleware
             normalMiddlewares.push(routerMiddleware(history));
@@ -66,6 +74,10 @@ export default function createReduxStore(reducers, ...middlewares) {
                     });
                     store.replaceReducer(nextRootReducer);
                 });
+            }
+
+            if (sagaMiddleware) {
+                store.runSaga = sagaMiddleware.run;
             }
 
             return store;

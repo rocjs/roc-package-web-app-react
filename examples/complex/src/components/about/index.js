@@ -14,6 +14,7 @@ import { provideHooks } from 'redial';
     }),
     defer: (locals) => {
         locals.setProps({color: 'red'});
+        locals.dispatch({ type: 'CLICKED_ASYNC' });
     },
 })
 export default class About extends Component {

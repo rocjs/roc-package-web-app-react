@@ -7,6 +7,7 @@ export default {
                 useDefaultReducers: true,
                 middlewares: 'src/redux/middlewares.js',
                 useDefaultMiddlewares: true,
+                sagas: 'src/redux/sagas.js',
             },
 
             // Will be moved to redux above eventually, now kept here to make the template upgradable

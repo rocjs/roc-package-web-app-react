@@ -47,6 +47,17 @@ export default ({
         );
     }
 
+    const hasSagas = !!(buildSettings.redux.sagas && fileExists(buildSettings.redux.sagas));
+    if (hasSagas) {
+        const sagas = getAbsolutePath(buildSettings.redux.sagas);
+
+        newWebpackConfig.plugins.push(
+            new webpack.DefinePlugin({
+                REDUX_SAGAS: JSON.stringify(sagas),
+            })
+        );
+    }
+
     const hasClientLoading = !!(buildSettings.clientLoading && fileExists(buildSettings.clientLoading));
     if (hasClientLoading) {
         const clientLoading = getAbsolutePath(buildSettings.clientLoading);
@@ -77,6 +88,7 @@ export default ({
 
             HAS_REDUX_REDUCERS: hasReducers,
             HAS_REDUX_MIDDLEWARES: hasMiddlewares,
+            HAS_REDUX_SAGA: hasSagas,
             HAS_CLIENT_LOADING: hasClientLoading,
             HAS_TEMPLATE_VALUES: hasTemplateValues,
         })

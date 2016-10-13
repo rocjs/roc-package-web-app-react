@@ -79,6 +79,7 @@ export function reactRender({
     staticRender = false,
     hasTemplateValues,
     templateValues,
+    reduxSagas,
 }) {
     return new Promise((resolve) => {
         match({ history, routes: createRoutes(store), location: url },
@@ -109,10 +110,21 @@ export function reactRender({
 
                 const hooks = rocConfig.runtime.fetch.server;
 
+                let sagaPromise;
+                if (reduxSagas) {
+                    sagaPromise = store.runSaga(reduxSagas).done;
+                }
+
                 return triggerHooks({
                     renderProps,
                     hooks,
                     locals,
+                }).then((result) => {
+                    if (sagaPromise) {
+                        store.dispatch(require('redux-saga').END); // eslint-disable-line
+                        return sagaPromise.then(() => result);
+                    }
+                    return result;
                 }).then(({ redialMap, redialProps }) => {
                     let component = <RedialContext {...renderProps} redialMap={redialMap} />;
 
