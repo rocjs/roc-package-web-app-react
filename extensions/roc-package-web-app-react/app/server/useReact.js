@@ -3,6 +3,9 @@
 import useReactLib from 'roc-package-web-app-react/lib/app/server/useReact';
 
 import Header from '../shared/header';
+import getRoutesAndStore from '../default/get-routes-and-store';
+
+const { store, routes } = getRoutesAndStore();
 
 export default function useReact(createServer) {
     // eslint-disable-next-line
@@ -13,7 +16,7 @@ export default function useReact(createServer) {
         reduxSagas = require(REDUX_SAGAS).default; // eslint-disable-line
     }
 
-    return useReactLib(createServer, {
+    return ({ createRoutes = routes, createStore = store, ...rest } = {}) => useReactLib(createServer, {
         dev: __DEV__,
         dist: __DIST__,
         hasTemplateValues: HAS_TEMPLATE_VALUES,
@@ -21,5 +24,9 @@ export default function useReact(createServer) {
         rocPath: ROC_PATH,
         Header,
         reduxSagas,
+    })({
+        createRoutes,
+        createStore,
+        ...rest,
     });
 }
