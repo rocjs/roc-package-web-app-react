@@ -3,7 +3,7 @@
   "description": "Package for building React applications with Roc (Development)",
   "author": "VG",
   "license": "MIT",
-  "version": "1.0.0-alpha.12",
+  "version": "1.0.0-alpha.13",
   "main": "lib/index.js",
   "bin": "bin/index.js",
   "scripts": {
