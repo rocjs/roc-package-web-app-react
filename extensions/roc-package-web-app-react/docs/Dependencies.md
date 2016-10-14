@@ -63,6 +63,11 @@ __Version__: ~3.4.0
 __Extension__: roc-package-web-app-react  
 __Custom resolve function__:  No  
 
+### [redux-saga](https://www.npmjs.com/package/redux-saga)
+__Version__: 0.12.0  
+__Extension__: roc-package-web-app-react  
+__Custom resolve function__:  No  
+
 ### [redux-thunk](https://www.npmjs.com/package/redux-thunk)
 __Version__: ~2.1.0  
 __Extension__: roc-package-web-app-react  

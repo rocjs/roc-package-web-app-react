@@ -66,7 +66,7 @@ __Have post:__ Yes
 
 ### babel-config
 
-__Connects to extension:__ `roc-package-webpack-dev`  
+__Connects to extension:__ Not specified  
 __Connects to hook:__ `babel-config`  
 __Have post:__ No  
 

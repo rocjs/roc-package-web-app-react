@@ -119,9 +119,10 @@ __Expected return value:__ `{}`
 
 #### Arguments
 
-| Name   | Description                                                         | Type     | Required | Can be empty |
-| ------ | ------------------------------------------------------------------- | -------- | -------- | ------------ |
-| target | The target for which the Webpack configuration should be build for. | `String` | No       | Yes          |
+| Name        | Description                                                         | Type     | Required | Can be empty |
+| ----------- | ------------------------------------------------------------------- | -------- | -------- | ------------ |
+| target      | The target for which the Webpack configuration should be build for. | `String` | No       | Yes          |
+| babelConfig | The Babel configuration that should be used for the Webpack build.  | `{}`     | No       | Yes          |
 
 ### create-watchers
 
