@@ -5,10 +5,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Router from 'react-router/lib/Router';
 import useRouterHistory from 'react-router/lib/useRouterHistory';
+import applyRouterMiddleware from 'react-router/lib/applyRouterMiddleware';
 import createHistory from 'history/lib/createBrowserHistory';
 import { supportsHistory } from 'history/lib/DOMUtils';
 import debug from 'debug';
-import { RedialContext } from 'react-router-redial';
+import { useRedial } from 'react-router-redial';
+import useScroll from 'react-router-scroll/lib/useScroll';
 
 import { rocConfig } from '../shared/universal-config';
 
@@ -84,7 +86,7 @@ export default function createClient({ createRoutes, createStore, mountNode }) {
                 : forceRefreshSetting,
         });
 
-        let initialLoading = null;
+        let initialLoading;
         if (HAS_CLIENT_LOADING) {
             initialLoading = require(ROC_CLIENT_LOADING).default;
         }
@@ -162,15 +164,15 @@ export default function createClient({ createRoutes, createStore, mountNode }) {
             <Router
                 history={history}
                 routes={routes}
-                render={(props) => (
-                    <RedialContext
-                        {...props}
-                        locals={locals}
-                        blocking={rocConfig.runtime.fetch.client.blocking}
-                        defer={rocConfig.runtime.fetch.client.defer}
-                        parallel={rocConfig.runtime.fetch.client.parallel}
-                        initialLoading={initialLoading}
-                    />
+                render={applyRouterMiddleware(
+                    useScroll(),
+                    useRedial({
+                        locals,
+                        initialLoading,
+                        blocking: rocConfig.runtime.fetch.client.blocking,
+                        defer: rocConfig.runtime.fetch.client.defer,
+                        parallel: rocConfig.runtime.fetch.client.parallel,
+                    })
                 )}
             />
         );

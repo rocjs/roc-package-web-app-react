@@ -5,10 +5,10 @@ import serialize from 'serialize-javascript';
 import PrettyError from 'pretty-error';
 import React from 'react';
 import { renderToString, renderToStaticMarkup } from 'react-dom/server';
-import { match } from 'react-router';
+import { match, applyRouterMiddleware } from 'react-router';
 import { Provider } from 'react-redux';
 import Helmet from 'react-helmet';
-import { triggerHooks, RedialContext } from 'react-router-redial';
+import { triggerHooks, useRedial } from 'react-router-redial';
 import { getAbsolutePath, getSettings } from 'roc';
 import ServerStatus from 'react-server-status';
 
@@ -126,7 +126,7 @@ export function reactRender({
                     }
                     return result;
                 }).then(({ redialMap, redialProps }) => {
-                    let component = <RedialContext {...renderProps} redialMap={redialMap} />;
+                    let component = applyRouterMiddleware(useRedial({ redialMap }))(renderProps);
 
                     if (store) {
                         component = (
