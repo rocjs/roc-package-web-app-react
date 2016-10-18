@@ -84,18 +84,18 @@ export default {
             fetch: {
                 server: {
                     description: 'What redial hooks that should run on the server and in what order.',
-                    validator: required(isArray(isString)),
+                    validator: required(isArray(oneOf(isString, isArray(isString)))),
                 },
                 client: {
                     blocking: {
                         description: 'What redial hooks that should run on the client that blocks route transitions ' +
                             'and in what order.',
-                        validator: required(isArray(isString)),
+                        validator: required(isArray(oneOf(isString, isArray(isString)))),
                     },
                     defer: {
                         description: 'What redial hooks that should run on the client that should not block route ' +
                             'transitions and in what order.',
-                        validator: required(isArray(isString)),
+                        validator: required(isArray(oneOf(isString, isArray(isString)))),
                     },
                     parallel: {
                         description: 'If defer hooks should be started at the same time as the blocking ones.',
