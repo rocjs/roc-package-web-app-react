@@ -38,8 +38,8 @@ export default {
             fetch: {
                 server: ['fetch'],
                 client: {
-                    blocking: ['fetch'],
-                    defer: ['defer'],
+                    beforeTransition: ['fetch'],
+                    afterTransition: ['defer'],
                     parallel: false,
                 },
             },

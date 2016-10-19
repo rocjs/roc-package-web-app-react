@@ -87,12 +87,12 @@ export default {
                     validator: required(isArray(oneOf(isString, isArray(isString)))),
                 },
                 client: {
-                    blocking: {
+                    beforeTransition: {
                         description: 'What redial hooks that should run on the client that blocks route transitions ' +
                             'and in what order.',
                         validator: required(isArray(oneOf(isString, isArray(isString)))),
                     },
-                    defer: {
+                    afterTransition: {
                         description: 'What redial hooks that should run on the client that should not block route ' +
                             'transitions and in what order.',
                         validator: required(isArray(oneOf(isString, isArray(isString)))),
