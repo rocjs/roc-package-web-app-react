@@ -1,3 +1,5 @@
+import path from 'path';
+
 import { lazyFunctionRequire, generateDependencies } from 'roc';
 
 import config from '../config/roc.config.js';
@@ -26,29 +28,33 @@ export default {
     }, {
         extension: 'roc',
         hook: 'update-settings',
-        action: () => (readSettings) => () => {
+        action: ({ context: { usedExtensions } }) => (readSettings) => () => {
             const settings = readSettings();
             const newSettings = { build: { input: {} } };
 
-            if (!settings.build.input.web) {
-                newSettings.build.input.web = require.resolve('roc-package-web-app-react/app/default/client');
-            }
+            const rocPackageWebAppReact = usedExtensions.find(({ name }) => name === 'roc-package-web-app-react');
 
-            if (!settings.build.input.node) {
-                newSettings.build.input.node = require.resolve('roc-package-web-app-react/app/default/server');
-            }
+            if (rocPackageWebAppReact) {
+                if (!settings.build.input.web) {
+                    newSettings.build.input.web = path.join(rocPackageWebAppReact.path, 'app/default/client.js');
+                }
 
-            if (settings.build.resources.length > 0) {
-                const resources = settings.build.resources.map((resource) => {
-                    const matches = /^roc-package-web-app-react\/(.*)/.exec(resource);
-                    if (matches && matches[1]) {
-                        return require.resolve(`roc-package-web-app-react/${matches[1]}`);
-                    }
+                if (!settings.build.input.node) {
+                    newSettings.build.input.node = path.join(rocPackageWebAppReact.path, 'app/default/server.js');
+                }
 
-                    return resource;
-                });
+                if (settings.build.resources.length > 0) {
+                    const resources = settings.build.resources.map((resource) => {
+                        const matches = /^roc-package-web-app-react\/(.*)/.exec(resource);
+                        if (matches && matches[1]) {
+                            return path.join(rocPackageWebAppReact.path, `/${matches[1]}`);
+                        }
 
-                newSettings.build.resources = resources;
+                        return resource;
+                    });
+
+                    newSettings.build.resources = resources;
+                }
             }
 
             // If a change has been done we will run the hook
