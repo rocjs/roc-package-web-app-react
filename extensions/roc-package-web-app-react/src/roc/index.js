@@ -25,6 +25,7 @@ export default {
             'redial',
             'redux-saga',
             'react-router-redial',
+            'react-router-scroll',
             'redux',
             'redux-thunk',
             'roc-package-web-app',
