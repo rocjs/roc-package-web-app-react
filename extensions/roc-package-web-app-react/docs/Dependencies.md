@@ -14,12 +14,12 @@ __Extension__: roc-package-web-app-react
 __Custom resolve function__:  No  
 
 ### [react](https://www.npmjs.com/package/react)
-__Version__: ~15.0.1  
+__Version__: ^15.3.2  
 __Extension__: roc-plugin-react  
 __Custom resolve function__:  No  
 
 ### [react-dom](https://www.npmjs.com/package/react-dom)
-__Version__: ~15.0.1  
+__Version__: ^15.3.2  
 __Extension__: roc-plugin-react  
 __Custom resolve function__:  No  
 
@@ -34,17 +34,22 @@ __Extension__: roc-package-web-app-react
 __Custom resolve function__:  No  
 
 ### [react-router](https://www.npmjs.com/package/react-router)
-__Version__: ~2.3.0  
+__Version__: ~2.8.1  
 __Extension__: roc-package-web-app-react  
 __Custom resolve function__:  No  
 
 ### [react-router-redial](https://www.npmjs.com/package/react-router-redial)
-__Version__: ~0.2.2  
+__Version__: ~0.3.0  
 __Extension__: roc-package-web-app-react  
 __Custom resolve function__:  No  
 
 ### [react-router-redux](https://www.npmjs.com/package/react-router-redux)
 __Version__: ~4.0.2  
+__Extension__: roc-package-web-app-react  
+__Custom resolve function__:  No  
+
+### [react-router-scroll](https://www.npmjs.com/package/react-router-scroll)
+__Version__: ~0.3.2  
 __Extension__: roc-package-web-app-react  
 __Custom resolve function__:  No  
 
@@ -54,7 +59,7 @@ __Extension__: roc-package-web-app-react
 __Custom resolve function__:  No  
 
 ### [redial](https://www.npmjs.com/package/redial)
-__Version__: ~0.4.1  
+__Version__: ~0.5.0  
 __Extension__: roc-package-web-app-react  
 __Custom resolve function__:  No  
 

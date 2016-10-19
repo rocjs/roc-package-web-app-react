@@ -41,9 +41,9 @@ roc development build [targets]
 
 #### Arguments
 
-| Name    | Description                                                                      | Default | Type       | Required | Can be empty |
-| ------- | -------------------------------------------------------------------------------- | ------- | ---------- | -------- | ------------ |
-| targets | The targets the project should be built for, overrides the settings if provided. |         | `[String]` | No       | Yes          |
+| Name    | Description                                                                      | Default | Type            | Required | Can be empty |
+| ------- | -------------------------------------------------------------------------------- | ------- | --------------- | -------- | ------------ |
+| targets | The targets the project should be built for, overrides the settings if provided. |         | `Array(String)` | No       | Yes          |
 
 ####  Settings options
 * [build](docs/Settings.md#build)
@@ -73,9 +73,9 @@ roc development dev [targets]
 
 #### Arguments
 
-| Name    | Description                                                                      | Default | Type       | Required | Can be empty |
-| ------- | -------------------------------------------------------------------------------- | ------- | ---------- | -------- | ------------ |
-| targets | The targets the project should be built for, overrides the settings if provided. |         | `[String]` | No       | Yes          |
+| Name    | Description                                                                      | Default | Type            | Required | Can be empty |
+| ------- | -------------------------------------------------------------------------------- | ------- | --------------- | -------- | ------------ |
+| targets | The targets the project should be built for, overrides the settings if provided. |         | `Array(String)` | No       | Yes          |
 
 ####  Settings options
 _All groups are available._
