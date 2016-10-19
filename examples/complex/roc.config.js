@@ -4,7 +4,7 @@ module.exports = {
             applicationName: 'My Roc Application',
             serve: ['files', 'build/client'],
             fetch: {
-                server: ['fetch', 'defer']
+                server: [['fetch', 'defer']]
             }
         },
         build: {

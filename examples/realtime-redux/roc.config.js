@@ -3,6 +3,10 @@ module.exports = {
         runtime: {
             applicationName: 'Stock live demo',
             configWhitelistProperty: 'stock'
-        }
-    }
+        },
+        build: {
+            routes: 'routes.js',
+            reducers: 'reducers.js',
+        },
+    },
 };
