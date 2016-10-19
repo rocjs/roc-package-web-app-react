@@ -169,8 +169,8 @@ export default function createClient({ createRoutes, createStore, mountNode }) {
                     useRedial({
                         locals,
                         initialLoading,
-                        blocking: rocConfig.runtime.fetch.client.blocking,
-                        defer: rocConfig.runtime.fetch.client.defer,
+                        beforeTransition: rocConfig.runtime.fetch.client.beforeTransition,
+                        afterTransition: rocConfig.runtime.fetch.client.afterTransition,
                         parallel: rocConfig.runtime.fetch.client.parallel,
                     })
                 )}
