@@ -13,6 +13,11 @@ export default {
             // Will be moved to redux above eventually, now kept here to make the template upgradable
             reducers: 'src/redux/reducers.js',
 
+            i18n: {
+                usePolyfill: false,
+                locales: [],
+            },
+
             routes: 'src/routes/routes.js',
             useDefaultRoutes: true,
 

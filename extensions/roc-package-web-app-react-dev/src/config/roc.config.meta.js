@@ -50,6 +50,15 @@ export default {
                     validator: notEmpty(isPath),
                 },
             },
+            i18n: {
+                usePolyfill: {
+                    description: 'If Roc should load Intl polyfill and locales on client and server.',
+                },
+                locales: {
+                    description: 'List of locales polyfills to load on the client - these are listed in the ' +
+                                 'intl package (see node_modules/intl/locale-date/jsonp/.',
+                },
+            },
             clientLoading: {
                 description: 'The React component to use on the first client load while fetching data, will only ' +
                 'be used if some blocking hooks are defined.',

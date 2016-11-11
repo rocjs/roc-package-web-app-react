@@ -1,5 +1,6 @@
 import { getAbsolutePath, fileExists } from 'roc';
 import webpack from 'webpack';
+import ContextReplacementPlugin from 'webpack/lib/ContextReplacementPlugin';
 
 export default ({
     context: { config: { settings: { build: buildSettings } } },
@@ -80,11 +81,27 @@ export default ({
         );
     }
 
+    const hasI18nLocales = !!(buildSettings.i18n.locales && buildSettings.i18n.locales.length);
+    if (hasI18nLocales) {
+        const locales = buildSettings.i18n.locales;
+
+        newWebpackConfig.plugins.push(
+            new webpack.DefinePlugin({
+                I18N_LOCALES: JSON.stringify(locales),
+            }),
+            new ContextReplacementPlugin(
+                new RegExp('intl/locale-data/jsonp$'),
+                new RegExp(`^\.\/(${locales.join('|')})$`)
+            )
+        );
+    }
+
     newWebpackConfig.plugins.push(
         new webpack.DefinePlugin({
             USE_DEFAULT_REDUX_REDUCERS: buildSettings.redux.useDefaultReducers,
             USE_DEFAULT_REDUX_MIDDLEWARES: buildSettings.redux.useDefaultMiddlewares,
             USE_DEFAULT_REACT_ROUTER_ROUTES: buildSettings.useDefaultRoutes,
+            USE_I18N_POLYFILL: buildSettings.i18n.usePolyfill,
 
             HAS_REDUX_REDUCERS: hasReducers,
             HAS_REDUX_MIDDLEWARES: hasMiddlewares,

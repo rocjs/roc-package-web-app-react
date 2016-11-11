@@ -1,5 +1,5 @@
 /* global __DEV__, HAS_CLIENT_LOADING, ROC_CLIENT_LOADING, ROC_PATH, HAS_REDUX_REDUCERS, document, window,
- HAS_REDUX_SAGA, REDUX_SAGAS */
+ HAS_REDUX_SAGA, REDUX_SAGAS, I18N_LOCALES, USE_I18N_POLYFILL */
 /* eslint-disable global-require */
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -186,5 +186,24 @@ export default function createClient({ createRoutes, createStore, mountNode }) {
         }
     };
 
-    render();
+    if (USE_I18N_POLYFILL) {
+        require.ensure([], require => {
+            const areIntlLocalesSupported = require('intl-locales-supported');
+
+            if (!global.Intl) {
+                require('intl');
+            }
+
+            I18N_LOCALES.forEach(locale => {
+                if (!areIntlLocalesSupported(locale)) {
+                    // eslint-disable-next-line
+                    require('intl/locale-data/jsonp/' + locale);
+                }
+            });
+
+            render();
+        });
+    } else {
+        render();
+    }
 }

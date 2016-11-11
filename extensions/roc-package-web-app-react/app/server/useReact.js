@@ -1,4 +1,5 @@
-/* global __DIST__, __DEV__ HAS_TEMPLATE_VALUES, TEMPLATE_VALUES, ROC_PATH, HAS_REDUX_SAGA, REDUX_SAGAS */
+/* global __DIST__, __DEV__ HAS_TEMPLATE_VALUES, TEMPLATE_VALUES, ROC_PATH, HAS_REDUX_SAGA, REDUX_SAGAS,
+ I18N_LOCALES, USE_I18N_POLYFILL */
 
 import useReactLib from 'roc-package-web-app-react/lib/app/server/useReact';
 
@@ -14,6 +15,24 @@ export default function useReact(createServer) {
 
     if (HAS_REDUX_SAGA) {
         reduxSagas = require(REDUX_SAGAS).default; // eslint-disable-line
+    }
+
+    if (USE_I18N_POLYFILL) {
+        // eslint-disable-next-line
+        const areIntlLocalesSupported = require('intl-locales-supported');
+
+        if (global.Intl) {
+            if (!areIntlLocalesSupported(I18N_LOCALES)) {
+                // eslint-disable-next-line
+                const IntlPolyfill = require('intl');
+
+                Intl.NumberFormat = IntlPolyfill.NumberFormat;
+                Intl.DateTimeFormat = IntlPolyfill.DateTimeFormat;
+            }
+        } else {
+            // eslint-disable-next-line
+            global.Intl = require('intl');
+        }
     }
 
     return ({ createRoutes = routes, createStore = store, ...rest } = {}) => useReactLib(createServer, {
