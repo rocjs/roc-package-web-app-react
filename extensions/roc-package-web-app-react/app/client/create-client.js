@@ -194,14 +194,15 @@ export default function createClient({ createRoutes, createStore, mountNode }) {
                 require('intl');
             }
 
-            I18N_LOCALES.forEach(locale => {
-                if (!areIntlLocalesSupported(locale)) {
-                    // eslint-disable-next-line
-                    require('intl/locale-data/jsonp/' + locale);
-                }
+            // eslint-disable-next-line
+            require.ensure([], require => {
+                I18N_LOCALES.forEach(locale => {
+                    if (!areIntlLocalesSupported(locale)) {
+                        // eslint-disable-next-line
+                        require('intl/locale-data/jsonp/' + locale);
+                    }
+                });
             });
-
-            render();
         });
     } else {
         render();
