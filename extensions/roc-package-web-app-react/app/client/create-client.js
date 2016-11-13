@@ -187,22 +187,24 @@ export default function createClient({ createRoutes, createStore, mountNode }) {
     };
 
     if (USE_I18N_POLYFILL) {
-        require.ensure([], require => {
+        const intlLoader = !global.Intl ?
+            require('bundle?name=intl!intl') :
+            (cb) => cb();
+
+
+        intlLoader(() => {
             const areIntlLocalesSupported = require('intl-locales-supported');
 
-            if (!global.Intl) {
-                require('intl');
-            }
+            const localeModules = I18N_LOCALES.map(locale => new Promise((resolve) => {
+                if (!areIntlLocalesSupported(locale)) {
+                    // eslint-disable-next-line
+                    require('bundle!intl/locale-data/jsonp/' + locale)(resolve);
+                } else {
+                    resolve();
+                }
+            }));
 
-            // eslint-disable-next-line
-            require.ensure([], require => {
-                I18N_LOCALES.forEach(locale => {
-                    if (!areIntlLocalesSupported(locale)) {
-                        // eslint-disable-next-line
-                        require('intl/locale-data/jsonp/' + locale);
-                    }
-                });
-            });
+            Promise.all(localeModules).then(render);
         });
     } else {
         render();
