@@ -21,17 +21,12 @@ export default function useReact(createServer) {
         // eslint-disable-next-line
         const areIntlLocalesSupported = require('intl-locales-supported');
 
-        if (global.Intl) {
-            if (!areIntlLocalesSupported(I18N_LOCALES)) {
-                // eslint-disable-next-line
-                const IntlPolyfill = require('intl');
-
-                Intl.NumberFormat = IntlPolyfill.NumberFormat;
-                Intl.DateTimeFormat = IntlPolyfill.DateTimeFormat;
-            }
-        } else {
+        if (!areIntlLocalesSupported(I18N_LOCALES)) {
             // eslint-disable-next-line
-            global.Intl = require('intl');
+            const IntlPolyfill = require('intl');
+
+            Intl.NumberFormat = IntlPolyfill.NumberFormat;
+            Intl.DateTimeFormat = IntlPolyfill.DateTimeFormat;
         }
     }
 
