@@ -1,3 +1,5 @@
+import { join } from 'path';
+
 import { getAbsolutePath, fileExists } from 'roc';
 import webpack from 'webpack';
 import ContextReplacementPlugin from 'webpack/lib/ContextReplacementPlugin';
@@ -90,7 +92,7 @@ export default ({
                 I18N_LOCALES: JSON.stringify(locales),
             }),
             new ContextReplacementPlugin(
-                new RegExp('intl/locale-data/jsonp$'),
+                /intl[\/\\]locale-data[\/\\]jsonp$/,
                 new RegExp(`^\.\/(${locales.join('|')})$`)
             )
         );
@@ -110,6 +112,8 @@ export default ({
             HAS_TEMPLATE_VALUES: hasTemplateValues,
         })
     );
+
+    newWebpackConfig.resolveLoader.root.push(join(__dirname, '..', '..', 'node_modules'));
 
     return newWebpackConfig;
 };
