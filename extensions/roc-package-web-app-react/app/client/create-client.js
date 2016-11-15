@@ -191,6 +191,9 @@ export default function createClient({ createRoutes, createStore, mountNode }) {
             require('bundle?name=intl!intl') :
             (cb) => cb();
 
+        // intl's locale data identifies locales by the shortest ISO 639 language code.
+        // https://tools.ietf.org/html/rfc5646
+        const language = (locale) => /^([^-]+)/.exec(locale)[0];
 
         intlLoader(() => {
             const areIntlLocalesSupported = require('intl-locales-supported');
@@ -198,7 +201,7 @@ export default function createClient({ createRoutes, createStore, mountNode }) {
             const localeModules = I18N_LOCALES.map(locale => new Promise((resolve) => {
                 if (!areIntlLocalesSupported(locale)) {
                     // eslint-disable-next-line
-                    require('bundle!intl/locale-data/jsonp/' + locale)(resolve);
+                    require('bundle!intl/locale-data/jsonp/' + language(locale))(resolve);
                 } else {
                     resolve();
                 }
