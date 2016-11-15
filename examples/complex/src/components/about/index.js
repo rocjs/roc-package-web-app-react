@@ -27,6 +27,7 @@ export default class About extends Component {
                 <h1 style={{color: this.props.color}}>About us</h1>
                 <button onClick={ () => this.props.reload() }>Reload</button>
                 <pre>{ JSON.stringify(props, null, 2) }</pre>
+                <pre>{ JSON.stringify(location, null, 2)}</pre>
             </div>
         );
     }

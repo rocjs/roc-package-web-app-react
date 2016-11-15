@@ -13,6 +13,16 @@ __Version__: ^2.1.0
 __Extension__: roc-package-web-app-react  
 __Custom resolve function__:  No  
 
+### [intl](https://www.npmjs.com/package/intl)
+__Version__: ^1.2.5  
+__Extension__: roc-package-web-app-react  
+__Custom resolve function__:  No  
+
+### [intl-locales-supported](https://www.npmjs.com/package/intl-locales-supported)
+__Version__: ^1.0.0  
+__Extension__: roc-package-web-app-react  
+__Custom resolve function__:  No  
+
 ### [react](https://www.npmjs.com/package/react)
 __Version__: ^15.3.2  
 __Extension__: roc-plugin-react  
@@ -117,9 +127,6 @@ __Version__: ~1.3.0
 
 #### [koa-lowercase-path](https://www.npmjs.com/package/koa-lowercase-path)
 __Version__: ~1.0.0  
-
-#### [koa-mount](https://www.npmjs.com/package/koa-mount)
-__Version__: ~1.3.0  
 
 #### [koa-normalize-path](https://www.npmjs.com/package/koa-normalize-path)
 __Version__: ~1.0.0  

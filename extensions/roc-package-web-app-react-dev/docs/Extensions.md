@@ -12,13 +12,13 @@ It is therefore _never to be included_ as a direct dependency in app or componen
 ### roc-package-webpack-dev — [v1.0.0-beta.4](https://www.npmjs.com/package/roc-package-webpack-dev)
 Package providing module support.
 
-### roc-package-webpack-node-dev — [v1.0.0-beta.2](https://www.npmjs.com/package/roc-package-webpack-node-dev)
+### roc-package-webpack-node-dev — [v1.0.0-beta.3](https://www.npmjs.com/package/roc-package-webpack-node-dev)
 Package providing Node support through Webpack for Roc (Development)
 
 ### roc-package-webpack-web-dev — [v1.0.0-beta.3](https://www.npmjs.com/package/roc-package-webpack-web-dev)
 Package providing browser support through Webpack for Roc (Development)
 
-### roc-package-web-app-dev — [v1.0.0-beta.5](https://www.npmjs.com/package/roc-package-web-app-dev)
+### roc-package-web-app-dev — [v1.0.0-beta.6](https://www.npmjs.com/package/roc-package-web-app-dev)
 Package for building web applications using Roc (Development)
 
 ## Plugins

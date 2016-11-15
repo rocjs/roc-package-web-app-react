@@ -17,6 +17,7 @@
   * [get-webpack-targets](#get-webpack-targets)
 * [roc-package-webpack-node-dev](#roc-package-webpack-node-dev)
   * [dev-process-created](#dev-process-created)
+  * [dev-process-stopping](#dev-process-stopping)
 * [roc-plugin-style-css](#roc-plugin-style-css)
   * [add-style](#add-style)
 
@@ -152,6 +153,19 @@ __Expected return value:__ _Nothing_
 | Name          | Description                 | Type | Required | Can be empty |
 | ------------- | --------------------------- | ---- | -------- | ------------ |
 | serverProcess | The created server process. |      | No       |              |
+
+### dev-process-stopping
+
+Used to react before the development server is stopped.
+
+__Initial value:__ _Nothing_  
+__Expected return value:__ _Nothing_
+
+#### Arguments
+
+| Name          | Description                               | Type | Required | Can be empty |
+| ------------- | ----------------------------------------- | ---- | -------- | ------------ |
+| serverProcess | The server process that is being stopped. |      | No       |              |
 
 ## roc-plugin-style-css
 
