@@ -1,5 +1,5 @@
 /* global __DEV__, HAS_CLIENT_LOADING, ROC_CLIENT_LOADING, ROC_PATH, HAS_REDUX_REDUCERS, document, window,
- HAS_REDUX_SAGA, REDUX_SAGAS */
+ HAS_REDUX_SAGA, REDUX_SAGAS, I18N_LOCALES, USE_I18N_POLYFILL */
 /* eslint-disable global-require */
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -186,5 +186,30 @@ export default function createClient({ createRoutes, createStore, mountNode }) {
         }
     };
 
-    render();
+    if (USE_I18N_POLYFILL) {
+        const intlLoader = !global.Intl ?
+            require('bundle?name=intl!intl') :
+            (cb) => cb();
+
+        // intl's locale data identifies locales by the shortest ISO 639 language code.
+        // https://tools.ietf.org/html/rfc5646
+        const language = (locale) => /^([^-]+)/.exec(locale)[0];
+
+        intlLoader(() => {
+            const areIntlLocalesSupported = require('intl-locales-supported');
+
+            const localeModules = I18N_LOCALES.map(locale => new Promise((resolve) => {
+                if (!areIntlLocalesSupported(locale)) {
+                    // eslint-disable-next-line
+                    require('bundle!intl/locale-data/jsonp/' + language(locale))(resolve);
+                } else {
+                    resolve();
+                }
+            }));
+
+            Promise.all(localeModules).then(render);
+        });
+    } else {
+        render();
+    }
 }

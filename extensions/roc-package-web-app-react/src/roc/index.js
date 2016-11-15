@@ -17,6 +17,8 @@ export default {
     dependencies: {
         exports: generateDependencies(packageJSON, [
             'history',
+            'intl',
+            'intl-locales-supported',
             'react-helmet',
             'react-redux',
             'react-router',
