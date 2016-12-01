@@ -82,6 +82,12 @@ export function reactRender({
     reduxSagas,
 }) {
     return new Promise((resolve) => {
+        let currentLocation = {};
+
+        history.listen((location) => {
+            currentLocation = location;
+        });
+
         match({ history, routes: createRoutes(store), location: url },
             (error, redirect, renderProps) => {
                 if (redirect) {
@@ -126,6 +132,15 @@ export function reactRender({
                     }
                     return result;
                 }).then(({ redialMap, redialProps }) => {
+                    const currentUrl = currentLocation.pathname + currentLocation.search;
+
+                    if (currentUrl !== url) {
+                        log(`Redirect request to ${currentUrl}`);
+                        return resolve({
+                            redirect: currentUrl,
+                        });
+                    }
+
                     let component = applyRouterMiddleware(useRedial({ redialMap }))(renderProps);
 
                     if (store) {
