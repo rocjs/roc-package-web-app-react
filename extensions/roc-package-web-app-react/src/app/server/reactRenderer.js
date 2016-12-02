@@ -132,12 +132,14 @@ export function reactRender({
                     }
                     return result;
                 }).then(({ redialMap, redialProps }) => {
-                    const currentUrl = currentLocation.pathname + currentLocation.search;
+                    const currentUrl = `${currentLocation.pathname}${currentLocation.search}`;
 
                     if (currentUrl !== url) {
-                        log(`Redirect request to ${currentUrl}`);
+                        const base = currentLocation.basename ? currentLocation.basename : '';
+
+                        log(`Redirect request to ${base}${currentUrl} due to history location modification`);
                         return resolve({
-                            redirect: currentUrl,
+                            redirect: `${base}${currentUrl}`,
                         });
                     }
 
