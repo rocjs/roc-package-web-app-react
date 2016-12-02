@@ -91,9 +91,12 @@ export function reactRender({
         match({ history, routes: createRoutes(store), location: url },
             (error, redirect, renderProps) => {
                 if (redirect) {
-                    log(`Redirect request to ${redirect.pathname + redirect.search}`);
+                    const base = redirect.basename ? redirect.basename : '';
+                    const redirectUrl = `${base}${redirect.pathname}${redirect.search}`;
+                    log(`Redirect request to ${redirectUrl} due to React Router`);
+
                     return resolve({
-                        redirect: redirect.pathname + redirect.search,
+                        redirect: redirectUrl,
                     });
                 } else if (error) {
                     log('Router error', pretty.render(error));
@@ -135,15 +138,18 @@ export function reactRender({
                     }
                     return result;
                 }).then(({ redialMap, redialProps }) => {
-                    const currentUrl = `${currentLocation.pathname}${currentLocation.search}`;
+                    if (Object.keys(currentLocation).length > 0) {
+                        const currentUrl = `${currentLocation.pathname}${currentLocation.search}`;
 
-                    if (currentUrl !== url) {
-                        const base = currentLocation.basename ? currentLocation.basename : '';
+                        if (currentUrl !== url) {
+                            const base = currentLocation.basename ? currentLocation.basename : '';
+                            const redirectUrl = `${base}${currentUrl}`;
 
-                        log(`Redirect request to ${base}${currentUrl} due to history location modification`);
-                        return resolve({
-                            redirect: `${base}${currentUrl}`,
-                        });
+                            log(`Redirect request to ${redirectUrl} due to history location modification`);
+                            return resolve({
+                                redirect: `${redirectUrl}`,
+                            });
+                        }
                     }
 
                     let component = applyRouterMiddleware(useRedial({ redialMap }))(renderProps);
