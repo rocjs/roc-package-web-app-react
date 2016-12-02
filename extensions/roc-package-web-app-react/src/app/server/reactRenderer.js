@@ -112,7 +112,10 @@ export function reactRender({
                 const locals = store ? {
                     dispatch: store.dispatch,
                     getState: store.getState,
-                } : {};
+                    history,
+                } : {
+                    history,
+                };
 
                 const hooks = rocConfig.runtime.fetch.server;
 
