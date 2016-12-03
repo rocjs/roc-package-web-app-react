@@ -82,7 +82,7 @@ export function reactRender({
     reduxSagas,
 }) {
     return new Promise((resolve) => {
-        let currentLocation = {};
+        let currentLocation;
 
         history.listen((location) => {
             currentLocation = location;
@@ -91,7 +91,7 @@ export function reactRender({
         match({ history, routes: createRoutes(store), location: url },
             (error, redirect, renderProps) => {
                 if (redirect) {
-                    const base = redirect.basename ? redirect.basename : '';
+                    const base = redirect.basename || '';
                     const redirectUrl = `${base}${redirect.pathname}${redirect.search}`;
                     log(`Redirect request to ${redirectUrl} due to React Router`);
 
@@ -138,11 +138,11 @@ export function reactRender({
                     }
                     return result;
                 }).then(({ redialMap, redialProps }) => {
-                    if (Object.keys(currentLocation).length > 0) {
+                    if (currentLocation) {
                         const currentUrl = `${currentLocation.pathname}${currentLocation.search}`;
 
                         if (currentUrl !== url) {
-                            const base = currentLocation.basename ? currentLocation.basename : '';
+                            const base = currentLocation.basename || '';
                             const redirectUrl = `${base}${currentUrl}`;
 
                             log(`Redirect request to ${redirectUrl} due to history location modification`);
