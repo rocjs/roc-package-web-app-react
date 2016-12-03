@@ -92,7 +92,9 @@ export default function createClient({ createRoutes, createStore, mountNode }) {
         }
 
         let routes;
-        let locals = {};
+        let locals = {
+            history,
+        };
         const createComponent = [(component) => component];
         const createDevComponent = [(component) => component];
 
@@ -117,6 +119,7 @@ export default function createClient({ createRoutes, createStore, mountNode }) {
             locals = {
                 dispatch: store.dispatch,
                 getState: store.getState,
+                history,
             };
 
             createComponent.push((component) => (

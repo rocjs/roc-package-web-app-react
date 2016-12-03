@@ -82,12 +82,21 @@ export function reactRender({
     reduxSagas,
 }) {
     return new Promise((resolve) => {
+        let currentLocation;
+
+        history.listen((location) => {
+            currentLocation = location;
+        });
+
         match({ history, routes: createRoutes(store), location: url },
             (error, redirect, renderProps) => {
                 if (redirect) {
-                    log(`Redirect request to ${redirect.pathname + redirect.search}`);
+                    const base = redirect.basename || '';
+                    const redirectUrl = `${base}${redirect.pathname}${redirect.search}`;
+                    log(`Redirect request to ${redirectUrl} due to React Router`);
+
                     return resolve({
-                        redirect: redirect.pathname + redirect.search,
+                        redirect: redirectUrl,
                     });
                 } else if (error) {
                     log('Router error', pretty.render(error));
@@ -106,7 +115,10 @@ export function reactRender({
                 const locals = store ? {
                     dispatch: store.dispatch,
                     getState: store.getState,
-                } : {};
+                    history,
+                } : {
+                    history,
+                };
 
                 const hooks = rocConfig.runtime.fetch.server;
 
@@ -126,6 +138,20 @@ export function reactRender({
                     }
                     return result;
                 }).then(({ redialMap, redialProps }) => {
+                    if (currentLocation) {
+                        const currentUrl = `${currentLocation.pathname}${currentLocation.search}`;
+
+                        if (currentUrl !== url) {
+                            const base = currentLocation.basename || '';
+                            const redirectUrl = `${base}${currentUrl}`;
+
+                            log(`Redirect request to ${redirectUrl} due to history location modification`);
+                            return resolve({
+                                redirect: `${redirectUrl}`,
+                            });
+                        }
+                    }
+
                     let component = applyRouterMiddleware(useRedial({ redialMap }))(renderProps);
 
                     if (store) {
