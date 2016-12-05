@@ -18,7 +18,7 @@ Package providing Node support through Webpack.
 ### roc-package-webpack-web — [v1.0.0-beta.3](https://www.npmjs.com/package/roc-package-webpack-web)
 Package providing support bundling for Browser runtimes.
 
-### roc-package-web-app — [v1.0.0-beta.6](https://www.npmjs.com/package/roc-package-web-app)
+### roc-package-web-app — [v1.0.0-beta.7](https://www.npmjs.com/package/roc-package-web-app)
 Package for building web applications using Roc
 
 ## Plugins

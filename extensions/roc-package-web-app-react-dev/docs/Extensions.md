@@ -18,7 +18,7 @@ Package providing Node support through Webpack for Roc (Development)
 ### roc-package-webpack-web-dev — [v1.0.0-beta.3](https://www.npmjs.com/package/roc-package-webpack-web-dev)
 Package providing browser support through Webpack for Roc (Development)
 
-### roc-package-web-app-dev — [v1.0.0-beta.6](https://www.npmjs.com/package/roc-package-web-app-dev)
+### roc-package-web-app-dev — [v1.0.0-beta.7](https://www.npmjs.com/package/roc-package-web-app-dev)
 Package for building web applications using Roc (Development)
 
 ## Plugins
@@ -28,7 +28,7 @@ Roc plugin that adds basic Babel management
 ### roc-plugin-browsersync — [v1.0.0-beta.2](https://www.npmjs.com/package/roc-plugin-browsersync)
 Plugin providing Browsersync for Roc
 
-### roc-plugin-style-css — [v1.0.0-beta.3](https://www.npmjs.com/package/roc-plugin-style-css)
+### roc-plugin-style-css — [v1.0.0-beta.5](https://www.npmjs.com/package/roc-plugin-style-css)
 Plugin providing CSS support for Webpack in Roc
 
 ### roc-plugin-assets-images — [v1.0.0-beta.2](https://www.npmjs.com/package/roc-plugin-assets-images)

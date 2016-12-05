@@ -3,11 +3,6 @@
 The dependencies that are available in the project.
 
 ## Exported
-### [lodash](https://www.npmjs.com/package/lodash)
-__Version__: 4.16.4  
-__Extension__: roc-package-webpack-web-dev  
-__Custom resolve function__:  No  
-
 ### [react-a11y](https://www.npmjs.com/package/react-a11y)
 __Version__: ~0.3.3  
 __Extension__: roc-package-web-app-react-dev  
