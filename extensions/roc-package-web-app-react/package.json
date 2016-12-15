@@ -37,7 +37,7 @@
     "nunjucks": "~2.4.2",
     "pretty-error": "~2.0.0",
     "react-helmet": "~3.1.0",
-    "react-redux": "~4.4.5",
+    "react-redux": "^5.0.1",
     "react-router": "~2.8.1",
     "react-router-redial": "~0.3.0",
     "react-router-redux": "~4.0.2",
