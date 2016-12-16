@@ -36,13 +36,16 @@ export function initRenderPage({ script, css }, distMode, devMode, Header) {
     const bundleName = script[0];
     const styleName = css[0];
 
-    return (
-        head,
+    return ({
         content = '',
-        fluxState = {},
+        customTemplateValues = {},
+        error,
+        head,
         redialProps = [],
-        customTemplateValues = {}
-    ) => {
+        reduxState = {},
+        request,
+        status,
+    }) => {
         const { dev, build, ...rest } = rocConfig; // eslint-disable-line
 
         const rocConfigClient = distMode ? rest : { ...rest, dev };
@@ -55,16 +58,19 @@ export function initRenderPage({ script, css }, distMode, devMode, Header) {
         }
 
         return nunjucks.render(rocConfig.runtime.template.name, {
-            head,
-            content,
-            fluxState: serialize(fluxState),
             bundleName,
-            styleName,
-            dist: distMode,
-            serializedRocConfig: serialize(rocConfigClient),
-            serializedAppConfig: serialize(appConfig),
-            redialProps: serialize(redialProps),
+            content,
             custom: customTemplateValues,
+            dist: distMode,
+            error,
+            fluxState: serialize(reduxState),
+            head,
+            redialProps: serialize(redialProps),
+            request,
+            serializedAppConfig: serialize(appConfig),
+            serializedRocConfig: serialize(rocConfigClient),
+            status,
+            styleName,
         });
     };
 }
@@ -76,6 +82,7 @@ export function reactRender({
     createRoutes,
     renderPage,
     koaState,
+    request,
     staticRender = false,
     hasTemplateValues,
     templateValues,
@@ -102,13 +109,13 @@ export function reactRender({
                     log('Router error', pretty.render(error));
                     return resolve({
                         status: 500,
-                        body: renderPage(),
+                        body: renderPage({ error, request, status: 500 }),
                     });
                 } else if (!renderProps) {
                     log('No renderProps, most likely the path does not exist');
                     return resolve({
                         status: 404,
-                        body: renderPage(),
+                        body: renderPage({ request, status: 404 }),
                     });
                 }
 
@@ -162,9 +169,10 @@ export function reactRender({
                         );
                     }
 
-                    const page = staticRender ? renderToStaticMarkup(component) : renderToString(component);
+                    const content = staticRender ? renderToStaticMarkup(component) : renderToString(component);
                     const head = Helmet.rewind();
-                    const state = store ? store.getState() : {};
+                    const reduxState = store ? store.getState() : {};
+                    const status = ServerStatus.rewind() || 200;
 
                     let computedTemplateValues;
                     if (hasTemplateValues) {
@@ -172,22 +180,30 @@ export function reactRender({
                         computedTemplateValues = templateValues.default({
                             koaState,
                             settings: rocConfig,
-                            reduxState: state,
+                            reduxState,
                         });
                     }
 
                     return resolve({
-                        body: renderPage(head, page, state, redialProps, computedTemplateValues),
-                        status: ServerStatus.rewind() || 200,
+                        body: renderPage({
+                            computedTemplateValues,
+                            content,
+                            head,
+                            redialProps,
+                            reduxState,
+                            request,
+                            status,
+                        }),
+                        status,
                     });
                 })
                 .catch((err) => {
                     if (err) {
-                        log('Fetching error', pretty.render(err));
+                        log('General error', pretty.render(err));
                     }
                     return resolve({
                         status: 500,
-                        body: renderPage(),
+                        body: renderPage({ error: err, request, status: 500 }),
                     });
                 });
             });
