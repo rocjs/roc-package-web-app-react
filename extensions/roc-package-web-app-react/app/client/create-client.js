@@ -10,7 +10,7 @@ import createHistory from 'history/lib/createBrowserHistory';
 import { supportsHistory } from 'history/lib/DOMUtils';
 import debug from 'debug';
 import { useRedial } from 'react-router-redial';
-import useScroll from 'react-router-scroll/lib/useScroll';
+import useScroll from 'react-router-scroll-async/lib/useScroll';
 
 import { rocConfig } from '../shared/universal-config';
 
@@ -163,19 +163,24 @@ export default function createClient({ createRoutes, createStore, mountNode }) {
             ));
         }
 
+        let updateScroll = () => {};
+
         const finalComponent = compose(createComponent)(
             <Router
                 history={history}
                 routes={routes}
                 render={applyRouterMiddleware(
-                    useScroll(),
+                    useScroll({
+                        updateScroll: (cb) => { updateScroll = cb; },
+                    }),
                     useRedial({
                         locals,
                         initialLoading,
                         beforeTransition: rocConfig.runtime.fetch.client.beforeTransition,
                         afterTransition: rocConfig.runtime.fetch.client.afterTransition,
                         parallel: rocConfig.runtime.fetch.client.parallel,
-                    })
+                        onCompleted: (type) => type === 'beforeTransition' && updateScroll(),
+                    }),
                 )}
             />
         );
