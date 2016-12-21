@@ -6,6 +6,7 @@ export default {
             redux: {
                 useDefaultReducers: true,
                 middlewares: 'src/redux/middlewares.js',
+                enhancers: 'src/redux/enhancers.js',
                 useDefaultMiddlewares: true,
                 sagas: 'src/redux/sagas.js',
             },

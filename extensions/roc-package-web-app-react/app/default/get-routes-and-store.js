@@ -1,5 +1,6 @@
 /* global REACT_ROUTER_ROUTES, REDUX_REDUCERS, HAS_REDUX_REDUCERS, HAS_REDUX_MIDDLEWARES, REDUX_MIDDLEWARES,
-    USE_DEFAULT_REDUX_REDUCERS, USE_DEFAULT_REDUX_MIDDLEWARES, USE_DEFAULT_REACT_ROUTER_ROUTES, __WEB__
+    USE_DEFAULT_REDUX_REDUCERS, USE_DEFAULT_REDUX_MIDDLEWARES, USE_DEFAULT_REACT_ROUTER_ROUTES, __WEB__,
+    HAS_REDUX_ENHANCERS, REDUX_ENHANCERS
 */
 /* eslint-disable global-require */
 
@@ -24,6 +25,11 @@ export default function getRoutesAndStore() {
             middlewares = middlewares.concat(require(REDUX_MIDDLEWARES).default());
         }
 
+        let enhancers;
+        if (HAS_REDUX_ENHANCERS) {
+            enhancers = require(REDUX_ENHANCERS).default();
+        }
+
         const reducers = {
             ...defaultReducers,
             ...require(REDUX_REDUCERS),
@@ -31,7 +37,8 @@ export default function getRoutesAndStore() {
 
         const storeCreator = createStore(
             reducers,
-            ...middlewares
+            middlewares,
+            enhancers
         );
 
         let replaceReducers = null;

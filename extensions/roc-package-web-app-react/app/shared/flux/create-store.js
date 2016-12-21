@@ -9,13 +9,14 @@ import { rocConfig } from '../universal-config';
  * Redux store creator
  *
  * @param {!object} reducers - Reducers that should be added to the store
- * @param {...function} middlewares - Redux middlewares that should be added to the store
+ * @param {function[]} middlewares - Redux middlewares that should be added to the store
+ * @param {function[]} enhancers - Redux enhancers that should be added to the store
  * @returns {function} A function that has the following interface:
  * `(callback) => (reduxReactRouter, getRoutes, createHistory, initialState)`.
  * The callback will be called when the application is in _DEV_ mode on the client as a way to add hot module update of
  * the reducers. The callback itself will take a function as the parameter that in turn takes the reducers to update.
  */
-export default function createReduxStore(reducers, ...middlewares) {
+export default function createReduxStore(reducers, middlewares = [], enhancers = []) {
     return (callback) =>
         (history, initialState) => {
             let finalCreateStore;
@@ -50,11 +51,13 @@ export default function createReduxStore(reducers, ...middlewares) {
                 finalCreateStore = compose(
                     applyMiddleware(...normalMiddlewares, ...debugMiddlewares),
                     devTools,
-                    persistState(window.location.href.match(/[?&]debug_session=([^&]+)\b/))
+                    persistState(window.location.href.match(/[?&]debug_session=([^&]+)\b/)),
+                    ...enhancers
                 )(createStore);
             } else {
                 finalCreateStore = compose(
-                    applyMiddleware(...normalMiddlewares)
+                    applyMiddleware(...normalMiddlewares),
+                    ...enhancers
                 )(createStore);
             }
 

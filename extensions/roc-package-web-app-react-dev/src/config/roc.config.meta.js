@@ -40,6 +40,11 @@ export default {
                         'internally.',
                     validator: notEmpty(isPath),
                 },
+                enhancers: {
+                    description: 'The enhancers to use if no entry file is given, will use default entry files ' +
+                        'internally.',
+                    validator: notEmpty(isPath),
+                },
                 useDefaultMiddlewares: {
                     description: 'If Roc should use internally defined middlewares, please look at the ' +
                     ' documentation for what middlewares that are included.',
