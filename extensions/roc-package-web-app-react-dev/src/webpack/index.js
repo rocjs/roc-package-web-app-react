@@ -50,6 +50,17 @@ export default ({
         );
     }
 
+    const hasEnhancers = !!(buildSettings.redux.enhancers && fileExists(buildSettings.redux.enhancers));
+    if (hasEnhancers) {
+        const enhancers = getAbsolutePath(buildSettings.redux.enhancers);
+
+        newWebpackConfig.plugins.push(
+            new webpack.DefinePlugin({
+                REDUX_ENHANCERS: JSON.stringify(enhancers),
+            })
+        );
+    }
+
     const hasSagas = !!(buildSettings.redux.sagas && fileExists(buildSettings.redux.sagas));
     if (hasSagas) {
         const sagas = getAbsolutePath(buildSettings.redux.sagas);
@@ -107,6 +118,7 @@ export default ({
 
             HAS_REDUX_REDUCERS: hasReducers,
             HAS_REDUX_MIDDLEWARES: hasMiddlewares,
+            HAS_REDUX_ENHANCERS: hasEnhancers,
             HAS_REDUX_SAGA: hasSagas,
             HAS_CLIENT_LOADING: hasClientLoading,
             HAS_TEMPLATE_VALUES: hasTemplateValues,
