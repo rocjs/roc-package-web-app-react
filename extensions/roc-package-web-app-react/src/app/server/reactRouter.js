@@ -69,6 +69,7 @@ export default function reactRouter({
                     createRoutes,
                     renderPage,
                     koaState: this.state,
+                    request: this.request,
                     hasTemplateValues,
                     templateValues,
                     reduxSagas,
