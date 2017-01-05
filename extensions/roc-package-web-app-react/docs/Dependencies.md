@@ -39,7 +39,7 @@ __Extension__: roc-package-web-app-react
 __Custom resolve function__:  No  
 
 ### [react-redux](https://www.npmjs.com/package/react-redux)
-__Version__: ~4.4.5  
+__Version__: ^5.0.1  
 __Extension__: roc-package-web-app-react  
 __Custom resolve function__:  No  
 
@@ -59,7 +59,12 @@ __Extension__: roc-package-web-app-react
 __Custom resolve function__:  No  
 
 ### [react-router-scroll](https://www.npmjs.com/package/react-router-scroll)
-__Version__: ~0.3.2  
+__Version__: DEPRECATED - Use react-router-scroll-async  
+__Extension__: roc-package-web-app-react  
+__Custom resolve function__:  Yes  
+
+### [react-router-scroll-async](https://www.npmjs.com/package/react-router-scroll-async)
+__Version__: ~0.5.0  
 __Extension__: roc-package-web-app-react  
 __Custom resolve function__:  No  
 
