@@ -45,7 +45,7 @@ export function initRenderPage({ script, css }, distMode, devMode, Header) {
         reduxState = {},
         request,
         status,
-    }) => {
+    } = {}) => {
         const { dev, build, ...rest } = rocConfig; // eslint-disable-line
 
         const rocConfigClient = distMode ? rest : { ...rest, dev };
