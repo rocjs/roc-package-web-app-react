@@ -174,10 +174,10 @@ export function reactRender({
                     const reduxState = store ? store.getState() : {};
                     const status = ServerStatus.rewind() || 200;
 
-                    let computedTemplateValues;
+                    let customTemplateValues;
                     if (hasTemplateValues) {
                         // Provides settings, Redux state and Koa state
-                        computedTemplateValues = templateValues.default({
+                        customTemplateValues = templateValues.default({
                             koaState,
                             settings: rocConfig,
                             reduxState,
@@ -186,7 +186,7 @@ export function reactRender({
 
                     return resolve({
                         body: renderPage({
-                            computedTemplateValues,
+                            customTemplateValues,
                             content,
                             head,
                             redialProps,
