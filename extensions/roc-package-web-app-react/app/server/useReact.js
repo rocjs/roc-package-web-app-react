@@ -30,17 +30,21 @@ export default function useReact(createServer) {
         }
     }
 
-    return ({ createRoutes = routes, createStore = store, ...rest } = {}) => useReactLib(createServer, {
-        dev: __DEV__,
-        dist: __DIST__,
-        hasTemplateValues: HAS_TEMPLATE_VALUES,
-        templateValues,
-        rocPath: ROC_PATH,
-        Header,
-        reduxSagas,
-    })({
-        createRoutes,
-        createStore,
-        ...rest,
-    });
+    return ({ createRoutes = routes, createStore = store, ...rest } = {}, beforeUserMiddlewares) =>
+        useReactLib(createServer, {
+            dev: __DEV__,
+            dist: __DIST__,
+            hasTemplateValues: HAS_TEMPLATE_VALUES,
+            templateValues,
+            rocPath: ROC_PATH,
+            Header,
+            reduxSagas,
+        })(
+            {
+                createRoutes,
+                createStore,
+                ...rest,
+            },
+            beforeUserMiddlewares
+        );
 }
