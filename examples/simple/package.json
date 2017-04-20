@@ -5,7 +5,7 @@
   "author": "VG",
   "license": "MIT",
   "scripts": {
-    "dev": "roc dev --applicationName 'Simple Example'"
+    "dev": "roc dev --runtime-applicationName 'Simple Example'"
   },
   "dependencies": {
     "roc-package-web-app-react": "*"
