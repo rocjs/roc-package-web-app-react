@@ -58,6 +58,7 @@ export function initRenderPage({ script, css }, distMode, devMode, Header) {
         }
 
         return nunjucks.render(rocConfig.runtime.template.name, {
+            ...build.templateContext,
             bundleName,
             content,
             custom: customTemplateValues,

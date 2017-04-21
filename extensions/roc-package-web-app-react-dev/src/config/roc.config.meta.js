@@ -1,4 +1,4 @@
-import { isString, isBoolean, isPath, isArray, notEmpty, isInteger, required } from 'roc/validators';
+import { isString, isBoolean, isPath, isArray, notEmpty, isInteger, required, isObject } from 'roc/validators';
 
 export default {
     settings: {
@@ -72,6 +72,12 @@ export default {
 
             templateValues: {
                 description: '[UNDOCUMENTED]',
+            },
+            templateContext: {
+                description: 'Custom context data passed to template rendering.',
+                validator: isObject({
+                    unmanaged: true,
+                }),
             },
         },
         dev: {
