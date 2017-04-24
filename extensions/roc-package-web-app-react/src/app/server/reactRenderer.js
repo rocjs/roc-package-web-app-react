@@ -18,6 +18,7 @@ const pretty = new PrettyError();
 const log = debug('roc:react-render');
 
 const rocConfig = getSettings();
+const defaultTemplatePath = `${myPath}/views`;
 
 const whiteListed = () => (
     rocConfig.runtime.configWhitelistProperty ?
@@ -28,8 +29,12 @@ const whiteListed = () => (
 const appConfig = whiteListed();
 
 export function initRenderPage({ script, css }, distMode, devMode, Header) {
-    const templatePath = rocConfig.runtime.template.path || `${myPath}/views`;
-    nunjucks.configure(getAbsolutePath(templatePath), {
+    const templatePaths = []
+        // Put configurable template paths first for higher priority
+        .concat(rocConfig.runtime.template.path || [], defaultTemplatePath)
+        .map(path => getAbsolutePath(path));
+
+    nunjucks.configure(templatePaths, {
         watch: devMode,
     });
 
