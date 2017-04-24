@@ -22,7 +22,9 @@ export default {
                 },
                 htmlAttributes: {
                     description: 'Attributes that should be added to the <html> tag.',
-                    validator: required(isObject()),
+                    validator: required(isObject({
+                        unmanaged: true,
+                    })),
                 },
                 meta: {
                     description: 'Meta tags to be used in <head>, should be formatted as objects.',
