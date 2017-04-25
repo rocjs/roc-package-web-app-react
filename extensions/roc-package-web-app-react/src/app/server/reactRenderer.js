@@ -12,6 +12,8 @@ import { triggerHooks, useRedial } from 'react-router-redial';
 import { getAbsolutePath, getSettings } from 'roc';
 import ServerStatus from 'react-server-status';
 
+import { invokeHook } from '../../roc/util';
+
 import myPath from './helpers/myPath';
 
 const pretty = new PrettyError();
@@ -29,10 +31,12 @@ const whiteListed = () => (
 const appConfig = whiteListed();
 
 export function initRenderPage({ script, css }, distMode, devMode, Header) {
-    const templatePaths = []
-        // Put configurable template paths first for higher priority
-        .concat(rocConfig.runtime.template.path || [], defaultTemplatePath)
-        .map(path => getAbsolutePath(path));
+    const templatePaths = [].concat(
+        // Combine paths from highest priority to lowest
+        rocConfig.runtime.template.path || [],
+        invokeHook('get-template-paths'),
+        defaultTemplatePath
+    ).map(path => getAbsolutePath(path));
 
     nunjucks.configure(templatePaths, {
         watch: devMode,
