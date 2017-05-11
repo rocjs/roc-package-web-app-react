@@ -59,7 +59,7 @@ __Extension__: roc-package-web-app-react
 __Custom resolve function__:  No  
 
 ### [react-router-redux](https://www.npmjs.com/package/react-router-redux)
-__Version__: ~4.0.8  
+__Version__: ^4.0.8  
 __Extension__: roc-package-web-app-react  
 __Custom resolve function__:  No  
 
@@ -84,7 +84,7 @@ __Extension__: roc-package-web-app-react
 __Custom resolve function__:  No  
 
 ### [redux](https://www.npmjs.com/package/redux)
-__Version__: ~3.4.0  
+__Version__: ^3.6.0  
 __Extension__: roc-package-web-app-react  
 __Custom resolve function__:  No  
 
@@ -94,12 +94,12 @@ __Extension__: roc-package-web-app-react
 __Custom resolve function__:  No  
 
 ### [redux-thunk](https://www.npmjs.com/package/redux-thunk)
-__Version__: ~2.1.0  
+__Version__: ^2.2.0  
 __Extension__: roc-package-web-app-react  
 __Custom resolve function__:  No  
 
 ### [roc-package-web-app](https://www.npmjs.com/package/roc-package-web-app)
-__Version__: ^1.0.0-beta.3  
+__Version__: ^1.0.0-beta.7  
 __Extension__: roc-package-web-app-react  
 __Custom resolve function__:  No  
 
