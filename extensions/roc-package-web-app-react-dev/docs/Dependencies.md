@@ -9,17 +9,17 @@ __Extension__: roc-package-web-app-react-dev
 __Custom resolve function__:  No  
 
 ### [redux-devtools](https://www.npmjs.com/package/redux-devtools)
-__Version__: ~3.2.0  
+__Version__: ~3.4.0  
 __Extension__: roc-package-web-app-react-dev  
 __Custom resolve function__:  No  
 
 ### [redux-devtools-dock-monitor](https://www.npmjs.com/package/redux-devtools-dock-monitor)
-__Version__: ~1.1.1  
+__Version__: ~1.1.2  
 __Extension__: roc-package-web-app-react-dev  
 __Custom resolve function__:  No  
 
 ### [redux-devtools-log-monitor](https://www.npmjs.com/package/redux-devtools-log-monitor)
-__Version__: ~1.0.11  
+__Version__: ~1.3.0  
 __Extension__: roc-package-web-app-react-dev  
 __Custom resolve function__:  No  
 
@@ -34,7 +34,7 @@ __Extension__: roc-package-webpack-dev
 __Custom resolve function__:  No  
 
 ### [yellowbox-react](https://www.npmjs.com/package/yellowbox-react)
-__Version__: ~0.9.1  
+__Version__: ~0.10.0  
 __Extension__: roc-package-web-app-react-dev  
 __Custom resolve function__:  No  
 
