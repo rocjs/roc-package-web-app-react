@@ -30,7 +30,7 @@ const whiteListed = () => (
 
 const appConfig = whiteListed();
 
-export function initRenderPage({ script, css }, distMode, devMode, Header) {
+function setupTemplate(devMode) {
     const templatePaths = [].concat(
         // Combine paths from highest priority to lowest
         rocConfig.runtime.template.path || [],
@@ -38,10 +38,34 @@ export function initRenderPage({ script, css }, distMode, devMode, Header) {
         defaultTemplatePath
     ).map(path => getAbsolutePath(path));
 
-    nunjucks.configure(templatePaths, {
+    let mainTemplate = rocConfig.runtime.template.name;
+    const baseTemplate = 'roc-package-web-app-react/main.njk';
+    const inheritance = {};
+    invokeHook('inherit-template')(({ namespace, template }) => {
+        inheritance[namespace] = mainTemplate;
+        mainTemplate = template;
+    });
+
+    const nunjucksEnv = nunjucks.configure(templatePaths, {
         watch: devMode,
     });
 
+    return {
+        nunjucksEnv,
+        mainTemplate,
+        nunjucksContext: {
+            baseTemplate,
+            inheritance,
+        },
+    };
+}
+
+export function initRenderPage({ script, css }, distMode, devMode, Header) {
+    const {
+        nunjucksEnv,
+        nunjucksContext,
+        mainTemplate,
+    } = setupTemplate(devMode);
     const bundleName = script[0];
     const styleName = css[0];
 
@@ -66,8 +90,9 @@ export function initRenderPage({ script, css }, distMode, devMode, Header) {
             head = Helmet.rewind(); // eslint-disable-line
         }
 
-        return nunjucks.render(rocConfig.runtime.template.name, {
+        return nunjucksEnv.render(mainTemplate, {
             ...build.templateContext,
+            ...nunjucksContext,
             bundleName,
             content,
             custom: customTemplateValues,

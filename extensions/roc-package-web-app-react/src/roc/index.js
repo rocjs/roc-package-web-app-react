@@ -19,6 +19,11 @@ export default {
             initialValue: [],
             returns: isArray(isString),
         },
+        'inherit-template': {
+            description: 'Used to inherit the main template in order to add functionality and/or content',
+            hasCallback: true,
+            initialValue: [],
+        },
     },
     packages: [
         require.resolve('roc-package-web-app'),
