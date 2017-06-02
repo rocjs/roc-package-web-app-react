@@ -1,0 +1,11 @@
+{%- extends inheritance.testC -%}
+
+{% block head %}
+	<link rel="stylesheet" href="/static.css">
+{% endblock %}
+{%- block bodyPreApplication -%}
+	<header>
+		{{ super() }}
+		<div class="item">This is C!</div>
+	</header>
+{%- endblock -%}

@@ -1,0 +1,14 @@
+{%- extends inheritance.testB -%}
+
+{%- block bodyPreApplication -%}
+	{{ super() }}
+	<div class="item">This is B!</div>
+{%- endblock -%}
+{% block bodyPostApplication %}
+	<footer>
+		{{ super() }}
+		<p>
+			It's not part of the React application, but defined in the template
+		</p>
+	</footer>
+{% endblock %}

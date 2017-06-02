@@ -1,0 +1,6 @@
+{%- extends inheritance.testA -%}
+
+{%- block bodyPreApplication -%}
+	{{ super() }}
+	<div class="item">This is A!</div>
+{%- endblock -%}

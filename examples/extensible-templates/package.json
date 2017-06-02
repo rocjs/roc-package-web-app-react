@@ -1,0 +1,16 @@
+{
+  "name": "roc-web-react-extensible-templates-example",
+  "version": "1.0.0",
+  "description": "Roc Web React simple example",
+  "author": "Patrik Åkerstrand <patrik.akerstrand@schibsted.com>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "roc dev"
+  },
+  "dependencies": {
+    "roc-package-web-app-react": "*"
+  },
+  "devDependencies": {
+      "roc-package-web-app-react-dev": "*"
+  }
+}

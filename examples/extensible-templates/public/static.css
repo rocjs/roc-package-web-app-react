@@ -1,0 +1,29 @@
+header {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	height: 50px;
+	background: darkblue;
+	color: #fefefe;
+}
+
+header > .main, header > .item {
+	flex: 1 1 auto;
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+}
+
+header > .main {
+	flex: 0 0 100%;
+}
+
+footer {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	background: darkblue;
+	color: #fefefe;
+	height: 100px;
+}
