@@ -61,9 +61,10 @@ export default {
             },
             template: {
                 path: {
-                    description: 'A directory where the template for the application can be found. ' +
-                        'Will default to internal path.',
-                    validator: notEmpty(isPath),
+                    description: 'A directory, or array of directories, where the template for the application ' +
+                        'can be found. Internal path with default templates will be appended to the array, ' +
+                        'so it\'s possible to extend them.',
+                    validator: notEmpty(oneOf(isPath, isArray(notEmpty(isPath)))),
                 },
                 name: {
                     description: 'Name of the template file that will be used. Uses Nunjucks, please see ' +

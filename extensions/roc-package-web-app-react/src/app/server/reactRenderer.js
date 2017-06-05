@@ -12,12 +12,15 @@ import { triggerHooks, useRedial } from 'react-router-redial';
 import { getAbsolutePath, getSettings } from 'roc';
 import ServerStatus from 'react-server-status';
 
+import { invokeHook } from '../../roc/util';
+
 import myPath from './helpers/myPath';
 
 const pretty = new PrettyError();
 const log = debug('roc:react-render');
 
 const rocConfig = getSettings();
+const defaultTemplatePath = `${myPath}/views`;
 
 const whiteListed = () => (
     rocConfig.runtime.configWhitelistProperty ?
@@ -28,8 +31,14 @@ const whiteListed = () => (
 const appConfig = whiteListed();
 
 export function initRenderPage({ script, css }, distMode, devMode, Header) {
-    const templatePath = rocConfig.runtime.template.path || `${myPath}/views`;
-    nunjucks.configure(getAbsolutePath(templatePath), {
+    const templatePaths = [].concat(
+        // Combine paths from highest priority to lowest
+        rocConfig.runtime.template.path || [],
+        invokeHook('get-template-paths'),
+        defaultTemplatePath
+    ).map(path => getAbsolutePath(path));
+
+    nunjucks.configure(templatePaths, {
         watch: devMode,
     });
 
@@ -58,6 +67,7 @@ export function initRenderPage({ script, css }, distMode, devMode, Header) {
         }
 
         return nunjucks.render(rocConfig.runtime.template.name, {
+            ...build.templateContext,
             bundleName,
             content,
             custom: customTemplateValues,

@@ -1,5 +1,6 @@
 import { generateDependencies } from 'roc';
 import { warn } from 'roc/log/default/large';
+import { isString, isArray } from 'roc/validators';
 
 import config from '../config/roc.config';
 import meta from '../config/roc.config.meta';
@@ -11,6 +12,14 @@ let warnForReactRouterScroll = true;
 export default {
     config,
     meta,
+    hooks: {
+        'get-template-paths': {
+            description: 'Used to append paths for template files lookup. ' +
+                'Actions should concat the previousValue to build the complete value.',
+            initialValue: [],
+            returns: isArray(isString),
+        },
+    },
     packages: [
         require.resolve('roc-package-web-app'),
     ],
