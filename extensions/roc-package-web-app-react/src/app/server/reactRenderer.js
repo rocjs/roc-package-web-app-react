@@ -91,7 +91,6 @@ export function initRenderPage({ script, css }, distMode, devMode, Header) {
         }
 
         return nunjucksEnv.render(mainTemplate, {
-            ...build.templateContext,
             ...nunjucksContext,
             bundleName,
             content,
@@ -209,14 +208,22 @@ export function reactRender({
                     const reduxState = store ? store.getState() : {};
                     const status = ServerStatus.rewind() || 200;
 
-                    let customTemplateValues;
+                    const customTemplateValues = invokeHook('get-template-values', {
+                        koaState,
+                        settings: rocConfig,
+                        reduxState,
+                    });
+
                     if (hasTemplateValues) {
                         // Provides settings, Redux state and Koa state
-                        customTemplateValues = templateValues.default({
-                            koaState,
-                            settings: rocConfig,
-                            reduxState,
-                        });
+                        Object.assign(
+                            customTemplateValues,
+                            templateValues.default({
+                                koaState,
+                                settings: rocConfig,
+                                reduxState,
+                            }),
+                        );
                     }
 
                     return resolve({

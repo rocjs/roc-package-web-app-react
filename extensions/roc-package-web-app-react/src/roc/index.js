@@ -24,6 +24,12 @@ export default {
             hasCallback: true,
             initialValue: [],
         },
+        'get-template-values': {
+            description:
+                'Used to add extra values to the templates when they render. ' +
+                'Actions should merge their props with the previousValue',
+            initialValue: {},
+        },
     },
     packages: [
         require.resolve('roc-package-web-app'),

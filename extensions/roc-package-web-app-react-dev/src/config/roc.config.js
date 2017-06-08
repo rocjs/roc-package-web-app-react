@@ -27,7 +27,6 @@ export default {
             resources: ['roc-package-web-app-react/styles/base.css'],
 
             templateValues: 'src/template-values.js',
-            templateContext: {},
         },
         dev: {
             // A11Y not play nice with Redux Devtools at the moment
