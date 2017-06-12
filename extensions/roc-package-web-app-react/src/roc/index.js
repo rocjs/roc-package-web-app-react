@@ -1,6 +1,6 @@
 import { generateDependencies } from 'roc';
 import { warn } from 'roc/log/default/large';
-import { isString, isArray } from 'roc/validators';
+import { isString, isArray, isObject } from 'roc/validators';
 
 import config from '../config/roc.config';
 import meta from '../config/roc.config.meta';
@@ -9,26 +9,32 @@ const packageJSON = require('../../package.json');
 
 let warnForReactRouterScroll = true;
 
+const extendTemplateSignature = (input, info) => {
+    if (info) {
+        return {
+            type: 'Object(path?: Path, namespace: String, template: String)',
+        };
+    }
+
+    // Don't do any validation for now, use for documentation purposes only
+    return true;
+};
+
 export default {
     config,
     meta,
     hooks: {
-        'get-template-paths': {
-            description: 'Used to append paths for template files lookup. ' +
-                'Actions should concat the previousValue to build the complete value.',
-            initialValue: [],
-            returns: isArray(isString),
-        },
-        'inherit-template': {
-            description: 'Used to inherit the main template in order to add functionality and/or content',
+        'extend-template': {
+            description: 'Used to add template paths, namespace and template file to render.',
             hasCallback: true,
-            initialValue: [],
+            returns: extendTemplateSignature,
         },
         'get-template-values': {
             description:
                 'Used to add extra values to the templates when they render. ' +
                 'Actions should merge their props with the previousValue',
             initialValue: {},
+            returns: isObject(),
         },
     },
     packages: [

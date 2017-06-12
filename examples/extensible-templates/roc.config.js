@@ -17,27 +17,22 @@ module.exports = {
     project: {
         actions: [
             {
-                hook: 'get-template-paths',
-                action: () => () => (previousValue) => {
-                    return previousValue.concat(path.resolve('./views'));
-                }
-            },
-            {
-                hook: 'inherit-template',
+                hook: 'extend-template',
                 action: () => () => () => ({
+                    path: path.resolve('./views'),
                     namespace: 'testA',
                     template: 'A/a.njk',
                 }),
             },
             {
-                hook: 'inherit-template',
+                hook: 'extend-template',
                 action: () => () => () => ({
                     namespace: 'testB',
                     template: 'B/b.njk',
                 }),
             },
             {
-                hook: 'inherit-template',
+                hook: 'extend-template',
                 action: () => () => () => ({
                     namespace: 'testC',
                     template: 'C/c.njk',

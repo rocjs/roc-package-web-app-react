@@ -31,17 +31,17 @@ const whiteListed = () => (
 const appConfig = whiteListed();
 
 function setupTemplate(devMode) {
-    const templatePaths = [].concat(
+    let templatePaths = [].concat(
         // Combine paths from highest priority to lowest
         rocConfig.runtime.template.path || [],
-        invokeHook('get-template-paths'),
         defaultTemplatePath
     ).map(path => getAbsolutePath(path));
 
     let mainTemplate = rocConfig.runtime.template.name;
     const baseTemplate = 'roc-package-web-app-react/main.njk';
     const inheritance = {};
-    invokeHook('inherit-template')(({ namespace, template }) => {
+    invokeHook('extend-template')(({ path = [], namespace, template }) => {
+        templatePaths = templatePaths.concat(path);
         inheritance[namespace] = mainTemplate;
         mainTemplate = template;
     });
