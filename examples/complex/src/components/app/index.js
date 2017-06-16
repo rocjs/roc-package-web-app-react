@@ -18,6 +18,7 @@ export default class App extends Component {
                     <ul>
                         <li><IndexLink to="/">Home</IndexLink></li>
                         <li><Link to="/about/">About</Link></li>
+                        <li><Link to={{ pathname: '/long/', state: { scrollToTop: true } }}>Long</Link></li>
                         <li><Link to="/simple/">Simple</Link></li>
                     </ul>
                 </nav>
