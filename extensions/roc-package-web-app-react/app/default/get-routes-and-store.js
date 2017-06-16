@@ -56,15 +56,22 @@ export default function getRoutesAndStore() {
         store = storeCreator(replaceReducers);
     }
 
+    const { default: projectRoutes, middlewareConfig = {} } = require(REACT_ROUTER_ROUTES);
+
     if (USE_DEFAULT_REACT_ROUTER_ROUTES) {
         const { createRoutes } = require('../shared');
 
-        routes = createRoutes(require(REACT_ROUTER_ROUTES).default);
+        routes = createRoutes(projectRoutes);
     } else {
         routes = require(REACT_ROUTER_ROUTES).default;
     }
 
     return {
+        routerMiddlewareConfig: {
+            'react-router-scroll-async': {},
+            'react-router-redial': {},
+            ...middlewareConfig,
+        },
         routes,
         store,
     };
