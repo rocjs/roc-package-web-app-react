@@ -3,6 +3,9 @@
 ## Hooks
 * [roc](#roc)
   * [update-settings](#update-settings)
+* [roc-package-web-app-react](#roc-package-web-app-react)
+  * [extend-template](#extend-template)
+  * [get-template-values](#get-template-values)
 * [roc-plugin-start](#roc-plugin-start)
   * [get-potential-target](#get-potential-target)
   * [register-runtime](#register-runtime)
@@ -23,6 +26,22 @@ __Expected return value:__ `Object()`
 | Name        | Description                                                                  | Type       | Required | Can be empty |
 | ----------- | ---------------------------------------------------------------------------- | ---------- | -------- | ------------ |
 | getSettings | A function that returns the settings after the context has been initialized. | `Function` | No       |              |
+
+## roc-package-web-app-react
+
+### extend-template
+
+Used to add template paths, namespace and template file to render.
+
+__Initial value:__ _Nothing_  
+__Expected return value:__ `Object(path?: Path, namespace: String, template: String)`
+
+### get-template-values
+
+Used to add extra values to the templates when they render. Actions should merge their props with the previousValue
+
+__Initial value:__ `{}`  
+__Expected return value:__ `Object()`
 
 ## roc-plugin-start
 
