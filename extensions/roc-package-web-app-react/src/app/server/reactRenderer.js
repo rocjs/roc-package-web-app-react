@@ -30,18 +30,55 @@ const whiteListed = () => (
 
 const appConfig = whiteListed();
 
-export function initRenderPage({ script, css }, distMode, devMode, Header) {
-    const templatePaths = [].concat(
+function setupTemplate(devMode) {
+    let templatePaths = [].concat(
         // Combine paths from highest priority to lowest
         rocConfig.runtime.template.path || [],
-        invokeHook('get-template-paths'),
         defaultTemplatePath
     ).map(path => getAbsolutePath(path));
 
-    nunjucks.configure(templatePaths, {
+    const baseTemplate = 'roc-package-web-app-react/main.njk';
+    let parentTemplate = rocConfig.runtime.template.root ?
+        rocConfig.runtime.template.name :
+        baseTemplate;
+    const inheritance = {};
+    invokeHook('extend-template')(({ path = [], namespace, template }) => {
+        templatePaths = templatePaths.concat(path);
+        inheritance[namespace] = parentTemplate;
+        parentTemplate = template;
+    });
+
+    const nunjucksEnv = nunjucks.configure(templatePaths, {
         watch: devMode,
     });
 
+    const mainTemplate = rocConfig.runtime.template.root ?
+        parentTemplate :
+        rocConfig.runtime.template.name;
+
+    // If we have root = true we will set parentTemplate to be baseTemplate
+    // This will make it impossible to create a loop in the template system
+    parentTemplate = rocConfig.runtime.template.root ?
+        baseTemplate :
+        parentTemplate;
+
+    return {
+        mainTemplate,
+        nunjucksEnv,
+        nunjucksContext: {
+            baseTemplate,
+            inheritance,
+            parentTemplate,
+        },
+    };
+}
+
+export function initRenderPage({ script, css }, distMode, devMode, Header) {
+    const {
+        nunjucksEnv,
+        nunjucksContext,
+        mainTemplate,
+    } = setupTemplate(devMode);
     const bundleName = script[0];
     const styleName = css[0];
 
@@ -66,8 +103,8 @@ export function initRenderPage({ script, css }, distMode, devMode, Header) {
             head = Helmet.rewind(); // eslint-disable-line
         }
 
-        return nunjucks.render(rocConfig.runtime.template.name, {
-            ...build.templateContext,
+        return nunjucksEnv.render(mainTemplate, {
+            ...nunjucksContext,
             bundleName,
             content,
             custom: customTemplateValues,
@@ -184,14 +221,22 @@ export function reactRender({
                     const reduxState = store ? store.getState() : {};
                     const status = ServerStatus.rewind() || 200;
 
-                    let customTemplateValues;
+                    const customTemplateValues = invokeHook('get-template-values', {
+                        koaState,
+                        settings: rocConfig,
+                        reduxState,
+                    });
+
                     if (hasTemplateValues) {
                         // Provides settings, Redux state and Koa state
-                        customTemplateValues = templateValues.default({
-                            koaState,
-                            settings: rocConfig,
-                            reduxState,
-                        });
+                        Object.assign(
+                            customTemplateValues,
+                            templateValues.default({
+                                koaState,
+                                settings: rocConfig,
+                                reduxState,
+                            }),
+                        );
                     }
 
                     return resolve({

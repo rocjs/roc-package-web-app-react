@@ -1,0 +1,28 @@
+{%- extends parentTemplate -%}
+
+{% block head %}
+	<link rel="stylesheet" href="/static.css">
+{% endblock %}
+
+{%- block bodyPreApplication -%}
+  <header>
+  	<div class="main">
+  		This is a very nice static header.
+    </div>
+    {{ super() }}
+  </header>
+{%- endblock -%}
+
+{% block bodyPostApplication %}
+  <footer>
+    <p>
+  		This is a very nice static footer.
+  	</p>
+    {{ super() }}
+  </footer>
+{% endblock %}
+
+{% block bodyScripts %}
+  {{ super() }}
+  <script>console.log('Hello World')</script>
+{% endblock %}

@@ -1,0 +1,12 @@
+{%- extends inheritance.testB -%}
+
+{%- block bodyPreApplication -%}
+	{{ super() }}
+	<div class="item">{{ custom.project.b }}</div>
+{%- endblock -%}
+{% block bodyPostApplication %}
+		{{ super() }}
+		<p>
+			It's not part of the React application, but defined in the template
+		</p>
+{% endblock %}

@@ -29,6 +29,7 @@ export default {
             template: {
                 path: undefined,
                 name: 'main.html',
+                root: false,
             },
             debug: {
                 client: 'roc:*',
