@@ -38,12 +38,18 @@ function compose(funcs) {
  * const server = createClient({
  *     createRoutes: routes,
  *     createStore: store,
- *     mountNode: 'application'
+ *     mountNode: 'application',
+ *     routerMiddlewareConfig,
  * });
  *
  * @param {rocClientOptions} options - Options for the client
  */
-export default function createClient({ createRoutes, createStore, mountNode }) {
+export default function createClient({
+    createRoutes,
+    createStore,
+    mountNode,
+    routerMiddlewareConfig,
+}) {
     if (!createRoutes) {
         throw new Error('createRoutes needs to be defined');
     }
@@ -171,15 +177,25 @@ export default function createClient({ createRoutes, createStore, mountNode }) {
                 routes={routes}
                 render={applyRouterMiddleware(
                     useScroll({
+                        ...routerMiddlewareConfig['react-router-scroll-async'],
                         updateScroll: (cb) => { updateScroll = cb; },
                     }),
                     useRedial({
+                        ...routerMiddlewareConfig['react-router-redial'],
                         locals,
                         initialLoading,
                         beforeTransition: rocConfig.runtime.fetch.client.beforeTransition,
                         afterTransition: rocConfig.runtime.fetch.client.afterTransition,
                         parallel: rocConfig.runtime.fetch.client.parallel,
-                        onCompleted: (type) => type === 'beforeTransition' && updateScroll(),
+                        onCompleted: (type) => {
+                            if (type === 'beforeTransition') {
+                                updateScroll();
+                            }
+
+                            if (routerMiddlewareConfig['react-router-redial'].onCompleted) {
+                                routerMiddlewareConfig['react-router-redial'].onCompleted(type);
+                            }
+                        },
                     }),
                 )}
             />
