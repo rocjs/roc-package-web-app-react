@@ -37,25 +37,38 @@ function setupTemplate(devMode) {
         defaultTemplatePath
     ).map(path => getAbsolutePath(path));
 
-    let mainTemplate = rocConfig.runtime.template.name;
     const baseTemplate = 'roc-package-web-app-react/main.njk';
+    let parentTemplate = rocConfig.runtime.template.root ?
+        rocConfig.runtime.template.name :
+        baseTemplate;
     const inheritance = {};
     invokeHook('extend-template')(({ path = [], namespace, template }) => {
         templatePaths = templatePaths.concat(path);
-        inheritance[namespace] = mainTemplate;
-        mainTemplate = template;
+        inheritance[namespace] = parentTemplate;
+        parentTemplate = template;
     });
 
     const nunjucksEnv = nunjucks.configure(templatePaths, {
         watch: devMode,
     });
 
+    const mainTemplate = rocConfig.runtime.template.root ?
+        parentTemplate :
+        rocConfig.runtime.template.name;
+
+    // If we have root = true we will set parentTemplate to be baseTemplate
+    // This will make it impossible to create a loop in the template system
+    parentTemplate = rocConfig.runtime.template.root ?
+        baseTemplate :
+        parentTemplate;
+
     return {
-        nunjucksEnv,
         mainTemplate,
+        nunjucksEnv,
         nunjucksContext: {
             baseTemplate,
             inheritance,
+            parentTemplate,
         },
     };
 }

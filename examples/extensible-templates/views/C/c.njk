@@ -1,11 +1,6 @@
 {%- extends inheritance.testC -%}
 
-{% block head %}
-	<link rel="stylesheet" href="/static.css">
-{% endblock %}
 {%- block bodyPreApplication -%}
-	<header>
 		{{ super() }}
 		<div class="item">{{ custom.project.c }}</div>
-	</header>
 {%- endblock -%}

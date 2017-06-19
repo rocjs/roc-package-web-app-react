@@ -1,6 +1,6 @@
 import { generateDependencies } from 'roc';
 import { warn } from 'roc/log/default/large';
-import { isString, isArray, isObject } from 'roc/validators';
+import { isObject } from 'roc/validators';
 
 import config from '../config/roc.config';
 import meta from '../config/roc.config.meta';
