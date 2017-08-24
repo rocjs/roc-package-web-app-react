@@ -1,31 +1,44 @@
 # User-guide
 
-`roc-package-web-app-react` provides a complete _framework_ for creating and running ambitious Node.js and React web applications. It is developed by [Schibsted](http://www.schibsted.com/en/About-Schibsted/Schibsted-Products-and-Technology/) and used in production for many products.
+`roc-package-web-app-react` provides a complete _framework_ for creating and running ambitious Node.js and React web applications. It is developed by [Schibsted](http://www.schibsted.com/en/About-Schibsted/Schibsted-Products-and-Technology/) and used in production across many products.
 
-It is a perfect match for writing fully-featured web applications that use `React` components and `Redux` to handle your flow of data. It does not compromise on features or flexibility. Plugins are available for all important features like styling pipelines and automated testing.
+It is a perfect match for writing fully-featured server-rendered web applications that use `React` components and `Redux` to handle your flow of data. It does not compromise on features or flexibility. Plugins are available for all important features like styling pipelines and automated testing.
 
-The guide covers all the basic elements that you need in order to be productive with `web-app-react`. We assume you already know ES2015+, Node.js and some web development using React and Redux.
+The guide covers all the basic elements that you need in order to be productive with `web-app-react`. We assume you already know ES2015+, Node.js and have some web development using React and Redux.
+
+## The underlying technology:
+
+`web-app-react` provides the following stack fully configured with sane defaults
+
+- HTTP server: [Koa.js 1.x](http://koajs.com/)
+- UI library: [React](https://facebook.github.io/react/)
+- Data-flow: [Redux](http://redux.js.org/)
+- Routing: [React-router 3.x](https://github.com/ReactTraining/react-router/tree/v3)
+- Transpiling: [Babel](http://babeljs.io/)
+- Bundling: [Webpack 1.x](http://webpack.github.io/docs/)
 
 ## Table of Contents
 
-- Installing Roc
-- Bootstrapping your app
-- File structure of your app
-- Roc command basics
-- Tooling configuration
-- Runtime configuration
-- Writing components
-- Styling components
-- Adding extra resources
-- Routing
-- Fetching data
-- Data flow
-- Adding server side behaviour
-- Testing your app
-- Modifying webpack and babel configurations
-- Including extra scripts in bundles
-- Polyfills and language features
-- Troubleshooting
+- [Installing Roc](#installing-roc)
+- [Creating your app](#creating-your-app)
+- [File structure of your app](#file-structure-of-your-app)
+- [Roc command basics](#roc-command-basics)
+- [Tooling configuration](#tooling-configuration)
+- [Runtime configuration](#runtime-configuration)
+- [Writing React components](#writing-react-components)
+- [Styling React components](#styling-react-components)
+- [Adding extra resources](#adding-extra-resources)
+- [Extending the root HTML document](#extending-the-root-html-document)
+- [Routing](#routing)
+- [Fetching data](#fetching-data)
+- [Data flow](#data-flow)
+- [Adding server side behaviour](#adding-server-side-behaviour)
+- [Testing your app](#testing-your-app)
+- [Modifying webpack and babel configurations](#modifying-webpack-and-babel-configurations)
+- [Polyfills](#polyfills)
+- [Language features](#language-features)
+- [Docker](#docker)
+- [Troubleshooting](#troubleshooting)
 
 ## Installing Roc
 
@@ -39,7 +52,7 @@ Bootstrapping a new project in the location of your choice is fully automated. R
 
 `$ roc new my-app web-app-react wip`
 
-The automated bootstrap process will ask you some questions. We recommend that you answer `Y` to data fetching and Redux examples, unless you have a clear plan on how this works already. The examples are easy to delete from your app later if you do not need them.
+The automated bootstrap process will ask you some questions. We recommend that you answer `Y` to data fetching and Redux examples, unless you have a clear plan on how this works already. The examples are easy to delete from your app later if you do not need them. Much of this guide will assume that you answered `Y`.
 
 ## File structure of your app
 
@@ -61,16 +74,16 @@ The automated bootstrap process will ask you some questions. We recommend that y
 └── roc.config.js
 ```
 
-`src/components` - components of the application  
-`src/routes.js` - react router mapping  
-`public/` - files served directly from web server  
-`roc.config.js` - application configuration  
+`src/components` - UI components of the application  
+`src/routes.js` - React router setup  
+`public/` - Files served directly from web server  
+`roc.config.js` - Application configuration  
 `package.json` - npm package data  
 
 Some of these files can be deleted as they are only for illustration and demo purposes.
-The structure set up for you is only a suggestion and can be adjusted using roc.config.js. Jump to [tooling configuration](toolingconfiguration) for details.
+The structure set up for you should be viewed as a suggestion and can be adjusted at any time using `roc.config.js`. Jump to [tooling configuration](#tooling-configuration) for details.
 
-## Command basics
+## Roc command basics
 
 Roc has a CLI (Command Line Interface) that is used for all common operations when working with your project.
 
@@ -110,7 +123,7 @@ General options:
  -v, --version                           Output version number.
 ```
 
-We used the `project creation` group when bootstrapping our project in the previous section. What deserves our attention now are the additional commands grouped under `project development` as well as `start`:
+We used `new` from the `project creation` group when bootstrapping our project in the previous section. What deserves our attention now are the additional commands grouped under `project development` as well as `start`:
 
 ```
 Project development:
@@ -120,18 +133,18 @@ Project development:
  development test [targets]              Runs tests on the current project.
 ```
 
-These commands are important for your development workflow and they can be abbreviated as `roc build`, `roc clean`, `roc dev` and `roc test`. For information about how to use the commands and their available settings add `-h` when running them.
+These commands are important for your daily development workflow and they can be abbreviated as `roc build`, `roc clean`, `roc dev` and `roc test`. For information about how to use the commands and their available settings add the help option `-h` (`--help`) when running them.
 
-Your bootstrapped project has also created aliases in your `package.json` for these commands, so `npm run build`, `npm start` etc. also work as expected.
+Your bootstrapped project has also created aliases in your `package.json` for these commands, so `npm run build`, `npm start` etc. also work as expected for those familiar with npmscripts.
 
 To start the development server and launch the app in your browser, run  
 `$ roc dev` which will open a new tab like in the screenshot:
 
 ![my-app in the browser](rocdev.png)
 
-Here you see your React app running in development mode. You can open the files in your favourite editor and they will be live-reloaded in the browser as you make modifications to them. Development mode is powerful in this Roc extension and provides a great set of tools ready to be used.
+Here you see your React app running in development mode. You can open the files in your favourite editor and they will be live-reloaded in the browser as you make modifications to them. Development mode in your Roc project is powerful and you get a great set of tools that are ready to be used.
 
-By default you can open Redux DevTools by pressing `ctrl+h` on your keyboard. A running BrowserSync instance can be found on port `3031`.
+By default you can open Redux DevTools in the browser by pressing `ctrl+h` on your keyboard. A running BrowserSync instance can be found on port `3031`.
 
 Development mode is reserved for local development only. You should never use it in production.
 
@@ -197,31 +210,32 @@ ROC_CONFIG_SETTINGS are deep-merged on top of settings from roc.config.js
 }
 ```
 
-How you choose to set your configration is up to you, but we **highly recommend**:
+How you choose to set your configration is up to you, but in general we **highly recommend**:
 - Use CLI parameters for temporary configuration and experiments
-- `roc.config.js` for configuration that must follow your project permanently and have it checked into source control with the rest of the project.  
+- `roc.config.js` for configuration that must follow your project permanently; and have it checked into source control with the rest of the project.  
 
-Only use the environmental `ROC_CONFIG_SETTINGS` in situations where you for some reason have no choice, for example certain CI servers or sandboxed environments. The Roc CLI will actually warn you when something is appended using `ROC_CONFIG_SETTINGS` to help avoid unexpected implicit behaviour as a result of these being set. It is easy to forget previously defined environment variables.
+Only use the environmental `ROC_CONFIG_SETTINGS` in situations where you for some reason have no other choice. For example certain CI servers or sandboxed environments.  
+The Roc CLI will actually warn you when settings are appended using `ROC_CONFIG_SETTINGS` to help avoid unexpected implicit behaviour as a result of these being set. It is easy to forget about previously defined environment variables.
 
 ![env warning](envwarning.png)
 
 The tooling configuration that we just introduced takes care of build-time information as well as some framework-specific settings controlled by `web-app-react`. We recommend you spend a little time to get familiar with them.
 
-You should _not_ mix your own application-specific `Runtime configuration` with these. This is handled separately by design.
+You should _not_ mix your own application-specific `Runtime configuration` with this tooling configuration. They are handled separately by design.
 
 ## Runtime configuration
 
-Most applications need to bring their own set of configurations that must also vary depending on the environment. Examples of this can be
-- Host of backend servers to use
-- Feature flags
+Most applications need to bring their own unique sets of configurations that can also vary depending on the environment. Examples of this can be
+- Host of backend API servers to use
+- Feature flags for the application
 - Language settings
 
-Hardcoding values like this that can vary in different environments is not a great idea.
+Hardcoding configuration values like this that can vary in different environments is not a great idea.
 
 To solve this in a good manner, `web-app-react` includes and exposes [node-config](https://github.com/lorenwest/node-config) to your project. It takes care of all your configuration needs.
 
 ### Defining runtime configuration with node-config
-Create a new directory `config/` in your project root. Here you may define `js` or `json` files named after the environment (`NODE_ENV`) of choice. For example:
+Create a new directory `config/` in your project root. Here you may define `js` or `json` files named like the corresponding environment (`NODE_ENV`) of choice. For example:
 
 ```
 config/
@@ -230,7 +244,7 @@ config/
     custom-environment-variables.json
 ```
 
-`production.json` will be loaded when NODE_ENV is set to `production` and can contain your configuration:
+`production.json` will be loaded when NODE_ENV is set to `production` and should contain your configuration:
 
 ```json
 {
@@ -241,11 +255,11 @@ config/
 }
 ```
 
-The concept of `DANGEROUSLY_EXPOSE_TO_CLIENT` shown in the example config is unique to `web-app-react` and is actually controlled by the setting `--runtime-configWhitelistProperty`. Configuration under this key will be serialized and served to clients as well.
+The concept of `DANGEROUSLY_EXPOSE_TO_CLIENT` shown in the example config above is unique to `web-app-react` and is actually controlled by the setting `--runtime-configWhitelistProperty`. Configuration under this particular key will be serialized and served to clients as well.
 
-It is very useful to handle configuration values that must be accessible in both server and client environments. For example components that are rendered on both server and client _both_ need to know where to fetch their data from. The values under `DANGEROUSLY_EXPOSE_TO_CLIENT` solve this elegantly. It allows us to have a clear split between universal configuration and secrets that should be server-side only.
+Components that are rendered on both server and client _both_ need to know where to fetch their data from. The values under `DANGEROUSLY_EXPOSE_TO_CLIENT` solve this elegantly. It allows us to have a clear split between universal configuration and secrets that should be server-side only.
 
-`node-config` also supports using individual environmental variables to define runtime configuration. These can be mapped in the file `custom-environment-variables.json`. See the [docs](https://github.com/lorenwest/node-config/wiki/Environment-Variables#custom-environment-variables) for details.
+`node-config` also supports using individual environmental variables to define important runtime configuration. These can be mapped in the file `custom-environment-variables.json`. See the official  [docs](https://github.com/lorenwest/node-config/wiki/Environment-Variables#custom-environment-variables) for details.
 
 ### Reading runtime configuration for your app
 
@@ -273,9 +287,9 @@ import { appConfig as config } from 'roc-package-web-app-react/app/shared/univer
 console.log(config.backendHost); // www.getroc.org
 ```
 
-`config` will contain only the configuration that was grouped under `DANGEROUSLY_EXPOSE_TO_CLIENT`.
+`config` will contain only the configuration that was grouped under `DANGEROUSLY_EXPOSE_TO_CLIENT` in your definition.
 
-## Writing components
+## Writing React components
 
 Roc exposes `React` and `prop-types` to your project, and does **not** introduce any abstraction or extra APIs that you need to be aware of. You can define your React components like any other vanilla React project.
 
@@ -301,7 +315,9 @@ export default () => (
 );
 ```
 
-## Styling components
+You can consult the [official docs for React](https://facebook.github.io/react/docs/components-and-props.html) on components and props.
+
+## Styling React components
 
 Roc does not enforce a particular way of styling components on you. We do however give a fully working styling pipeline as a part of the default template used in this guide; provided by `roc-plugin-style-sass`. This plugin can be found in your `package.json` and removed if you wish to replace it with something else later.
 
@@ -336,7 +352,7 @@ export default () => (
 
 Because `roc-plugin-style-sass` uses css-modules by default, you do not need to worry about any other component defining `.stylish` and colliding.  
 
-`style.stylish` as used in the example will be a random and unique hash that matches the corresponding class in the css-bundle that is built for you and automatically available in your application.
+`style.stylish` as used in the example will be a random and unique string that matches the corresponding class in the css-bundle that is built for you and automatically available in your application.
 
 If you for some reason wish to disable css-modules or adjust other configuration to customize the style build pipeline:
 
@@ -349,6 +365,8 @@ If you for some reason wish to disable css-modules or adjust other configuration
 
 These follow `roc-plugin-style-sass` and will no longer be available if you remove the plugin from your project.
 
+Styling components is an area with a lot of differing opinions and available options in the community. Using the plugin as-is will **save you a lot of time** unless you strictly need something else.
+
 ## Adding extra resources
 
 If you need to include extra resources like global styles or scripts into the start of your application bundle this can be done using the `--build-resources` configuration.
@@ -358,6 +376,55 @@ If you need to include extra resources like global styles or scripts into the st
 ```
 
 Note that the default value for this configuration is `["roc-package-web-app-react/styles/base.css"]` which contains some [css-resets](https://github.com/rocjs/roc-package-web-app-react/blob/master/extensions/roc-package-web-app-react/styles/base.css). If you wish to add more resources by redefining this array be sure to include this default explicitly, otherwise you will lose the resets. For example `["roc-package-web-app-react/styles/base.css", "styles/somethingelse.css"]`
+
+## Extending the root HTML document
+
+A complete server-rendered HTML document is provided by `web-app-react`. The ([njk](https://mozilla.github.io/nunjucks/)) template used to render this document [can be viewed on github](https://github.com/rocjs/roc-package-web-app-react/blob/master/extensions/roc-package-web-app-react/views/roc-package-web-app-react/main.njk).
+
+You can extend this in your application using several mechanisms:
+
+### Define individual custom template values
+```
+--build-templateValues
+```
+
+This defaults to ``"src/template-values.js"``. In this file you can define a function that returns an object with values that will be exposed in the template as `custom`.
+
+Example `src/template-values.js`:
+```javascript
+export default function getTemplateValues({ koaState, settings, reduxState }) {
+  // you can use state from koa, settings and redux state to make your decision
+  return {
+      bodyClass: 'main',
+  };
+}
+```
+
+`custom.bodyClass` will then evaluate to `main` in the default template.
+
+### Take ownership of the template and re-define it
+
+```
+--runtime-template-path   A directory, or array of directories, where the template for the application can be found. Internal path with default templates will be appended to the array, so it's possible to extend them.
+```
+
+Allows you to specify a local path for your custom template. For example `--runtime-template-path="views"` that can contain a file `main.html`. This will then be used instead of the default provided by `web-app-react`.
+
+This allows you to define your own template from scratch.
+
+### Add content to blocks without having to re-define all markup
+
+As you can see in the [base template](https://github.com/rocjs/roc-package-web-app-react/blob/master/extensions/roc-package-web-app-react/views/roc-package-web-app-react/main.njk) some pre-defined blocks like `bodyPreApplication` and `bodyPostApplication` are defined. If you only need to add some data to the template at these blocks, it is much cleaner to **extend** the base template and then declare these blocks.
+
+Example custom template with custom `bodyPreApplication` block:
+
+```
+{% extends baseTemplate %}
+{%- block bodyPreApplication -%}
+    <!-- Add things to the bodyPreApplication block -->
+{%- endblock -%}
+```
+
 
 ## Routing
 
@@ -417,16 +484,16 @@ export default () => (
 );
 ```
 
-`components/header/index.js` demonstrates this well as it drives the application menu by rendering links.
+`components/header/index.js` demonstrates this well as it drives the example application menu by rendering links.
 
 ## Fetching data
 
 Most applications need to fetch data from external sources. Let's face it, applications without data are not very useful.  
 `web-app-react` aims to make data-fetching a great experience.
 
-In various tech stacks it is very common to do data-fetching in the `componentDidMount` component lifecycle of React. However this is problematic because it has some large limitations: it is only executed on the client and not when server rendering components.
+In various tech stacks it is very common to do data-fetching in the `componentDidMount` component lifecycle of React. However this is problematic because of some large limitations: it is only executed on the client and not when server rendering components.
 
-Only fetching data on the client using mechanisms like `componentDidMount` results in delays and visible flash of content because we must wait for the data to arrive before it can be rendered. For creating a good user experience what we **actually** want the ability to do is:
+Only fetching data on the client using mechanisms like `componentDidMount` results in delays and visible flash of content because we must wait for the data to arrive before it can be rendered. For creating a good user experience what we **actually** want the abilities to do in different scenarios is:
 
 - Trigger new data fetches upon route transitions (for example, the user navigates from `/` to `/data`)
 - Do data fetching on the server so that we do not always have to wait on the client for shared/common data
@@ -480,15 +547,18 @@ The hooks themselves can also be configured further using Roc. The defaults are 
 --runtime-fetch-client-parallel           If defer hooks should be started at the same time as the blocking ones.
 ```
 
+**Important:** Remember that a component must be mapped in the route definition for the hooks to be executed.
+
 ## Data flow
 [Redux](http://redux.js.org/docs/introduction/) is a very popular library that implements unidirectional flow of data along with a great way of `connect`ing this store of data to any of your React components.
 
-### Connecting components to the Redux store
-
 As our applications grow in size and complexity; handling `state` using just React `Component` and `setState` can start to become tedious.
 
-
 `web-app-react` integrates `Redux` as a first-class citizen and it is available for you to use. Roc does not modify the API of Redux; it only aims to be readily configured.
+
+### Connecting components to the Redux store
+
+A connected component will automatically be updated when the Redux state data is modified.  
 
 Example of a redux-connected component in a project:
 
@@ -513,7 +583,7 @@ export default class MyComponent extends Component {
 }
 ```
 
-The value from Redux `state.somevalue` is now connected to `MyComponent` accessible as the `prop` `myprop`.
+The value from Redux `state.somevalue` is now connected to `MyComponent` accessible as the `prop`: `myprop`.
 
 ### Redux actions
 
@@ -533,6 +603,7 @@ export function myAction() {
 #### Dispatching actions
 Roc does not dictate how you dispatch actions. Just import your action and `dispatch` it. `dispatch` is available in the object passed as argument to the data fetching hooks and as a `prop` on Redux `connect`ed React components.
 
+Example connected component with `dispatch` as a prop:
 ```javascript
 import { connect } from 'react-redux';
 import { myAction } from './actions';
@@ -547,6 +618,24 @@ class ConnectedComponent extends Component {
 }
 ```
 
+Example component with hooks that uses `dispatch`:
+
+```javascript
+import { connect } from 'react-redux';
+import { myAction } from './actions';
+
+@provideHooks({
+  fetch: ({ dispatch }) => dispatch(myAction()).then(/*something...*/),
+})
+class HookComponent extends Component {
+  render() {
+    return (
+      <div />
+    );
+  }
+}
+```
+
 If you answered `Y` to include a Redux demo in your app you can view some example actions in the bottom of `src/redux/repo.js`
 
 ### Redux reducers
@@ -556,7 +645,7 @@ Roc bootstraps Redux for us and expects to find your reducers exported in the fi
 --build-reducers    The reducers to use if no entry file is given, will use default entry files internally.
 ```
 
-This file must have the reducer functions as named exports. The export name will be used as the key in the Redux store.
+This file must have the reducer functions as **named exports**. The export name will be used as the key in the Redux store.
 
 If you answered `Y` to include a Redux demo in your app you can view this file in your project which exports reducers: `src/redux/reducers.js`.
 
@@ -603,7 +692,7 @@ which can be used to add your own custom middlewares to Koa.
 
 ### Adding your own Koa middleware
 
-Koa middlewares allow you to react to any request made to your HTTP server. Example operations are adding new server-side routes or adding HTTP-headers to all requsts. The example below adds a Koa middleware that logs `Roc rocks` on every request.
+Koa middlewares allow you to react to any request made to your HTTP server. Example operations are adding new server-side routes or adding HTTP-headers to all requests. The example below adds a Koa middleware that logs `Roc rocks` on every request.
 
 `src/server/middlewares.js`
 
@@ -616,13 +705,317 @@ const oneMiddleware = function* (next) {
 export default (settings, { server }) => [ oneMiddleware ];
 ```
 
-Note that the function provides the Roc runtime `settings` and Koa `server` instance as arguments which can be taken into consideration before returning the final list of middlewares.
+Note that the function provides the Roc runtime `settings` and Koa `server` instance as arguments which can be taken into consideration before returning the final list of your middlewares.
 
 ### Accessing the Redux store from a Koa middleware
+
 For your convenience the Redux store is made available to you in your own Koa middlewares through `this.state.reduxStore`. This can be used to perform Redux operations on the server. Useful if you need to pass some data from the server side to be used on the client.
 
 ## Testing your app
 
-## Polyfills and language features
+The project can be enhanced with plugins that enable testing with little effort on your part.
+
+A fully featured setup for testing with [Jest](https://facebook.github.io/jest/) is included in your project if you answered `Y` to include this when initializing. Roc uses `roc-plugin-test-jest` to do this. You can see this plugin in your `package.json` file if it is enabled.
+
+If you said `n` to include testing, you can install the plugin yourself in the project: `npm i --save-dev roc-plugin-test-jest`.
+
+The plugin adds a `test` command to `roc`:
+
+```
+development test [targets]    Runs tests on the current project.
+```
+
+To run tests in your project run the command:
+
+```sh
+$ roc test
+```
+
+![roc test command](roctest.png)
+
+The plugin adds some settings. Run `$ roc test -h` for a complete overview:
+
+```
+test:
+ --test-jest-junit-enabled    If a JUnit report should be be created.
+ --test-jest-junit-path       Where the file should be written.
+```
+
+You can add Jest configuration for your project in two ways:
+- Under the "jest" property in `package.json`
+- Under the "jest" property in `roc.config.js`
+
+Note that it will look for the Jest config in `roc.config.js` first and will only use this if it is found. No merging of Jest configs in `package.json` and `roc.config.js` is done.
+
+Read more about Jest configuration in the [official docs](https://facebook.github.io/jest/docs/en/configuration.html#content).
+
+## Modifying webpack and babel configurations
+
+Roc takes care of the underlying tooling and build configurations for you so that you can focus on coding your product in a productive environment.
+
+`web-app-react` uses [Babel](http://babeljs.io/) under the hood for code transpilation and [Webpack](http://webpack.github.io/docs/) for building bundles.
+
+Even though there are Roc plugins available to solve the common use-cases it is sometimes necessary for you to modify your `Webpack` or `Babel` configurations directly. Examples of this can include adding extra `plugins` to `Babel` or some new `loaders` to `Webpack`.
+
+### Webpack
+
+Additions can be made to the webpack configuration by defining `webpack` in your `roc.config.js`. This should either be an object with the plain Webpack configuration or a function that returns an object. If a function is defined, the function is invoked with one parameter: `target`.
+
+Example `roc.config.js` with webpack object
+
+```javascript
+module.exports = {
+  settings: {
+    // your settings...
+  },
+  webpack: {
+    module: {
+      loaders: [/*some new loader*/],
+    },
+  },
+}
+```
+
+Example `roc.config.js` with webpack function
+
+```javascript
+module.exports = {
+  settings: {
+    // your settings...
+  },
+  webpack: (target) => {
+    if (target === 'web') {
+      return {
+        module: {
+          loaders: [/*some new loader*/],
+        },
+      };
+    }
+    return {};
+  },
+}
+```
+
+When modifying the webpack configuration using the `webpack` property [webpack-merge](https://github.com/survivejs/webpack-merge) is used to modify the configuration for you.
+
+If you need additional power on modifying the underlying webpack configuration you can tap into the Roc [hook and actions system](https://github.com/rocjs/roc/blob/master/docs/Configuration.md#actions). This can be useful if you need to remove or mutate existing configurations.
+
+Custom actions can also be defined in `roc.config.js` and is done using the `project->actions` property.
+
+Example `roc.config.js` with custom action function to modify webpack
+
+```javascript
+module.exports = {
+  settings: {
+    // your settings...
+  },
+  project: {
+    actions: ({ hook }) => {
+      if (hook === 'build-webpack') {
+        return () => (webpack) => {
+          webpack.output.filename = 'lol.js';
+          return webpack;
+        },
+      },
+    },
+  },
+}
+```
+
+This is very powerful and opens up to modifying most of the important behaviour. It is not only limited to webpack. Run `$ roc docs` and view `docs/Hooks.md` for a list of hooks that you can use.
+
+If you do something smart and useful as a `project->action` you can easily share this to be plugged into other `web-app-react` projects by moving it into a [dedicated roc plugin](https://github.com/rocjs/roc/blob/master/docs/guides/CreateExtension.md#creating-an-extension).
+
+### Babel
+
+Additions can be made to the babel configuration in several ways:
+1. Add a `babel` property to your `roc.config.js`
+2. Add `.babelrc` file to the project
+3. Add a `babel` property to your `package.json`
+
+Configuration is prioritized in that order. Only one of them will be considered.
+
+Note that all Babel configurations will support the `extends` property. The value of this determines if the project Babel configuration should be [merged](https://github.com/schnittstabil/merge-options) with the one provided by `web-app-react` or not. It will extend by default. Set to `false` if you which to overwrite the entire configuration.
+
+#### Using roc.config.js
+
+Example `roc.config.js` with babel object:
+```javascript
+module.exports = {
+  settings: {
+    // your settings...
+  },
+  babel: {
+    extends: false, // we want to define a config from scratch
+    // your custom babel config
+  },
+}
+```
+
+Example `roc.config.js` with babel function:
+```javascript
+module.exports = {
+  settings: {
+    // your settings...
+  },
+  babel: (target) => {
+    return {
+      extends: true, // we want to merge with the one provided by web-app-react
+      // your custom babel config depending on target
+    };
+  },
+}
+```
+
+#### Using .babelrc or package.json
+If you use `.babelrc` or `babel` definition in `package.json` it works just like [documented by Babel](https://babeljs.io/docs/usage/babelrc/).
+
+`extends` set to `false` is still respected if you wish to ignore the values defined by `web-app-react`.
+
+#### With a project action
+
+Like explained in the Webpack section above; a dedicated hook is exposed for modifying Babel configurations. It is named `babel-config`.
+
+Example `roc.config.js` with custom action function to modify Babel config:
+
+```javascript
+module.exports = {
+  settings: {
+    // your settings...
+  },
+  project: {
+    actions: ({ hook }) => {
+      if (hook === 'babel-config') {
+        return () => (babel) => {
+          // do something with babel
+          return babel;
+        }
+      }
+    }
+  },
+}
+```
+
+You can make sharable Babel adjustments between `web-app-react` projects by moving the action into a [dedicated roc plugin](https://github.com/rocjs/roc/blob/master/docs/guides/CreateExtension.md#creating-an-extension).
+
+## Polyfills
+
+`web-app-react` does not add any polyfills for you. If you wish to add custom polyfills this can be done by intalling the required polyfills to your project. For example:
+
+`$ npm i --save core-js`
+
+Add a file that can group your polyfilling ambitions, `src/polyfills.js` to the project:
+
+```javascript
+// only include polyfills on the client
+if (__WEB__) {
+  // load your polyfills of choice
+  require('core-js/es6/array');
+  require('core-js/es6/object');
+}
+```
+
+Include `src/polyfills.js` to your project build by prepending it to the `resources` array in `roc.config.js`:
+
+```javascript
+{
+  build: {
+    resources: ['src/polyfills.js', 'roc-package-web-app-react/styles/base.css'],
+  },
+}
+```
+
+Polyfills will now be included in your client-side bundle.
+
+## Language features
+
+[Babel](http://babeljs.io/) is used extensively.
+
+The following Babel presets and plugins are added by default through the extensions in your `web-app-react` project.
+
+presets: `preset-es2015, preset-stage-1, preset-react`  
+plugins: `plugin-transform-runtime, plugin-transform-decorators-legacy, plugin-react-transform`
+
+In practice, the following applies to your project as a consequence of this:
+- You can write modern ES, including the stage-1 proposals
+- You can write React JSX in your project
+- You can use the legacy decorator syntax, e.g. `@provideHooks(someHooks)class MyComponent....`
+- All your built code is transpiled to ES5
+
+## Docker
+
+You can run your application in a [Docker](https://www.docker.com/) container.
+
+Example `Dockerfile` to create an image:
+```
+FROM node:8.4.0
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
+COPY package.json /usr/src/app/package.json
+RUN npm install
+COPY . /usr/src/app
+RUN npm run build
+CMD ["npm", "start"]
+EXPOSE 3000
+```
+
+Logging output from the server will be availble in the Docker logs.
 
 ## Troubleshooting
+
+### Roc tooling
+The Roc CLI offers some functionality to help you in situations where things are going wrong (blowing up in your face) when running a command.
+
+Snippet from `$ roc` output:
+```
+General options:
+ -b, --better-feedback    Enables source-map-support and loud-rejection.
+ -V, --verbose            Enable verbose mode.
+```
+
+The `-b` option should be appended if you want stacktraces that map to the correct lines of code of Roc `src/`. This is useful for debugging errors that originate from any Roc internals.
+
+The `-V` option should be appended for very verbose feedback of what is currently happening. This includes useful information like:
+
+- Extensions used
+  - The Roc extensions that are loaded in your current context
+- Extensions tree
+  - A visual presentation of the extension hierarchy loaded in your current context
+- Feedback on all hooks that are executed in Roc
+  - Gives a complete overview of what extensions that are executing an action on given hook
+
+If you are having a problem with a command and feel like you do not know where to being, running with `-b -V` will likely set you on the correct path.
+
+In addition, [debug](https://github.com/visionmedia/debug) is used internally. This means that you can use the `DEBUG` environment variable to access useful information. For example: `$ DEBUG="*" roc build`
+
+There are also the useful settings if you want to add this to your configuration:
+
+```
+--runtime-debug-client    Filter for debug messages that should be shown for the client, see https://npmjs.com/package/debug.
+ --runtime-debug-server   Filter for debug messages that should be shown for the server, see https://npmjs.com/package/debug.
+```
+
+For example: `$ roc start server --runtime-debug-server="koa:*"`
+
+If you believe it is not a configuration error on your side and you do not know how to fix the problem, the output here can be shared in an [Issue](https://github.com/rocjs/roc/issues). We are here to help.
+
+For a better understanding of the underlying architecture of Roc you can [read more about that in the docs](https://github.com/rocjs/roc/tree/master/docs#table-of-contents).
+
+### Start without CLI
+You can start your application [without having the CLI installed globally](https://github.com/rocjs/roc/blob/master/docs/Runtime.md#how-can-i-start-my-roc-application-without-using-the-roc-cli).
+
+### Dev vs build + start
+
+Please note that `roc dev` and `roc build && roc start` are two **very** different things.
+
+`dev` mode provies some extra useful utilities for discovering problems:
+- [YellowBox](https://github.com/iamdustan/yellowbox-react) is installed and active for notifying about potential issues
+- [Redux devtools](https://github.com/gaearon/redux-devtools) are available on `ctrl+h` by default
+- [Browsersync](https://www.browsersync.io/) admin tool is running on port 3031 by default
+- React is in development mode for better feedback
+- It enables hot-reloading of your code
+- It is unsuitable for production, in every way imaginable
+
+Never run `dev` in a production environment. It is tailored for a good development experience but is not suited for production traffic.
+
+Use `roc start` to serve your production-grade bundles.
