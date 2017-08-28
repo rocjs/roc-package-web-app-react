@@ -27,6 +27,7 @@ The guide covers all the basic elements that you need in order to be productive 
 - [Runtime configuration](#runtime-configuration)
 - [Writing React components](#writing-react-components)
 - [Styling React components](#styling-react-components)
+- [Special variables](#special-variables)
 - [Adding extra resources](#adding-extra-resources)
 - [Extending the root HTML document](#extending-the-root-html-document)
 - [Routing](#routing)
@@ -370,6 +371,34 @@ import style from './style.scss?modules=false';
 ```
 
 Styling components is an area with a lot of differing opinions and available options in the community. Using the plugin as-is will **save you a lot of time** unless you strictly need something else.
+
+## Special variables
+
+Webpack is used for creating your application bundles and we make use of the [DefinePlugin](http://webpack.github.io/docs/list-of-plugins.html#defineplugin)
+
+The following useful constants are available to you in your project code:
+- \_\_WEB\_\_
+  - Boolean. `true` if client bundle.
+- \_\_NODE\_\_
+  - Boolean. `true` if server bundle
+
+These are extra useful because they are evaluated at `compile time`. They can be used to make sure code is only included in a specific bundle. For example:
+
+```javascript
+if (__WEB__) {
+  console.log('I will only exist in the client bundle.');
+}
+
+if (__NODE__) {
+  console.log('I will only exist in the server bundle.');
+}
+```
+
+Will in your final **server** bundle be:
+
+```javascript
+console.log('I will only exist in the server bundle.');
+```
 
 ## Adding extra resources
 
