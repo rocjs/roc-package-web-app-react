@@ -4,7 +4,7 @@
 
 It is a perfect match for writing fully-featured server-rendered web applications that use `React` components and `Redux` to handle your flow of data. It does not compromise on features or flexibility. Plugins are available for all important features like styling pipelines and automated testing.
 
-The guide covers all the basic elements that you need in order to be productive with `web-app-react`. We assume you already know ES2015+, Node.js and have some web development using React and Redux.
+The guide covers all the basic elements that you need in order to be productive with `web-app-react`. We assume you already know ES2015+, Node.js and have some web development experience using React and Redux.
 
 ## The underlying technology:
 
@@ -52,7 +52,7 @@ Bootstrapping a new project in the location of your choice is fully automated. R
 
 `$ roc new my-app web-app-react wip`
 
-The automated bootstrap process will ask you some questions. We recommend that you answer `Y` to data fetching and Redux examples, unless you have a clear plan on how this works already. The examples are easy to delete from your app later if you do not need them. Much of this guide will assume that you answered `Y`.
+The automated bootstrap process will ask you some questions. We recommend that you answer `Y` to data fetching and Redux examples, unless you have a clear plan on how this works already. The examples are easy to delete from your app later if you do not need them. Much of this guide will assume that you answered `Y` to these questions.
 
 ## File structure of your app
 
@@ -135,18 +135,18 @@ Project development:
 
 These commands are important for your daily development workflow and they can be abbreviated as `roc build`, `roc clean`, `roc dev` and `roc test`. For information about how to use the commands and their available settings add the help option `-h` (`--help`) when running them.
 
-Your bootstrapped project has also created aliases in your `package.json` for these commands, so `npm run build`, `npm start` etc. also work as expected for those familiar with npmscripts.
+Your bootstrapped project has also created command aliases in your `package.json` for these commands, so `npm run build`, `npm start` etc. also work as expected for those already familiar with npmscripts.
 
 To start the development server and launch the app in your browser, run  
 `$ roc dev` which will open a new tab like in the screenshot:
 
 ![my-app in the browser](rocdev.png)
 
-Here you see your React app running in development mode. You can open the files in your favourite editor and they will be live-reloaded in the browser as you make modifications to them. Development mode in your Roc project is powerful and you get a great set of tools that are ready to be used.
+Here you see your React app running in development mode. You can open the files in your favourite code editor and they will be live-reloaded in the browser as you make modifications to them. Development mode in your Roc project is powerful and you get a great set of tools that are ready to be used. No extra setup required.ß
 
 By default you can open Redux DevTools in the browser by pressing `ctrl+h` on your keyboard. A running BrowserSync instance can be found on port `3031`.
 
-Development mode is reserved for local development only. You should never use it in production.
+Development mode is reserved for local development only. **You should never use it in production.**
 
 Use `roc build` to build bundles optimized for production. Start them with `roc start`.
 
@@ -241,7 +241,6 @@ Create a new directory `config/` in your project root. Here you may define `js` 
 config/
     development.json
     production.json
-    custom-environment-variables.json
 ```
 
 `production.json` will be loaded when NODE_ENV is set to `production` and should contain your configuration:
@@ -267,7 +266,7 @@ So now that we know how to define configuration we need to know how to read and 
 
 #### Server only
 
-In your server modules you can read runtime configuration like this:
+In your server modules (for example Koa middlewares) you can read runtime configuration like this:
 
 ```
 import config from 'config';
@@ -279,7 +278,7 @@ console.log(config.host); // github.com
 
 #### Shared (universal)
 
-In your universal modules you can read runtime configuration like this:
+In your universal modules (for example React components) you can read runtime configuration like this:
 
 ```
 import { appConfig as config } from 'roc-package-web-app-react/app/shared/universal-config';
@@ -364,6 +363,11 @@ If you for some reason wish to disable css-modules or adjust other configuration
 ```
 
 These follow `roc-plugin-style-sass` and will no longer be available if you remove the plugin from your project.
+
+You can explicitly disable css-modules on an import by adding `?modules=false` to the import path. For example
+```javascript
+import style from './style.scss?modules=false';
+```
 
 Styling components is an area with a lot of differing opinions and available options in the community. Using the plugin as-is will **save you a lot of time** unless you strictly need something else.
 
@@ -462,9 +466,9 @@ The routes file exports a function that returns a declarative configuration of w
 
 You have complete ownership of this and can expose any component you like on any path.
 
-Read more about React router 3.x in the offical docs  [here](https://github.com/ReactTraining/react-router/blob/v3/docs/guides/RouteConfiguration.md).
+Read more about React router 3.x in the official docs  [here](https://github.com/ReactTraining/react-router/blob/v3/docs/guides/RouteConfiguration.md).
 
-By default `web-app-react` wraps the React router configuration with its own [application wrapper](https://github.com/rocjs/roc-package-web-app-react/blob/a6d3bd17ce59995da31b0984f33b148f9be47239/extensions/roc-package-web-app-react/app/shared/application.js). This is configurable by
+By default `web-app-react` wraps the React router configuration with its own [application wrapper](https://github.com/rocjs/roc-package-web-app-react/blob/a6d3bd17ce59995da31b0984f33b148f9be47239/extensions/roc-package-web-app-react/app/shared/application.js). This can be disabled by
 ```
 --build-useDefaultRoutes    If Roc should use an internal wrapper around the routes, please look at the documentation for more details.
 ```
@@ -519,7 +523,7 @@ import { provideHooks } from 'redial';
 @provideHooks({
   // by default, fetch is run on both server and client side
   fetch: ({ setProps }) => {
-    return fetchRocRepos() // function that returns promise to return json data
+    return fetchRocRepos() // example function that returns promise to return json data
     .then((json) => {
       setProps({
         repo: json,
@@ -547,7 +551,7 @@ The hooks themselves can also be configured further using Roc. The defaults are 
 --runtime-fetch-client-parallel           If defer hooks should be started at the same time as the blocking ones.
 ```
 
-**Important:** Remember that a component must be mapped in the route definition for the hooks to be executed.
+**Important:** Remember that a component must be mapped in the route definition for the hooks on it to be executed.
 
 ## Data flow
 [Redux](http://redux.js.org/docs/introduction/) is a very popular library that implements unidirectional flow of data along with a great way of `connect`ing this store of data to any of your React components.
@@ -749,6 +753,8 @@ Note that it will look for the Jest config in `roc.config.js` first and will onl
 
 Read more about Jest configuration in the [official docs](https://facebook.github.io/jest/docs/en/configuration.html#content).
 
+There are other alternative Roc plugins available for testing. For example [roc-plugin-test-mocha-webpack](https://github.com/rocjs/roc-plugin-test-mocha-webpack).
+
 ## Modifying webpack and babel configurations
 
 Roc takes care of the underlying tooling and build configurations for you so that you can focus on coding your product in a productive environment.
@@ -759,7 +765,7 @@ Even though there are Roc plugins available to solve the common use-cases it is 
 
 ### Webpack
 
-Additions can be made to the webpack configuration by defining `webpack` in your `roc.config.js`. This should either be an object with the plain Webpack configuration or a function that returns an object. If a function is defined, the function is invoked with one parameter: `target`.
+Additions can be made to the webpack configuration by defining `webpack` in your `roc.config.js`. This should either be an object with the plain [Webpack configuration](http://webpack.github.io/docs/) or a function that returns an object. If a function is defined, the function is invoked with one parameter: `target`.
 
 Example `roc.config.js` with webpack object
 
@@ -822,7 +828,7 @@ module.exports = {
 }
 ```
 
-This is very powerful and opens up to modifying most of the important behaviour. It is not only limited to webpack. Run `$ roc docs` and view `docs/Hooks.md` for a list of hooks that you can use.
+This is very powerful and opens up to modifying most of the important behaviour within the Roc ecosystem. It is not only limited to Webpack. Run `$ roc docs` and view `docs/Hooks.md` for a list of hooks that you can use.
 
 If you do something smart and useful as a `project->action` you can easily share this to be plugged into other `web-app-react` projects by moving it into a [dedicated roc plugin](https://github.com/rocjs/roc/blob/master/docs/guides/CreateExtension.md#creating-an-extension).
 
@@ -835,7 +841,7 @@ Additions can be made to the babel configuration in several ways:
 
 Configuration is prioritized in that order. Only one of them will be considered.
 
-Note that all Babel configurations will support the `extends` property. The value of this determines if the project Babel configuration should be [merged](https://github.com/schnittstabil/merge-options) with the one provided by `web-app-react` or not. It will extend by default. Set to `false` if you which to overwrite the entire configuration.
+Note that all Babel configurations will support the boolean `extends` property. The value of this determines if the project Babel configuration should be [merged](https://github.com/schnittstabil/merge-options) with the one provided by `web-app-react` or not. It will merge/extend by default. Set to `false` if you which to overwrite the entire configuration.
 
 #### Using roc.config.js
 
@@ -860,7 +866,7 @@ module.exports = {
   },
   babel: (target) => {
     return {
-      extends: true, // we want to merge with the one provided by web-app-react
+      extends: true, // default behaviour, we want to merge with the one provided by web-app-react
       // your custom babel config depending on target
     };
   },
@@ -959,7 +965,7 @@ CMD ["npm", "start"]
 EXPOSE 3000
 ```
 
-Logging output from the server will be availble in the Docker logs.
+Logging output from the server will be available in the Docker logs.
 
 ## Troubleshooting
 
@@ -973,7 +979,7 @@ General options:
  -V, --verbose            Enable verbose mode.
 ```
 
-The `-b` option should be appended if you want stacktraces that map to the correct lines of code of Roc `src/`. This is useful for debugging errors that originate from any Roc internals.
+The `-b` option should be appended if you want stack traces that map to the correct lines of code of Roc `src/`. This is useful for debugging errors that originate from any Roc internals.
 
 The `-V` option should be appended for very verbose feedback of what is currently happening. This includes useful information like:
 
@@ -984,11 +990,11 @@ The `-V` option should be appended for very verbose feedback of what is currentl
 - Feedback on all hooks that are executed in Roc
   - Gives a complete overview of what extensions that are executing an action on given hook
 
-If you are having a problem with a command and feel like you do not know where to being, running with `-b -V` will likely set you on the correct path.
+If you are having a problem with a command and feel like you do not know where to begin, running it with `-b -V` will likely set you on the correct path.
 
 In addition, [debug](https://github.com/visionmedia/debug) is used internally. This means that you can use the `DEBUG` environment variable to access useful information. For example: `$ DEBUG="*" roc build`
 
-There are also the useful settings if you want to add this to your configuration:
+There are also these useful settings if you want to add this to your configuration:
 
 ```
 --runtime-debug-client    Filter for debug messages that should be shown for the client, see https://npmjs.com/package/debug.
@@ -1008,7 +1014,7 @@ You can start your application [without having the CLI installed globally](https
 
 Please note that `roc dev` and `roc build && roc start` are two **very** different things.
 
-`dev` mode provies some extra useful utilities for discovering problems:
+`dev` mode provides some extra useful utilities for discovering problems:
 - [YellowBox](https://github.com/iamdustan/yellowbox-react) is installed and active for notifying about potential issues
 - [Redux devtools](https://github.com/gaearon/redux-devtools) are available on `ctrl+h` by default
 - [Browsersync](https://www.browsersync.io/) admin tool is running on port 3031 by default
