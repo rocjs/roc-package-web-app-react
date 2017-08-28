@@ -519,6 +519,31 @@ export default () => (
 
 `components/header/index.js` demonstrates this well as it drives the example application menu by rendering links.
 
+### Advanced router configurations
+
+The routes file also supports a named export `middlewareConfig`.
+
+This configuration supports two options:
+
+#### react-router-redial
+
+This allows you to hook onto relevant events triggered by `react-router-redial` on your routes.
+
+```
+onStarted(force)           Invoked when a route transition has been detected and when redial hooks will be invoked
+onError(error, metaData)   Invoked when an error happens
+onAborted(becauseError)    Invoked if it was prematurely aborted through manual interaction or an error
+onCompleted(type)          Invoked if everything was completed successfully, with type being either "beforeTransition" or "afterTransition"
+```
+
+Read docs [here](https://github.com/dlmr/react-router-redial#client-api) for more information.
+
+#### react-router-scroll-async
+
+This allows you to gain control of `scroll` related behaviour in your application.
+
+Read docs [here](https://github.com/dlmr/react-router-scroll-async#custom-scroll-behavior) for more information.
+
 ## Fetching data
 
 Most applications need to fetch data from external sources. Let's face it, applications without data are not very useful.  
