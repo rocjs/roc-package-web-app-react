@@ -53,7 +53,7 @@ Bootstrapping a new project in the location of your choice is fully automated. R
 
 `$ roc new my-app web-app-react wip`
 
-The automated bootstrap process will ask you some questions. We recommend that you answer `Y` to data fetching and Redux examples, unless you have a clear plan on how this works already. The examples are easy to delete from your app later if you do not need them. Much of this guide will assume that you answered `Y` to these questions.
+The automated bootstrap process will ask you some questions. We recommend that you answer `Y` to data fetching and Redux examples, unless you have a clear plan on how this works already. The examples are easy to delete from your app later if you do not need them.
 
 ## File structure of your app
 
@@ -202,7 +202,7 @@ ROC_CONFIG_SETTINGS are deep-merged on top of settings from roc.config.js
 
 ### Modify the build name permanently from the project using roc.config.js
 
-```js
+```javascript
 {
   //... other things
   build: {
@@ -269,7 +269,7 @@ So now that we know how to define configuration we need to know how to read and 
 
 In your server modules (for example Koa middlewares) you can read runtime configuration like this:
 
-```
+```javascript
 import config from 'config';
 
 console.log(config.host); // github.com
@@ -281,7 +281,7 @@ console.log(config.host); // github.com
 
 In your universal modules (for example React components) you can read runtime configuration like this:
 
-```
+```javascript
 import { appConfig as config } from 'roc-package-web-app-react/app/shared/universal-config';
 
 console.log(config.backendHost); // www.getroc.org
@@ -295,7 +295,7 @@ Roc exposes `React` and `prop-types` to your project, and does **not** introduce
 
 Examples:
 
-```js
+```javascript
 import React, { Component } from 'react';
 
 export default class Example extends Component {
@@ -307,7 +307,7 @@ export default class Example extends Component {
 }
 ```
 
-```js
+```javascript
 import React from 'react';
 
 export default () => (
@@ -340,7 +340,7 @@ Minimal example:
 
 `component.js`
 
-```js
+```javascript
 import React from 'react';
 
 import style from './style.scss';
@@ -471,7 +471,7 @@ React router 3.x is included for you and is ready to be used. Roc expects to fin
 
 In your project this is set to `src/routes.js` and contains the following:
 
-```
+```javascript
 // ...
 import App from './components';
 import Start from './components/start';
@@ -508,8 +508,8 @@ If you wish to opt out of this and configure the entire React router hierarchy b
 
 If you want to perform a transition to another react route gracefully on the client when the user clicks a link, the link can be rendered like this:
 
-```js
-impot { React } from 'react';
+```javascript
+import { React } from 'react';
 import { Link } from 'react-router';
 
 export default () => (
