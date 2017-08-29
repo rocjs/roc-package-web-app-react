@@ -2,7 +2,7 @@
 
 `roc-package-web-app-react` provides a complete _framework_ for creating and running ambitious Node.js and React web applications. It is developed by [Schibsted](http://www.schibsted.com/en/About-Schibsted/Schibsted-Products-and-Technology/) and used in production across many products.
 
-It is a perfect match for writing fully-featured server-rendered web applications that use `React` components and `Redux` to handle your flow of data. It does not compromise on features or flexibility. Plugins are available for all important features like styling pipelines and automated testing.
+It is a perfect match for writing fully-featured server-rendered web applications that use [React](https://facebook.github.io/react/) components and [Redux](http://redux.js.org/) to handle your flow of data. It does not compromise on features or flexibility. [Plugins](https://github.com/rocjs/roc/blob/master/docs/Extensions.md) are available for all important features like styling pipelines and automated testing.
 
 The guide covers all the basic elements that you need in order to be productive with `web-app-react`. We assume you already know ES2015+, Node.js and have some web development experience using React and Redux.
 
@@ -124,7 +124,7 @@ General options:
  -v, --version                           Output version number.
 ```
 
-We used `new` from the `project creation` group when bootstrapping our project in the previous section. What deserves our attention now are the additional commands grouped under `project development` as well as `start`:
+We used `new` from the `Project creation` group when bootstrapping our project in the previous section. What deserves our attention now are the additional commands grouped under `Project development` as well as the `start` command:
 
 ```
 Project development:
@@ -136,14 +136,14 @@ Project development:
 
 These commands are important for your daily development workflow and they can be abbreviated as `roc build`, `roc clean`, `roc dev` and `roc test`. For information about how to use the commands and their available settings add the help option `-h` (`--help`) when running them.
 
-Your bootstrapped project has also created command aliases in your `package.json` for these commands, so `npm run build`, `npm start` etc. also work as expected for those already familiar with npmscripts.
+Your bootstrapped project has also created command aliases in your `package.json` for these commands, so `npm run build`, `npm start` etc. also work as expected for those already familiar with npm scripts.
 
 To start the development server and launch the app in your browser, run  
 `$ roc dev` which will open a new tab like in the screenshot:
 
 ![my-app in the browser](rocdev.png)
 
-Here you see your React app running in development mode. You can open the files in your favourite code editor and they will be live-reloaded in the browser as you make modifications to them. Development mode in your Roc project is powerful and you get a great set of tools that are ready to be used. No extra setup required.ß
+Here you see your React app running in development mode. You can open the files in your favourite code editor and they will be live-reloaded in the browser as you make modifications to them. Development mode in your Roc project is powerful and you get a great set of tools that are ready to be used. No extra setup required.
 
 By default you can open Redux DevTools in the browser by pressing `ctrl+h` on your keyboard. A running BrowserSync instance can be found on port `3031`.
 
@@ -236,7 +236,7 @@ Hardcoding configuration values like this that can vary in different environment
 To solve this in a good manner, `web-app-react` includes and exposes [node-config](https://github.com/lorenwest/node-config) to your project. It takes care of all your configuration needs.
 
 ### Defining runtime configuration with node-config
-Create a new directory `config/` in your project root. Here you may define `js` or `json` files named like the corresponding environment (`NODE_ENV`) of choice. For example:
+Create a new directory `config/` in your project root. Here you may define [files in a supported format](https://github.com/lorenwest/node-config/wiki/Configuration-Files) named like the corresponding environment (`NODE_ENV`) of choice. For example:
 
 ```
 config/
@@ -370,7 +370,7 @@ You can explicitly disable css-modules on an import by adding `?modules=false` t
 import style from './style.scss?modules=false';
 ```
 
-Styling components is an area with a lot of differing opinions and available options in the community. Using the plugin as-is will **save you a lot of time** unless you strictly need something else.
+Styling components is an area with a lot of differing opinions and available options in the community. Using the plugin as-is will **save you a lot of time** unless you strictly need something else. If you prefer `less` there is a plugin that you can install instead; [roc-plugin-style-less](https://github.com/rocjs/roc-plugin-style-less).
 
 ## Special variables
 
@@ -433,7 +433,7 @@ export default function getTemplateValues({ koaState, settings, reduxState }) {
 }
 ```
 
-`custom.bodyClass` will then evaluate to `main` in the default template.
+`custom.bodyClass` will then evaluate to `main` in the default template. This feature will likely be removed in the future.
 
 ### Take ownership of the template and re-define it
 
@@ -562,7 +562,7 @@ To achieve all of this, `web-app-react` provides [react-router-redial](https://g
 It exposes an API that allows us to enhance our components rendered by `react-router` with dedicated data-fetching capabilities.
 
 Using it is simple:
-- In your component; import `provideHooks` from `react-router-redial`
+- In your component; import `provideHooks` from `redial`
 - Set up a `provideHooks` configuration object, by default we have `fetch` and `defer` function hooks available to us
   - `fetch` will trigger on both servers and clients
   - `defer` will trigger on client only, and it will not block any transitions
@@ -613,6 +613,14 @@ The hooks themselves can also be configured further using Roc. The defaults are 
 As our applications grow in size and complexity; handling `state` using just React `Component` and `setState` can start to become tedious.
 
 `web-app-react` integrates `Redux` as a first-class citizen and it is available for you to use. Roc does not modify the API of Redux; it only aims to be readily configured.
+
+Roc bootstraps Redux for us and expects to find your reducers exported in the file configured by
+
+```
+--build-reducers    The reducers to use if no entry file is given, will use default entry files internally.
+```
+
+Redux will only be enabled in your project if a reducers file is found.
 
 ### Connecting components to the Redux store
 
@@ -697,13 +705,8 @@ class HookComponent extends Component {
 If you answered `Y` to include a Redux demo in your app you can view some example actions in the bottom of `src/redux/repo.js`
 
 ### Redux reducers
-Roc bootstraps Redux for us and expects to find your reducers exported in the file configured by
 
-```
---build-reducers    The reducers to use if no entry file is given, will use default entry files internally.
-```
-
-This file must have the reducer functions as **named exports**. The export name will be used as the key in the Redux store.
+Your reducers file must have the reducer functions as **named exports**. The export name will be used as the key in the Redux store.
 
 If you answered `Y` to include a Redux demo in your app you can view this file in your project which exports reducers: `src/redux/reducers.js`.
 
