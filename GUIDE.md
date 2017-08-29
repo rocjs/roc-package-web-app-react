@@ -594,7 +594,7 @@ import { provideHooks } from 'redial';
 // Your component that uses the props 'repo' and 'stars'...
 ```
 
-You can see a complete example of this in your application (`src/components/fetching/index.js`) if you answered `Y` to include data-fetching.
+You can see a complete example of this in [the template source code](https://github.com/rocjs/roc-template-web-app-react/blob/enhancement/nextgen/template/src/components/fetching/index.js).
 
 The hooks themselves can also be configured further using Roc. The defaults are good, but being able to add more and finely tune this provides us with a lot of power:
 
@@ -620,7 +620,7 @@ Roc bootstraps Redux for us and expects to find your reducers exported in the fi
 --build-reducers    The reducers to use if no entry file is given, will use default entry files internally.
 ```
 
-Redux will only be enabled in your project if a reducers file is found.
+`Redux` will only be enabled in your project if a reducers file is found.
 
 ### Connecting components to the Redux store
 
@@ -702,19 +702,23 @@ class HookComponent extends Component {
 }
 ```
 
-If you answered `Y` to include a Redux demo in your app you can view some example actions in the bottom of `src/redux/repo.js`
+You can see full examples of Redux actions in the [template source code](https://github.com/rocjs/roc-template-web-app-react/blob/enhancement/nextgen/template/src/redux/repo.js#L42).
 
 ### Redux reducers
 
 Your reducers file must have the reducer functions as **named exports**. The export name will be used as the key in the Redux store.
 
-If you answered `Y` to include a Redux demo in your app you can view this file in your project which exports reducers: `src/redux/reducers.js`.
+Example `reducers.js` with named exports:
+```javascript
+export clicker from './clicker';
+export repo from './repo';
+```
 
 ### Fetching data with Redux
 
 The hooks that can be used for data-fetching also have access to Redux `dispatch`. Additionally [redux-thunk](https://github.com/gaearon/redux-thunk) is included for you, meaning that you _can_ dispatch thunk actions in your app.
 
-If you answered `Y` to include a Redux demo in your app you can view example usage of redux-thunk in the context of data-fetching in `src/redux/index.js` within your project.
+You can view full example usage of redux-thunk in the context of data-fetching in the [template source code](https://github.com/rocjs/roc-template-web-app-react/blob/enhancement/nextgen/template/src/components/redux/index.js#L27).
 
 In addition there exists Redux middlewares that you can opt to install to address the needs of data-fetching using Redux actions and reducers in a generic manner; for example [redux-api-middleware](https://github.com/agraboso/redux-api-middleware)
 
@@ -776,9 +780,15 @@ For your convenience the Redux store is made available to you in your own Koa mi
 
 The project can be enhanced with plugins that enable testing with little effort on your part.
 
-A fully featured setup for testing with [Jest](https://facebook.github.io/jest/) is included in your project if you answered `Y` to include this when initializing. Roc uses `roc-plugin-test-jest` to do this. You can see this plugin in your `package.json` file if it is enabled.
+You can install a fully featured setup for testing with [Jest](https://facebook.github.io/jest/) by installing the plugin yourself in the project:
 
-If you said `n` to include testing, you can install the plugin yourself in the project: `npm i --save-dev roc-plugin-test-jest`.
+```sh
+npm i --save-dev roc-plugin-test-jest
+```
+
+or answering `Y` when prompted upon project initialization.
+
+Roc uses `roc-plugin-test-jest` and you will see this plugin in your `package.json` file if it is enabled.
 
 The plugin adds a `test` command to `roc`:
 
