@@ -38,6 +38,8 @@ The guide covers all the basic elements that you need in order to be productive 
 - [Modifying webpack and babel configurations](#modifying-webpack-and-babel-configurations)
 - [Polyfills](#polyfills)
 - [Language features](#language-features)
+- [Start without Roc CLI](#start-without-roc-cli)
+- [Custom entry points](#custom-entry-points)
 - [Docker](#docker)
 - [Troubleshooting](#troubleshooting)
 
@@ -1015,6 +1017,31 @@ In practice, the following applies to your project as a consequence of this:
 - You can use the legacy decorator syntax, e.g. `@provideHooks(someHooks)class MyComponent....`
 - All your built code is transpiled to ES5
 
+### Start without Roc CLI
+You can start your application [without having the CLI installed globally](https://github.com/rocjs/roc/blob/master/docs/Runtime.md#how-can-i-start-my-roc-application-without-using-the-roc-cli).
+
+This is a good place to include code that **must** run first in the server process before the Roc runtime is started at all. A good example is monitoring or profiling tools.
+
+## Custom entry points
+
+You have the ability to take full control over the entry points used in your application.
+
+Settings to set custom entry points:
+```
+--build-input-node    The node/server entry point file.
+--build-input-web    The web/client entry point file.
+```
+
+Example `src/server.js`, enabled with `--build-input-node="src/server.js"`:
+
+```javascript
+import { createServer, useReact } from 'roc-package-web-app-react/app/server';
+
+useReact(createServer)().start();
+```
+
+Note that taking ownership of entry points means **you** have to keep them in sync manually as `roc-package-web-app-react` evolves.
+
 ## Docker
 
 You can run your application in a [Docker](https://www.docker.com/) container.
@@ -1073,9 +1100,6 @@ For example: `$ roc start server --runtime-debug-server="koa:*"`
 If you believe it is not a configuration error on your side and you do not know how to fix the problem, the output here can be shared in an [Issue](https://github.com/rocjs/roc/issues). We are here to help.
 
 For a better understanding of the underlying architecture of Roc you can [read more about that in the docs](https://github.com/rocjs/roc/tree/master/docs#table-of-contents).
-
-### Start without CLI
-You can start your application [without having the CLI installed globally](https://github.com/rocjs/roc/blob/master/docs/Runtime.md#how-can-i-start-my-roc-application-without-using-the-roc-cli).
 
 ### Dev vs build + start
 
