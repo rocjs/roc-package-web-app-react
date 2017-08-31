@@ -5,7 +5,7 @@ __Package for building React applications with Roc__
 - [roc-package-web-app-react-dev](/extensions/roc-package-web-app-react-dev)
 
 ## User guide
-Read our comprehensive user-guide on how to best utilize the tools and libraries provided by this Roc extension [here](GUIDE.md).
+Read the comprehensive user-guide on how to best utilize the tools and libraries provided by this Roc extension [here](GUIDE.md).
 
 ---
 To be used together with [Roc](https://github.com/rocjs/roc).

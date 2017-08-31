@@ -20,9 +20,17 @@ const extendTemplateSignature = (input, info) => {
     return true;
 };
 
+const currentExtension = extension => extension.name === 'roc-package-web-app-react';
+
 export default {
     config,
     meta,
+    description: ({ context: { usedExtensions } }) => {
+        const { packageJSON: { description } } = usedExtensions.find(currentExtension);
+        return `${description}\n\nRead the comprehensive user-guide on how to best utilize the tools ` +
+          'and libraries provided by this Roc extension' +
+          '[here](https://github.com/rocjs/roc-package-web-app-react/blob/master/GUIDE.md).';
+    },
     hooks: {
         'extend-template': {
             description: 'Used to add template paths, namespace and template file to render.',
