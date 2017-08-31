@@ -53,7 +53,7 @@ You need `Node.js` 4.x+ and `npm` 3.x+ to use Roc. You can install Roc globally 
 
 Bootstrapping a new project in the location of your choice is fully automated. Replace `my-app` in the command below with your preferred name.
 
-`$ roc new my-app web-app-react wip`
+`$ roc new my-app web-app-react`
 
 The automated bootstrap process will ask you some questions. We recommend that you answer `Y` to data fetching and Redux examples, unless you have a clear plan on how this works already. The examples are easy to delete from your app later if you do not need them.
 
