@@ -15,6 +15,11 @@ export default {
                     validator: notEmpty(isPath),
                 },
             },
+            useReactRouterScrollAsync: {
+                description: 'Use react-router-scroll-async middleware to help with scroll behavior for ' +
+                    'Single Page Applications. Disable this if SPA functionality is turned off.',
+                validator: required(isBoolean),
+            },
             routes: {
                 description: 'The routes to use if no entry file is given, will use default entry files internally.',
                 validator: notEmpty(isPath),

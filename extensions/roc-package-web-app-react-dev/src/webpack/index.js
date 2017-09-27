@@ -115,6 +115,7 @@ export default ({
             USE_DEFAULT_REDUX_MIDDLEWARES: buildSettings.redux.useDefaultMiddlewares,
             USE_DEFAULT_REACT_ROUTER_ROUTES: buildSettings.useDefaultRoutes,
             USE_I18N_POLYFILL: buildSettings.i18n.usePolyfill,
+            USE_REACT_ROUTER_SCROLL_ASYNC: buildSettings.useReactRouterScrollAsync,
 
             HAS_REDUX_REDUCERS: hasReducers,
             HAS_REDUX_MIDDLEWARES: hasMiddlewares,

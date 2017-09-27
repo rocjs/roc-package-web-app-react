@@ -1,5 +1,5 @@
 /* global __DEV__, HAS_CLIENT_LOADING, ROC_CLIENT_LOADING, ROC_PATH, HAS_REDUX_REDUCERS, document, window,
- HAS_REDUX_SAGA, REDUX_SAGAS, I18N_LOCALES, USE_I18N_POLYFILL */
+ HAS_REDUX_SAGA, REDUX_SAGAS, I18N_LOCALES, USE_I18N_POLYFILL, USE_REACT_ROUTER_SCROLL_ASYNC */
 /* eslint-disable global-require */
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -10,7 +10,6 @@ import createHistory from 'history/lib/createBrowserHistory';
 import { supportsHistory } from 'history/lib/DOMUtils';
 import debug from 'debug';
 import { useRedial } from 'react-router-redial';
-import useScroll from 'react-router-scroll-async/lib/useScroll';
 
 import { rocConfig } from '../shared/universal-config';
 
@@ -171,33 +170,42 @@ export default function createClient({
 
         let updateScroll = () => {};
 
+        const middlewares = [
+            useRedial({
+                ...routerMiddlewareConfig['react-router-redial'],
+                locals,
+                initialLoading,
+                beforeTransition: rocConfig.runtime.fetch.client.beforeTransition,
+                afterTransition: rocConfig.runtime.fetch.client.afterTransition,
+                parallel: rocConfig.runtime.fetch.client.parallel,
+                onCompleted: (type) => {
+                    if (type === 'beforeTransition') {
+                        updateScroll();
+                    }
+
+                    if (routerMiddlewareConfig['react-router-redial'].onCompleted) {
+                        routerMiddlewareConfig['react-router-redial'].onCompleted(type);
+                    }
+                },
+            }),
+        ];
+
+        if (USE_REACT_ROUTER_SCROLL_ASYNC) {
+            const useScroll = require('react-router-scroll-async/lib/useScroll');
+
+            middlewares.unshift(
+                useScroll({
+                    ...routerMiddlewareConfig['react-router-scroll-async'],
+                    updateScroll: (cb) => { updateScroll = cb; },
+                })
+            );
+        }
+
         const finalComponent = compose(createComponent)(
             <Router
                 history={history}
                 routes={routes}
-                render={applyRouterMiddleware(
-                    useScroll({
-                        ...routerMiddlewareConfig['react-router-scroll-async'],
-                        updateScroll: (cb) => { updateScroll = cb; },
-                    }),
-                    useRedial({
-                        ...routerMiddlewareConfig['react-router-redial'],
-                        locals,
-                        initialLoading,
-                        beforeTransition: rocConfig.runtime.fetch.client.beforeTransition,
-                        afterTransition: rocConfig.runtime.fetch.client.afterTransition,
-                        parallel: rocConfig.runtime.fetch.client.parallel,
-                        onCompleted: (type) => {
-                            if (type === 'beforeTransition') {
-                                updateScroll();
-                            }
-
-                            if (routerMiddlewareConfig['react-router-redial'].onCompleted) {
-                                routerMiddlewareConfig['react-router-redial'].onCompleted(type);
-                            }
-                        },
-                    }),
-                )}
+                render={applyRouterMiddleware(...middlewares)}
             />
         );
 
