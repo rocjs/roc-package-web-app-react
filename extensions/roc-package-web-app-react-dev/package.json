@@ -1,7 +1,7 @@
 {
   "name": "roc-package-web-app-react-dev",
   "description": "Package for building React applications with Roc (Development)",
-  "version": "1.0.0-beta.17",
+  "version": "1.0.0-beta.18",
   "main": "lib/index.js",
   "scripts": {
     "lint": "eslint .",
@@ -35,7 +35,6 @@
     "redux-logger": "~2.6.1",
     "roc": "^1.0.0-rc.12",
     "roc-package-web-app-dev": "^1.0.0-beta.3",
-    "roc-package-web-app-react": "file:../roc-package-web-app-react",
     "roc-plugin-react-dev": "^1.0.0-beta.2",
     "yellowbox-react": "~0.10.0"
   },
