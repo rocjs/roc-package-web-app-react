@@ -20,6 +20,7 @@
   * [dev-process-stopping](#dev-process-stopping)
 * [roc-plugin-style-css](#roc-plugin-style-css)
   * [add-style](#add-style)
+  * [add-style-preloaders](#add-style-preloaders)
 
 ## roc
 
@@ -179,3 +180,12 @@ Important that the _actions_ return an object matching the following:
 
 __Initial value:__ _Nothing_  
 __Expected return value:__ `Object(String / Array(String))`
+
+### add-style-preloaders
+
+Used to add general loaders early in the chain, before the PostCSS loader.
+
+These loaders will be applied to all styles added from the `add-style` hook.
+
+__Initial value:__ _Nothing_  
+__Expected return value:__ `Array(String)`

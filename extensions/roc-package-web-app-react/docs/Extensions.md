@@ -9,7 +9,7 @@ Package forming an abstract foundation of the Roc ecosystem.
 The package serves as a base from which other packages within the ecosystem are to be constructed.
 It is therefore _never to be included_ as a direct dependency in app or component projects.
 
-### roc-package-webpack — [v1.0.0-beta.7](https://www.npmjs.com/package/roc-package-webpack)
+### roc-package-webpack — [v1.0.0-beta.8](https://www.npmjs.com/package/roc-package-webpack)
 Package providing Webpack support for Roc
 
 ### roc-package-webpack-node — [v1.0.0-beta.3](https://www.npmjs.com/package/roc-package-webpack-node)
