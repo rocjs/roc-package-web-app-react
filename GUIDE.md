@@ -890,8 +890,8 @@ module.exports = {
         return () => (webpack) => {
           webpack.output.filename = 'lol.js';
           return webpack;
-        },
-      },
+        };
+      }
     },
   },
 }
