@@ -14,6 +14,19 @@ export default () => (
         <Route path="about/" component={ About } data={2} ignoreScrollBehavior />
         <Route path="long/" component={ Long } />
         <Route path="simple/" component={ Simple } data={3} />
+        <Route
+            path="async"
+            getComponent={ (nextState, callback) => {
+                require.ensure([], (require) => {
+                    const Async = require('./components/async').default;
+                    callback(
+                        null,
+                        Async
+                    );
+                });
+            }}
+            data={4}
+        />
     </Route>
 );
 

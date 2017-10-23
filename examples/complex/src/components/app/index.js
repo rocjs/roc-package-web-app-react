@@ -20,6 +20,7 @@ export default class App extends Component {
                         <li><Link to="/about/">About</Link></li>
                         <li><Link to={{ pathname: '/long/', state: { scrollToTop: true } }}>Long</Link></li>
                         <li><Link to="/simple/">Simple</Link></li>
+                        <li><Link to="/async/">Async</Link></li>
                     </ul>
                 </nav>
                 { this.props.children }

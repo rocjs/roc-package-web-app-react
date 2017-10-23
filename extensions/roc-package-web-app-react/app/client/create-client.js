@@ -3,7 +3,6 @@
 /* eslint-disable global-require */
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Router from 'react-router/lib/Router';
 import useRouterHistory from 'react-router/lib/useRouterHistory';
 import applyRouterMiddleware from 'react-router/lib/applyRouterMiddleware';
 import createHistory from 'history/lib/createBrowserHistory';
@@ -12,6 +11,8 @@ import debug from 'debug';
 import { useRedial } from 'react-router-redial';
 
 import { rocConfig } from '../shared/universal-config';
+
+import renderToDOM from './render-to-dom';
 
 const clientDebug = debug('roc:client');
 
@@ -81,8 +82,6 @@ export default function createClient({
     }
 
     const render = () => {
-        const node = document.getElementById(mountNode);
-
         const forceRefreshSetting = rocConfig.runtime.history.forceRefresh;
         let history = useRouterHistory(createHistory)({
             basename,
@@ -90,11 +89,6 @@ export default function createClient({
                 ? forceRefreshSetting()
                 : forceRefreshSetting,
         });
-
-        let initialLoading;
-        if (HAS_CLIENT_LOADING) {
-            initialLoading = require(ROC_CLIENT_LOADING).default;
-        }
 
         let routes;
         let locals = {
@@ -168,13 +162,14 @@ export default function createClient({
             ));
         }
 
+        const node = document.getElementById(mountNode);
         let updateScroll = () => {};
 
         const middlewares = [
             useRedial({
                 ...routerMiddlewareConfig['react-router-redial'],
                 locals,
-                initialLoading,
+                initialLoading: HAS_CLIENT_LOADING ? require(ROC_CLIENT_LOADING).default : undefined,
                 beforeTransition: rocConfig.runtime.fetch.client.beforeTransition,
                 afterTransition: rocConfig.runtime.fetch.client.afterTransition,
                 parallel: rocConfig.runtime.fetch.client.parallel,
@@ -201,15 +196,15 @@ export default function createClient({
             );
         }
 
-        const finalComponent = compose(createComponent)(
-            <Router
-                history={history}
-                routes={routes}
-                render={applyRouterMiddleware(...middlewares)}
-            />
+        renderToDOM(
+            {
+                createComponent: compose(createComponent),
+                history,
+                routes,
+                routerRenderFn: applyRouterMiddleware(...middlewares),
+            },
+            node
         );
-
-        ReactDOM.render(finalComponent, node);
 
         if (__DEV__) {
             const devNode = document.createElement('div');
